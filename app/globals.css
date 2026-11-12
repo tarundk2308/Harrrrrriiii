@@ -100,6 +100,15 @@ main {
   z-index: 2;
 }
 
+.invite-media-hidden {
+  position: fixed;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
 .bg-video {
   position: fixed;
   inset: 0;
@@ -109,6 +118,14 @@ main {
   height: 100dvh;
   pointer-events: none;
   overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.65s var(--ease), visibility 0.65s var(--ease);
+}
+
+.bg-video.is-on {
+  opacity: 1;
+  visibility: visible;
 }
 
 .bg-video-media {
@@ -120,6 +137,15 @@ main {
   object-position: center;
   opacity: 1;
   filter: saturate(1.08) contrast(1.04);
+  pointer-events: none;
+}
+
+.bg-video-media::-webkit-media-controls,
+.bg-video-media::-webkit-media-controls-enclosure,
+.bg-video-media::-webkit-media-controls-panel,
+.bg-video-media::-webkit-media-controls-start-playback-button {
+  display: none !important;
+  -webkit-appearance: none;
 }
 
 .bg-video-veil {
@@ -127,23 +153,47 @@ main {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(243, 238, 230, 0.1) 0%,
-    rgba(243, 238, 230, 0.18) 48%,
-    rgba(243, 238, 230, 0.26) 100%
+    rgba(243, 238, 230, 0.22) 0%,
+    rgba(243, 238, 230, 0.34) 52%,
+    rgba(243, 238, 230, 0.42) 100%
   );
 }
 
 .plate {
   position: relative;
   z-index: 2;
+  isolation: isolate;
   width: min(40rem, calc(100% - 1.4rem));
   margin-inline: auto;
   padding: clamp(2rem, 5.5vw, 3.25rem) clamp(1.15rem, 4vw, 1.85rem);
-  background: rgba(247, 243, 236, 0.95);
-  border: 1px solid rgba(166, 132, 86, 0.42);
-  box-shadow: 0 14px 42px rgba(35, 28, 22, 0.1);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: var(--ivory);
+  border: 1px solid rgba(166, 132, 86, 0.55);
+  border-radius: 2px;
+  box-shadow:
+    0 16px 48px rgba(35, 28, 22, 0.14),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+}
+
+.plate,
+.plate * {
+  color: var(--ink);
+}
+
+.plate .tamil,
+.plate .crown-tamil,
+.plate .crown-role,
+.plate .tamil-inline,
+.plate .amp,
+.plate .gate-amp {
+  color: var(--madder);
+}
+
+.plate .eyebrow-en,
+.plate .end-meta,
+.plate .groom-alias,
+.plate .groom-alias-card,
+.plate .groom-alias-inline {
+  color: var(--ink-soft);
 }
 
 .plate-blessing,
@@ -162,16 +212,8 @@ main {
 .plate .names,
 .plate .crown-name,
 .plate .time-light,
-.plate .card-names,
-.plate .mood-light,
-.plate .time-sub-light {
-  color: var(--ink);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
-}
-
-.type-crisp {
-  color: var(--ink);
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
+.plate .card-names {
+  font-weight: 500;
 }
 
 .groom-alias {
@@ -215,6 +257,14 @@ main {
 .blessing,
 .keepsake {
   position: relative;
+}
+
+.blessing-crown,
+.hero,
+.evening-light,
+.keepsake,
+.end {
+  padding: clamp(2rem, 6vw, 3.5rem) 0.65rem;
 }
 
 .hero {
@@ -705,7 +755,6 @@ main {
 }
 
 .keepsake {
-  padding: 8.5rem 1.2rem 2.5rem;
   text-align: center;
 }
 
@@ -714,7 +763,7 @@ main {
   margin: 0 auto;
   padding: 2.7rem 1.35rem 2.15rem;
   border: 1px solid var(--gold-soft);
-  background: rgba(247, 243, 236, 0.96);
+  background: var(--ivory);
   position: relative;
 }
 
@@ -818,7 +867,6 @@ main {
 }
 
 .end {
-  padding: clamp(2rem, 6vw, 3.5rem) 0.65rem 3rem;
   text-align: center;
 }
 
@@ -868,101 +916,70 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1.25rem;
+  padding: clamp(1.25rem, 5vw, 2.5rem);
   background: var(--paper);
 }
 
 .gate-inner {
-  width: min(21.5rem, 100%);
-  perspective: 1100px;
+  width: min(23rem, 100%);
 }
 
-.envelope {
-  position: relative;
-  width: 100%;
-  text-align: center;
-  filter: drop-shadow(0 26px 48px rgba(35, 28, 22, 0.11));
-}
-
-.env-lid {
-  position: relative;
-  height: 4.85rem;
-  margin-bottom: -1px;
-  z-index: 2;
-}
-
-.env-flap {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(175deg, var(--ivory) 0%, var(--paper-deep) 100%);
-  border: 1px solid var(--gold-soft);
-  border-bottom: none;
-  clip-path: polygon(0 0, 100% 0, 50% 100%);
-  transform-origin: 50% 0%;
-  transition: transform 1.05s var(--ease);
-  backface-visibility: hidden;
-}
-
-.env-flap.is-open {
-  transform: rotateX(175deg);
-}
-
-.env-seal {
-  position: absolute;
-  left: 50%;
-  bottom: -1.35rem;
-  translate: -50% 0;
-  z-index: 3;
-  width: 3.1rem;
-  height: 3.1rem;
+.gate-card {
   display: flex;
+  width: 100%;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  border-radius: 50%;
-  border: 1px solid var(--gold-soft);
-  background: var(--paper);
-  box-shadow: 0 0 0 0.35rem var(--ivory);
-  font-family: var(--serif);
-  font-size: 0.95rem;
-  letter-spacing: 0.06em;
-  color: var(--ink);
-  pointer-events: none;
+  gap: 0;
+  padding: clamp(2.1rem, 6vw, 2.85rem) clamp(1.5rem, 5vw, 2rem) clamp(1.85rem, 5vw, 2.35rem);
+  border: 1px solid rgba(166, 132, 86, 0.55);
+  background: var(--ivory);
+  box-shadow:
+    0 20px 52px rgba(35, 28, 22, 0.12),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: center;
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
 }
 
-.env-seal span {
+.gate-card:hover {
+  box-shadow:
+    0 24px 58px rgba(35, 28, 22, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+}
+
+.gate-mark {
+  margin-bottom: 1.15rem;
+  font-family: var(--serif);
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.gate-mark span {
   color: var(--gold);
 }
 
-.env-sheet {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.45rem;
-  padding: 2.35rem 1.4rem 1.65rem;
-  background: var(--ivory);
-  border: 1px solid var(--gold-soft);
-  border-top: none;
-}
-
-.env-sheet .kolam {
-  width: 52px;
-  height: 52px;
-  margin-bottom: 0.15rem;
+.gate-card .kolam {
+  width: 54px;
+  height: 54px;
+  margin-bottom: 1.25rem;
 }
 
 .gate-tamil {
+  margin: 0 0 0.35rem;
   font-family: var(--tamil);
   font-weight: 500;
-  font-size: 1.12rem;
+  font-size: 1.18rem;
   color: var(--madder);
-  margin: 0;
 }
 
 .gate-eyebrow {
-  margin: 0;
+  margin: 0 0 1.35rem;
   font-size: 0.62rem;
   font-weight: 400;
   letter-spacing: 0.42em;
@@ -971,80 +988,71 @@ main {
   color: var(--ink-soft);
 }
 
+.gate-rule {
+  display: block;
+  width: 3.5rem;
+  height: 1px;
+  margin: 0 0 1.35rem;
+  background: var(--gold);
+}
+
+.gate-rule-short {
+  width: 2.25rem;
+  margin: 1.35rem 0 1rem;
+}
+
 .gate-names {
-  margin: 0.15rem 0 0;
+  margin: 0;
   font-family: var(--serif);
-  font-size: 1.55rem;
-  line-height: 1.15;
+  font-size: clamp(1.45rem, 5.2vw, 1.85rem);
+  line-height: 1.25;
   letter-spacing: -0.02em;
   color: var(--ink);
 }
 
 .gate-amp {
   display: block;
+  margin: 0.35rem 0;
   font-style: italic;
   font-size: 0.72em;
   color: var(--madder);
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .gate-when {
-  margin: 0.15rem 0 0.85rem;
-  font-size: 0.68rem;
-  font-weight: 400;
-  letter-spacing: 0.16em;
+  margin: 1.1rem 0 0;
+  font-size: 0.66rem;
+  font-weight: 500;
+  line-height: 1.85;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ink-soft);
 }
 
-.open-pill {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  width: 100%;
-  max-width: 14rem;
-  margin-top: 0.15rem;
-  padding: 0.85rem 1.25rem 0.75rem;
-  border: 1px solid var(--madder);
-  border-radius: 999px;
-  background: var(--paper);
-  color: var(--madder);
-  cursor: pointer;
-  font: inherit;
-  transition:
-    background 0.25s var(--ease),
-    color 0.25s var(--ease),
-    box-shadow 0.25s var(--ease);
-  animation: pill-glow 2.8s ease-in-out infinite;
-}
-
-.open-pill:hover {
-  background: var(--madder);
-  color: var(--ivory);
-  box-shadow: 0 10px 28px rgba(124, 48, 64, 0.22);
-}
-
-.open-pill-label {
-  font-size: 0.68rem;
+.gate-open {
+  font-size: 0.66rem;
   font-weight: 400;
-  letter-spacing: 0.28em;
-  text-indent: 0.28em;
+  letter-spacing: 0.36em;
+  text-indent: 0.36em;
   text-transform: uppercase;
+  color: var(--madder);
+  animation: pulse-cta 2.6s ease-in-out infinite;
 }
 
-.open-pill-hint {
-  font-size: 0.75rem;
-  line-height: 1;
-  opacity: 0.55;
-  animation: cue 1.8s ease-in-out infinite;
+@keyframes pulse-cta {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .blessing-crown {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: clamp(2.25rem, 7vw, 4.5rem) 0.65rem;
   background: transparent;
 }
 
@@ -1096,7 +1104,6 @@ main {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: clamp(2.25rem, 7vw, 4.5rem) 0.65rem;
   background: transparent;
 }
 

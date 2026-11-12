@@ -1,29 +1,43 @@
 "use client";
 
 import { invite } from "@/lib/invite";
-import { useEffect, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 
-export function InviteAudio({ playing }: { playing: boolean }) {
-  const ref = useRef<HTMLAudioElement>(null);
+export type InviteAudioHandle = {
+  playFromStart: () => Promise<void>;
+};
+
+export const InviteAudio = forwardRef<InviteAudioHandle>(function InviteAudio(_props, ref) {
+  const audioRef = useRef<HTMLAudioElement>(null);
+
+  const playFromStart = async () => {
+    const el = audioRef.current;
+    if (!el) return;
+    el.volume = 0.42;
+    el.currentTime = invite.audioStartSeconds;
+    try {
+      await el.play();
+    } catch {
+      /* retried from shell if needed */
+    }
+  };
+
+  useImperativeHandle(ref, () => ({ playFromStart }), []);
 
   useEffect(() => {
-    const el = ref.current;
-    if (!el || !playing) return;
-
-    const start = async () => {
-      try {
-        el.volume = 0.42;
-        el.currentTime = invite.audioStartSeconds;
-        await el.play();
-      } catch {
-        /* autoplay blocked until user gesture — open click counts */
-      }
-    };
-
-    void start();
-  }, [playing]);
+    const el = audioRef.current;
+    if (!el) return;
+    el.setAttribute("playsinline", "");
+  }, []);
 
   return (
-    <audio ref={ref} src={invite.audioSrc} loop preload="auto" className="sr-only" aria-hidden="true" />
+    <audio
+      ref={audioRef}
+      src={invite.audioSrc}
+      loop
+      preload="auto"
+      className="invite-media-hidden"
+      aria-hidden="true"
+    />
   );
-}
+});

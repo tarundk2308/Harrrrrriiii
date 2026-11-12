@@ -15,7 +15,7 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
   const open = () => {
     if (opening) return;
     setOpening(true);
-    window.setTimeout(() => onOpen(), reduce ? 120 : 1300);
+    onOpen();
   };
 
   return (
@@ -23,56 +23,48 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
       className="gate"
       initial={false}
       animate={opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1 }}
-      transition={{ duration: reduce ? 0.2 : 0.6, delay: opening ? (reduce ? 0 : 0.65) : 0, ease }}
+      transition={{ duration: reduce ? 0.2 : 0.55, delay: opening ? (reduce ? 0 : 0.45) : 0, ease }}
       aria-hidden={opening}
     >
       <div className="gate-inner">
-        <motion.div
-          className="envelope"
-          animate={
-            opening
-              ? { y: reduce ? 0 : -18, scale: reduce ? 1 : 1.02, opacity: reduce ? 1 : 0.92 }
-              : { y: 0, scale: 1, opacity: 1 }
-          }
-          transition={{ duration: reduce ? 0.15 : 0.95, ease }}
+        <motion.button
+          type="button"
+          className="gate-card"
+          onClick={open}
+          aria-label="Open the invitation"
+          animate={opening ? { y: reduce ? 0 : -10, scale: reduce ? 1 : 0.98, opacity: 0.85 } : { y: 0, scale: 1, opacity: 1 }}
+          transition={{ duration: reduce ? 0.12 : 0.75, ease }}
+          whileTap={reduce ? undefined : { scale: 0.985 }}
         >
-          <div className="env-lid" aria-hidden="true">
-            <div className={`env-flap ${opening ? "is-open" : ""}`} />
-            <span className="env-seal">
-              H<span>·</span>S
-            </span>
-          </div>
+          <span className="gate-mark" aria-hidden="true">
+            H<span>·</span>S
+          </span>
 
-          <div className="env-sheet">
-            <Kolam when="load" />
-            <p lang="ta" className="gate-tamil">
-              {invite.occasionTamil}
-            </p>
-            <p className="gate-eyebrow">Engagement</p>
-            <p className="gate-names">
-              <GroomName variant="compact" />
-              <span className="gate-amp">&</span>
-              {invite.bride}
-            </p>
-            <p className="gate-when">
-              {invite.city} · {invite.dateLine}
-            </p>
+          <Kolam when="load" />
 
-            <motion.button
-              type="button"
-              className="open-pill"
-              onClick={open}
-              aria-label="Open the invitation"
-              whileTap={reduce ? undefined : { scale: 0.97 }}
-              animate={opening ? { opacity: 0 } : { opacity: 1 }}
-            >
-              <span className="open-pill-label">Open invitation</span>
-              <span className="open-pill-hint" aria-hidden="true">
-                ↓
-              </span>
-            </motion.button>
-          </div>
-        </motion.div>
+          <p lang="ta" className="gate-tamil">
+            {invite.occasionTamil}
+          </p>
+          <p className="gate-eyebrow">Engagement</p>
+
+          <span className="gate-rule" aria-hidden="true" />
+
+          <p className="gate-names">
+            <GroomName variant="compact" />
+            <span className="gate-amp">&</span>
+            {invite.bride}
+          </p>
+
+          <p className="gate-when">
+            {invite.weekday} · {invite.dateLine}
+            <br />
+            {invite.timeLine} · {invite.city}
+          </p>
+
+          <span className="gate-rule gate-rule-short" aria-hidden="true" />
+
+          <span className="gate-open">Tap to open</span>
+        </motion.button>
       </div>
     </motion.div>
   );

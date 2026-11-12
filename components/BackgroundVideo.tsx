@@ -1,35 +1,48 @@
 "use client";
 
 import { invite } from "@/lib/invite";
-import { useEffect, useRef } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 
-export function BackgroundVideo({ playing }: { playing: boolean }) {
-  const ref = useRef<HTMLVideoElement>(null);
+export type BackgroundVideoHandle = {
+  play: () => Promise<void>;
+};
 
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || !playing) return;
+export const BackgroundVideo = forwardRef<
+  BackgroundVideoHandle,
+  { visible: boolean }
+>(function BackgroundVideo({ visible }, ref) {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-    const run = async () => {
-      try {
-        await el.play();
-      } catch {
-        /* gesture from open should unlock playback */
-      }
-    };
+  const play = async () => {
+    const el = videoRef.current;
+    if (!el) return;
+    el.muted = true;
+    el.playsInline = true;
+    try {
+      await el.play();
+    } catch {
+      /* retried from shell if needed */
+    }
+  };
 
-    void run();
-  }, [playing]);
-
-  if (!playing) return null;
+  useImperativeHandle(ref, () => ({ play }), []);
 
   return (
-    <div className="bg-video" aria-hidden="true">
-      <video ref={ref} className="bg-video-media" muted loop playsInline autoPlay preload="auto">
+    <div className={`bg-video${visible ? " is-on" : ""}`} aria-hidden="true">
+      <video
+        ref={videoRef}
+        className="bg-video-media"
+        muted
+        loop
+        playsInline
+        preload="auto"
+        disablePictureInPicture
+        disableRemotePlayback
+      >
         <source src={invite.videoSrc} type="video/mp4" />
         {invite.videoSrcFallback ? <source src={invite.videoSrcFallback} type="video/quicktime" /> : null}
       </video>
       <div className="bg-video-veil" />
     </div>
   );
-}
+});

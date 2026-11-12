@@ -149,7 +149,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
                 <span className="eyebrow-en">Engagement</span>
               </motion.p>
 
-              <h1 id="names" className="names type-crisp">
+              <h1 id="names" className="names">
                 <Rise delay={0.45}>
                   <GroomName />
                 </Rise>
@@ -183,7 +183,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
           </section>
 
           <section className="evening-light" aria-label="The evening">
-            <ContentPlate className="plate-evening evening-light-inner type-crisp">
+            <ContentPlate className="plate-evening evening-light-inner">
               <Reveal>
                 <p className="kicker-light">The evening</p>
               </Reveal>
