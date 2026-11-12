@@ -13,6 +13,13 @@ export const BackgroundVideo = forwardRef<
 >(function BackgroundVideo({ onPlaying }, ref) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
+  const seekPastIntro = (el: HTMLVideoElement) => {
+    const start = invite.videoStartSeconds;
+    if (el.currentTime < start - 0.15) {
+      el.currentTime = start;
+    }
+  };
+
   const play = async () => {
     const el = videoRef.current;
     if (!el) return;
@@ -20,6 +27,7 @@ export const BackgroundVideo = forwardRef<
     el.muted = true;
     el.playsInline = true;
     el.controls = false;
+    seekPastIntro(el);
     try {
       await el.play();
     } catch {
@@ -43,9 +51,19 @@ export const BackgroundVideo = forwardRef<
 
     const handlePlaying = () => onPlaying?.();
 
+    const skipIntroOnLoop = () => {
+      if (el.currentTime < invite.videoStartSeconds - 0.12) {
+        el.currentTime = invite.videoStartSeconds;
+      }
+    };
+
+    const onMeta = () => seekPastIntro(el);
+
+    el.addEventListener("loadedmetadata", onMeta);
     el.addEventListener("loadeddata", kick);
     el.addEventListener("canplay", kick);
     el.addEventListener("playing", handlePlaying);
+    el.addEventListener("timeupdate", skipIntroOnLoop);
 
     const onPause = () => {
       if (document.visibilityState !== "visible") return;
@@ -58,9 +76,11 @@ export const BackgroundVideo = forwardRef<
     window.addEventListener("click", onInteract, { once: true });
 
     return () => {
+      el.removeEventListener("loadedmetadata", onMeta);
       el.removeEventListener("loadeddata", kick);
       el.removeEventListener("canplay", kick);
       el.removeEventListener("playing", handlePlaying);
+      el.removeEventListener("timeupdate", skipIntroOnLoop);
       el.removeEventListener("pause", onPause);
       window.removeEventListener("touchstart", onInteract);
       window.removeEventListener("click", onInteract);
