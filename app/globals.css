@@ -2689,6 +2689,26 @@ body:has(.invite-root.is-open)::before {
   padding: max(1rem, env(safe-area-inset-top)) 1rem max(2rem, env(safe-area-inset-bottom));
 }
 
+.pinterest-grid {
+  width: 100%;
+  max-width: 50rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+@media (min-width: 640px) {
+  .pinterest-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  .pinterest-pin--details {
+    margin-top: 2.5rem;
+  }
+}
+
 .pinterest-pin {
   width: 100%;
   max-width: 24rem;
@@ -2727,6 +2747,63 @@ body:has(.invite-root.is-open)::before {
   height: 46%;
   object-fit: cover;
   object-position: center bottom;
+}
+
+.pinterest-pin__media--compact {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(165deg, #fff5f7 0%, #fafafa 100%);
+}
+
+.pinterest-pin__date-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.15rem;
+}
+
+.pinterest-pin__date-weekday {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.pinterest-pin__date-num {
+  font-family: var(--serif);
+  font-size: clamp(3rem, 14vw, 3.75rem);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--ink);
+}
+
+.pinterest-pin__date-month {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.pinterest-pin__time-line {
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.pinterest-pin--hero,
+.pinterest-pin--details {
+  margin-inline: auto;
+}
+
+@media (min-width: 640px) {
+  .pinterest-pin--hero,
+  .pinterest-pin--details {
+    margin-inline: 0;
+    max-width: none;
+  }
 }
 
 .pinterest-pin__copy {
