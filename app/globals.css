@@ -1008,11 +1008,11 @@ main {
 
 .flower {
   position: absolute;
-  top: -8%;
+  top: -12%;
   border-radius: 68% 68% 40% 40%;
-  animation-name: flower-fall;
-  animation-timing-function: linear;
-  animation-iteration-count: infinite;
+  animation-name: flower-fall, flower-drift;
+  animation-timing-function: linear, ease-in-out;
+  animation-iteration-count: infinite, infinite;
   will-change: transform;
 }
 
@@ -1581,10 +1581,29 @@ body:has(.invite-root.is-open)::before {
 
 @keyframes flower-fall {
   0% {
-    transform: translate3d(0, -20px, 0) rotate(0deg);
+    transform: translate3d(0, -12vh, 0) rotate(0deg) scale(0.9);
+  }
+  20% {
+    transform: translate3d(calc(var(--drift) * 0.18 + var(--sway)), 18vh, 0) rotate(45deg) scale(1);
+  }
+  45% {
+    transform: translate3d(calc(var(--drift) * 0.42 - var(--sway)), 48vh, 0) rotate(120deg) scale(1.02);
+  }
+  70% {
+    transform: translate3d(calc(var(--drift) * 0.72 + var(--sway)), 78vh, 0) rotate(200deg) scale(0.98);
   }
   100% {
-    transform: translate3d(var(--drift), 115vh, 0) rotate(var(--spin));
+    transform: translate3d(var(--drift), 118vh, 0) rotate(var(--spin)) scale(0.92);
+  }
+}
+
+@keyframes flower-drift {
+  0%,
+  100% {
+    filter: brightness(1);
+  }
+  50% {
+    filter: brightness(1.08);
   }
 }
 
@@ -2509,6 +2528,20 @@ body:has(.invite-root.is-open)::before {
   overflow: hidden;
   pointer-events: none;
   mask-image: linear-gradient(to top, black 50%, transparent);
+  animation: lotus-peek-sway 12s ease-in-out infinite;
+}
+
+@keyframes lotus-peek-sway {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  33% {
+    transform: translate3d(6px, -3px, 0);
+  }
+  66% {
+    transform: translate3d(-5px, 2px, 0);
+  }
 }
 
 .gate-lotus-peek-img {
@@ -2516,6 +2549,11 @@ body:has(.invite-root.is-open)::before {
   height: 100%;
   object-fit: cover;
   object-position: center bottom;
+}
+
+.lotus-garden-inner {
+  width: 100%;
+  height: 100%;
 }
 
 .gate-envelope--engagement {

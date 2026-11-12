@@ -9,6 +9,7 @@ type Flower = {
   duration: string;
   size: number;
   drift: string;
+  sway: string;
   opacity: number;
   bg: string;
   spin: number;
@@ -25,19 +26,20 @@ function makeFlowers(count: number, opacityMul: number): Flower[] {
   return Array.from({ length: count }, (_, id) => ({
     id,
     left: `${2 + Math.random() * 96}%`,
-    delay: `${-(Math.random() * 32).toFixed(1)}s`,
-    duration: `${10 + Math.random() * 16}s`,
+    delay: `${-(Math.random() * 40).toFixed(1)}s`,
+    duration: `${7 + Math.random() * 10}s`,
     size: 10 + Math.random() * 16,
-    drift: `${-50 + Math.random() * 100}px`,
-    opacity: (0.08 + Math.random() * 0.12) * opacityMul,
+    drift: `${-70 + Math.random() * 140}px`,
+    sway: `${-22 + Math.random() * 44}px`,
+    opacity: (0.1 + Math.random() * 0.14) * opacityMul,
     bg: PASTEL_LOTTES[id % PASTEL_LOTTES.length]!,
-    spin: 120 + Math.random() * 140,
+    spin: 200 + Math.random() * 220,
   }));
 }
 
 export function FallingFlowers({ intense }: { intense?: boolean }) {
   const flowers = useMemo(
-    () => makeFlowers(intense ? 50 : 36, intense ? 0.9 : 0.75),
+    () => makeFlowers(intense ? 52 : 40, intense ? 0.95 : 0.8),
     [intense]
   );
 
@@ -55,6 +57,7 @@ export function FallingFlowers({ intense }: { intense?: boolean }) {
             animationDelay: f.delay,
             opacity: f.opacity,
             ["--drift" as string]: f.drift,
+            ["--sway" as string]: f.sway,
             ["--spin" as string]: `${f.spin}deg`,
             background: f.bg,
             boxShadow: "0 0 14px rgba(255, 255, 255, 0.55)",
