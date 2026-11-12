@@ -6,8 +6,8 @@ export function GroomName({
   variant?: "hero" | "compact" | "card" | "inline";
 }) {
   if (variant === "compact") {
-    return <span className="groom-compact">{invite.groomFull}</span>;
+    return <span className="groom-compact">{invite.groom}</span>;
   }
 
-  return <>{invite.groomFull}</>;
+  return <>{invite.groom}</>;
 }

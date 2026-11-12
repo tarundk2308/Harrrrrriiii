@@ -1,122 +1,79 @@
 "use client";
 
+import { GroomName } from "@/components/GroomName";
+import { Kolam } from "@/components/Kolam";
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
-import { AnimatedFloralStrip } from "@/components/AnimatedFloralStrip";
 import { useState } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
-const OPEN_MS = 1200;
 
-export function OpeningGate({
-  onOpenStart,
-  onOpenComplete,
-}: {
-  onOpenStart: () => void;
-  onOpenComplete: () => void;
-}) {
+export function OpeningGate({ onOpen }: { onOpen: () => void }) {
   const reduce = useReducedMotion();
   const [opening, setOpening] = useState(false);
 
   const open = () => {
     if (opening) return;
     setOpening(true);
-    onOpenStart();
-    const touch =
-      typeof window !== "undefined" &&
-      window.matchMedia("(max-width: 640px), (hover: none) and (pointer: coarse)").matches;
-    const doneMs = reduce ? 220 : touch ? 1320 : OPEN_MS;
-    window.setTimeout(() => onOpenComplete(), doneMs);
+    window.setTimeout(() => onOpen(), reduce ? 120 : 1300);
   };
 
   return (
     <motion.div
-      className="gate gate--engagement"
+      className="gate"
       initial={false}
-      animate={
-        opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1, pointerEvents: "auto" }
-      }
-      transition={{ duration: reduce ? 0.2 : 0.55, delay: opening ? (reduce ? 0 : 0.5) : 0, ease }}
+      animate={opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1 }}
+      transition={{ duration: reduce ? 0.2 : 0.6, delay: opening ? (reduce ? 0 : 0.65) : 0, ease }}
       aria-hidden={opening}
     >
-      <div className="gate-lotus-peek" aria-hidden="true">
-        <AnimatedFloralStrip
-          src="/images/lotus-florals.jpg"
-          width={1024}
-          height={260}
-          imageClassName="gate-lotus-peek-img"
-          washClassName="floral-strip-wash floral-strip-wash--gate"
-        />
-      </div>
-
-      <motion.button
-        type="button"
-        className="gate-envelope gate-envelope--engagement"
-        onClick={open}
-        aria-label="Tap to open the engagement invitation"
-        animate={
-          opening
-            ? { scale: 0.9, opacity: 0, y: 20 }
-            : reduce
-              ? { scale: 1, opacity: 1, y: 0 }
-              : { scale: 1, opacity: 1, y: [0, -6, 0] }
-        }
-        transition={
-          opening
-            ? { duration: reduce ? 0.12 : 0.5, ease }
-            : { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
-        }
-        whileTap={reduce || opening ? undefined : { scale: 0.97 }}
-      >
-        {!reduce && !opening ? (
-          <motion.span
-            className="gate-pulse"
-            aria-hidden="true"
-            animate={{ scale: [1, 1.35], opacity: [0.35, 0] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
-          />
-        ) : null}
-
+      <div className="gate-inner">
         <motion.div
-          className="gate-monogram-hero"
-          aria-hidden="true"
-          animate={reduce ? undefined : { scale: [1, 1.03, 1] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <span>H</span>
-          <span className="gate-monogram-dot">·</span>
-          <span>S</span>
-        </motion.div>
-
-        <span className="gate-couple gate-couple--script">
-          {invite.brideShort}
-          <span className="gate-amp-gold">&</span>
-          {invite.groomShort}
-        </span>
-
-        <span className="gate-when gate-when--engagement">{invite.eventTitle}</span>
-        <span className="gate-when-sub">{invite.dateLine}</span>
-
-        <span className="gate-divider" aria-hidden="true" />
-
-        <motion.span
-          className="gate-open gate-open--hero"
+          className="envelope"
           animate={
             opening
-              ? { y: -20, opacity: 0 }
-              : reduce
-                ? {}
-                : { letterSpacing: ["0.26em", "0.34em", "0.26em"] }
+              ? { y: reduce ? 0 : -18, scale: reduce ? 1 : 1.02, opacity: reduce ? 1 : 0.92 }
+              : { y: 0, scale: 1, opacity: 1 }
           }
-          transition={
-            opening
-              ? { duration: 0.35, ease }
-              : { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
-          }
+          transition={{ duration: reduce ? 0.15 : 0.95, ease }}
         >
-          Tap to open
-        </motion.span>
-      </motion.button>
+          <div className="env-lid" aria-hidden="true">
+            <div className={`env-flap ${opening ? "is-open" : ""}`} />
+            <span className="env-seal">
+              H<span>·</span>S
+            </span>
+          </div>
+
+          <div className="env-sheet">
+            <Kolam when="load" />
+            <p lang="ta" className="gate-tamil">
+              {invite.occasionTamil}
+            </p>
+            <p className="gate-eyebrow">{invite.eventTitle}</p>
+            <p className="gate-names">
+              <GroomName variant="compact" />
+              <span className="gate-amp">&</span>
+              {invite.bride}
+            </p>
+            <p className="gate-when">
+              {invite.city} · {invite.dateLine}
+            </p>
+
+            <motion.button
+              type="button"
+              className="open-pill"
+              onClick={open}
+              aria-label="Open the invitation"
+              whileTap={reduce ? undefined : { scale: 0.97 }}
+              animate={opening ? { opacity: 0 } : { opacity: 1 }}
+            >
+              <span className="open-pill-label">Open invitation</span>
+              <span className="open-pill-hint" aria-hidden="true">
+                ↓
+              </span>
+            </motion.button>
+          </div>
+        </motion.div>
+      </div>
     </motion.div>
   );
 }

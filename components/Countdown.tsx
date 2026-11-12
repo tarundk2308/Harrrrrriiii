@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 
 import { invite } from "@/lib/invite";
 
-const TARGET = new Date(invite.countdownIso).getTime();
+const TARGET = new Date(invite.iso).getTime();
 
 function parts(diff: number) {
   const total = Math.max(0, diff);

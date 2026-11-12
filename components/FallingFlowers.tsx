@@ -9,44 +9,32 @@ type Flower = {
   duration: string;
   size: number;
   drift: string;
-  sway: string;
   opacity: number;
-  bg: string;
+  hue: number;
   spin: number;
 };
 
-const PASTEL_LOTTES = [
-  "linear-gradient(165deg, #ffe4ec, #f9a8d4)",
-  "linear-gradient(165deg, #ede9fe, #c4b5fd)",
-  "linear-gradient(165deg, #ffedd5, #fdba74)",
-  "linear-gradient(165deg, #ecfdf5, #6ee7b7)",
-  "linear-gradient(165deg, #e0f2fe, #7dd3fc)",
-  "linear-gradient(165deg, #fce7f3, #f0abfc)",
-];
-
-function makeFlowers(count: number, opacityMul: number): Flower[] {
+function makeFlowers(count: number): Flower[] {
   return Array.from({ length: count }, (_, id) => ({
     id,
-    left: `${2 + Math.random() * 96}%`,
-    delay: `${-(Math.random() * 40).toFixed(1)}s`,
-    duration: `${7 + Math.random() * 10}s`,
-    size: 10 + Math.random() * 16,
-    drift: `${-70 + Math.random() * 140}px`,
-    sway: `${-22 + Math.random() * 44}px`,
-    opacity: (0.1 + Math.random() * 0.14) * opacityMul,
-    bg: PASTEL_LOTTES[id % PASTEL_LOTTES.length]!,
-    spin: 200 + Math.random() * 220,
+    left: `${4 + Math.random() * 92}%`,
+    delay: `${-(Math.random() * 28).toFixed(1)}s`,
+    duration: `${14 + Math.random() * 16}s`,
+    size: 7 + Math.random() * 12,
+    drift: `${-40 + Math.random() * 80}px`,
+    opacity: 0.12 + Math.random() * 0.18,
+    hue: Math.random() > 0.5 ? 38 : 350,
+    spin: 160 + Math.random() * 120,
   }));
 }
 
-export function FallingFlowers({ intense }: { intense?: boolean }) {
-  const flowers = useMemo(
-    () => makeFlowers(intense ? 52 : 40, intense ? 0.95 : 0.8),
-    [intense]
-  );
+export function FallingFlowers({ active }: { active: boolean }) {
+  const flowers = useMemo(() => makeFlowers(36), []);
+
+  if (!active) return null;
 
   return (
-    <div className={`flowers ${intense ? "flowers--lush" : "flowers--soft"}`} aria-hidden="true">
+    <div className="flowers" aria-hidden="true">
       {flowers.map((f) => (
         <span
           key={f.id}
@@ -59,10 +47,8 @@ export function FallingFlowers({ intense }: { intense?: boolean }) {
             animationDelay: f.delay,
             opacity: f.opacity,
             ["--drift" as string]: f.drift,
-            ["--sway" as string]: f.sway,
             ["--spin" as string]: `${f.spin}deg`,
-            background: f.bg,
-            boxShadow: "0 0 14px rgba(255, 255, 255, 0.55)",
+            background: `linear-gradient(165deg, hsl(${f.hue} 72% 94%), hsl(${f.hue} 42% 72%))`,
           }}
         />
       ))}
