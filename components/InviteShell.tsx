@@ -12,6 +12,7 @@ import { useEffect, useRef, useState } from "react";
 
 export function InviteShell() {
   const [open, setOpen] = useState(false);
+  const [gateVisible, setGateVisible] = useState(true);
   const videoRef = useRef<BackgroundVideoHandle>(null);
 
   useEffect(() => {
@@ -28,8 +29,15 @@ export function InviteShell() {
       <BackgroundVideo ref={videoRef} />
       <FallingFlowers active={open} />
       <InviteAudio active={open} />
-      {!open ? <OpeningGate onOpen={handleOpen} /> : null}
       <Invite revealed={open} />
+      {gateVisible ? (
+        <OpeningGate
+          onOpen={() => {
+            handleOpen();
+            setGateVisible(false);
+          }}
+        />
+      ) : null}
     </div>
   );
 }

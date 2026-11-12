@@ -1009,7 +1009,7 @@ main {
 .curtain-preview {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1018,6 +1018,8 @@ main {
 }
 
 .curtain-card {
+  position: relative;
+  z-index: 7;
   pointer-events: auto;
   display: flex;
   flex-direction: column;
@@ -1088,9 +1090,95 @@ main {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 54%;
-  z-index: 3;
+  width: 52%;
+  z-index: 4;
+  padding: 0;
+  border: none;
+  cursor: pointer;
   will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.curtain:disabled {
+  cursor: default;
+  pointer-events: none;
+}
+
+.curtain-lettering {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  max-width: min(11rem, 38vw);
+  pointer-events: none;
+  text-align: center;
+}
+
+.curtain-lettering--left {
+  right: clamp(0.65rem, 8vw, 1.75rem);
+  top: 50%;
+  transform: translateY(-50%);
+  align-items: flex-end;
+  text-align: right;
+}
+
+.curtain-lettering--right {
+  left: clamp(0.65rem, 8vw, 1.75rem);
+  top: 50%;
+  transform: translateY(-50%);
+  align-items: flex-start;
+  text-align: left;
+}
+
+.curtain-line {
+  display: block;
+  line-height: 1.35;
+}
+
+.curtain-line--tamil {
+  font-family: var(--tamil);
+  font-size: clamp(0.95rem, 3.2vw, 1.15rem);
+  color: rgba(255, 228, 210, 0.95);
+}
+
+.curtain-line--kicker {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(240, 217, 160, 0.95);
+}
+
+.curtain-line--name {
+  font-family: var(--script);
+  font-size: clamp(1.15rem, 4.5vw, 1.55rem);
+  color: #f5e6c8;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
+}
+
+.curtain-line--when {
+  font-family: var(--serif);
+  font-size: clamp(0.78rem, 2.8vw, 0.92rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 236, 220, 0.92);
+}
+
+.curtain-line--time,
+.curtain-line--city {
+  font-family: var(--serif);
+  font-size: clamp(0.72rem, 2.6vw, 0.85rem);
+  color: rgba(240, 217, 160, 0.88);
+}
+
+@media (max-width: 380px) {
+  .curtain-lettering {
+    gap: 0.35rem;
+  }
+
+  .curtain-line--name {
+    font-size: 1.05rem;
+  }
 }
 
 .curtain--left {

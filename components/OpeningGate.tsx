@@ -33,6 +33,44 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
         <span className="curtain-rod-shine" />
       </div>
 
+      <motion.button
+        type="button"
+        className="curtain curtain--left"
+        aria-label="Open the curtains"
+        disabled={opening}
+        onClick={open}
+        initial={false}
+        animate={{ x: opening ? "-105vw" : "0vw" }}
+        transition={panelTransition}
+      >
+        <span className="curtain-lettering curtain-lettering--left" aria-hidden="true">
+          <span className="curtain-line curtain-line--tamil" lang="ta">
+            {invite.occasionTamil}
+          </span>
+          <span className="curtain-line curtain-line--kicker">{invite.eventTitle}</span>
+          <span className="curtain-line curtain-line--name">{invite.groom}</span>
+        </span>
+      </motion.button>
+      <motion.button
+        type="button"
+        className="curtain curtain--right"
+        aria-label="Open the curtains"
+        disabled={opening}
+        onClick={open}
+        initial={false}
+        animate={{ x: opening ? "105vw" : "0vw" }}
+        transition={panelTransition}
+      >
+        <span className="curtain-lettering curtain-lettering--right" aria-hidden="true">
+          <span className="curtain-line curtain-line--name">{invite.bride}</span>
+          <span className="curtain-line curtain-line--when">
+            {invite.weekday} {invite.dateDay} {invite.dateMonthYear}
+          </span>
+          <span className="curtain-line curtain-line--time">{invite.timeLine}</span>
+          <span className="curtain-line curtain-line--city">{invite.city}</span>
+        </span>
+      </motion.button>
+
       <div className="curtain-preview">
         <motion.button
           type="button"
@@ -60,21 +98,6 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
           <span className="curtain-cta">Open curtains</span>
         </motion.button>
       </div>
-
-      <motion.div
-        className="curtain curtain--left"
-        aria-hidden="true"
-        initial={false}
-        animate={{ x: opening ? (reduce ? "-100%" : "-108%") : "0%" }}
-        transition={panelTransition}
-      />
-      <motion.div
-        className="curtain curtain--right"
-        aria-hidden="true"
-        initial={false}
-        animate={{ x: opening ? (reduce ? "100%" : "108%") : "0%" }}
-        transition={panelTransition}
-      />
     </div>
   );
 }

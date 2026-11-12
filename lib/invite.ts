@@ -8,6 +8,8 @@ export const invite = {
   occasionTamil: "நிச்சயதார்த்தம்",
 
   weekday: "Friday",
+  dateDay: "04",
+  dateMonthYear: "December 2026",
   dateLine: "4 December 2026",
   timeLine: "6:30 PM onwards",
   timeDisplay: "6:30 PM",
