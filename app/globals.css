@@ -12,10 +12,9 @@
   --night-soft: rgba(244, 239, 230, 0.74);
   --warm: #e7c79a;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --serif: "DM Serif Display", "Fraunces", Palatino, serif;
+  --serif: "Nunito", "Avenir Next", "Segoe UI", sans-serif;
   --sans: "Nunito", "Avenir Next", "Segoe UI", sans-serif;
-  --cute: "Nunito", system-ui, sans-serif;
-  --script: "Great Vibes", "Segoe Script", cursive;
+  --script: "Caveat", "Segoe Script", cursive;
   --tamil: "Noto Serif Tamil", "Tamil MN", serif;
 }
 
@@ -49,7 +48,7 @@ body {
 body {
   min-height: 100svh;
   color: var(--ink);
-  font-family: var(--cute);
+  font-family: var(--sans);
   font-weight: 400;
   font-size: 0.9375rem;
   line-height: 1.5;
@@ -343,16 +342,30 @@ main {
   z-index: 0;
 }
 
+.hero-sparkles {
+  position: absolute;
+  inset: -0.5rem;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-spark {
+  position: absolute;
+  font-size: 0.7rem;
+  color: rgba(176, 132, 74, 0.75);
+  text-shadow: 0 0 14px rgba(255, 230, 200, 0.35);
+}
+
 .hero > *:not(.hero-glow):not(.scroll-cue) {
   position: relative;
   z-index: 1;
 }
 
 .kolam {
-  width: 74px;
-  height: 74px;
+  width: 58px;
+  height: 58px;
   color: var(--gold);
-  margin-bottom: 1.35rem;
+  margin-bottom: 1rem;
 }
 
 .kolam-small {
@@ -398,7 +411,7 @@ main {
   display: block;
   font-family: var(--tamil);
   font-weight: 500;
-  font-size: 1.2rem;
+  font-size: 1rem;
   letter-spacing: 0;
   text-transform: none;
   color: var(--madder);
@@ -417,12 +430,15 @@ main {
 }
 
 .names {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: min(8.4rem, 15vw);
-  line-height: 0.88;
-  letter-spacing: -0.04em;
-  font-variation-settings: "SOFT" 40, "opsz" 72;
+  font-family: var(--script);
+  font-weight: 600;
+  font-size: clamp(1.45rem, 6vw, 2.05rem);
+  line-height: 1.18;
+  letter-spacing: 0.01em;
+}
+
+.names--cute {
+  margin-top: 0.25rem;
 }
 
 .mask {
@@ -459,12 +475,49 @@ main {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.38rem;
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
+  gap: 0.32rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--ink);
+}
+
+.hero--solo {
+  min-height: 100svh;
+  padding-bottom: 3rem;
+}
+
+.plate-hero--animated {
+  animation: plate-float 7s ease-in-out infinite;
+}
+
+@keyframes plate-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.hero-countdown {
+  margin-top: 1.15rem;
+}
+
+.hero-maps {
+  margin-top: 0.85rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.hero-maps a {
+  color: var(--madder);
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .facts li {
@@ -1153,213 +1206,9 @@ main {
 
 .curtain-line--name {
   font-family: var(--script);
-  font-size: clamp(0.95rem, 3.6vw, 1.2rem);
+  font-size: clamp(0.95rem, 3.8vw, 1.25rem);
   color: #f5e6c8;
   text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
-}
-
-.curtain-line--mix,
-.curtain-line--place {
-  font-family: var(--cute);
-  font-size: clamp(0.68rem, 2.4vw, 0.78rem);
-  font-weight: 500;
-  letter-spacing: 0.04em;
-  color: rgba(255, 236, 220, 0.92);
-}
-
-.curtain-card--minimal {
-  padding: 1.1rem 1rem 1rem;
-  gap: 0.28rem;
-}
-
-.curtain-center-mix {
-  font-family: var(--script);
-  font-size: clamp(1rem, 4vw, 1.2rem);
-  color: var(--ink);
-}
-
-.curtain-center-sub {
-  font-family: var(--cute);
-  font-size: 0.72rem;
-  color: var(--ink-soft);
-}
-
-.curtain-decor {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.curtain-garland--top {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 42px;
-  width: 100%;
-  height: 48px;
-  opacity: 0.92;
-}
-
-.curtain-kolam-ring {
-  position: absolute;
-  left: 50%;
-  top: 38%;
-  width: min(42vw, 160px);
-  height: auto;
-  transform: translate(-50%, -50%);
-  opacity: 0.35;
-  animation: curtain-ring-spin 48s linear infinite;
-}
-
-@keyframes curtain-ring-spin {
-  from {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  to {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
-.curtain-decor-arch {
-  position: absolute;
-  width: min(18vw, 72px);
-  height: auto;
-  opacity: 0.85;
-}
-
-.curtain-decor-arch--l {
-  left: 6%;
-  top: 22%;
-}
-
-.curtain-decor-arch--r {
-  right: 6%;
-  top: 22%;
-}
-
-.curtain-spark {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #fff 0%, #f0d9a0 70%);
-}
-
-.curtain-tassel {
-  position: absolute;
-  top: 10px;
-  width: 14px;
-  height: 28px;
-  background: linear-gradient(180deg, #d4b06a, #8b6328);
-  border-radius: 0 0 8px 8px;
-  opacity: 0.85;
-}
-
-.curtain-tassel--l {
-  left: 22%;
-}
-
-.curtain-tassel--r {
-  right: 22%;
-}
-
-.invite-pause {
-  position: fixed;
-  inset: 0;
-  z-index: 125;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.65rem;
-  background: rgba(247, 243, 236, 0.55);
-  backdrop-filter: blur(8px);
-  pointer-events: none;
-}
-
-.invite-pause-line {
-  font-family: var(--cute);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--madder);
-}
-
-.invite-main {
-  position: relative;
-  z-index: 10;
-  padding: 1rem 1rem 2.5rem;
-}
-
-.invite-floaters {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  opacity: 0.7;
-  transform: scale(0.85);
-  pointer-events: none;
-}
-
-.plate-hero--solo {
-  margin-top: 0.5rem;
-}
-
-.invite-kicker {
-  font-family: var(--cute);
-  font-size: 0.82rem;
-  font-weight: 600;
-  color: var(--madder);
-  text-align: center;
-}
-
-.invite-when-mix {
-  margin-top: 0.5rem;
-  font-family: var(--serif);
-  font-size: clamp(1rem, 4.2vw, 1.15rem);
-  text-align: center;
-  color: var(--ink);
-}
-
-.invite-venue-block {
-  margin-top: 1rem;
-  text-align: center;
-}
-
-.invite-venue-lead {
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  color: var(--ink-soft);
-}
-
-.facts--compact {
-  margin-top: 0.45rem;
-  font-size: 0.82rem;
-  line-height: 1.45;
-}
-
-.invite-countdown-wrap {
-  margin-top: 1.1rem;
-}
-
-.invite-maps {
-  margin-top: 0.9rem;
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-
-.invite-maps a {
-  color: var(--madder);
-}
-
-.end--minimal {
-  margin-top: 1.25rem;
-  text-align: center;
-}
-
-.end--minimal .end-meta {
-  font-size: 0.75rem;
 }
 
 .curtain-line--when {
@@ -1441,6 +1290,88 @@ main {
   width: 5px;
   background: linear-gradient(180deg, #f0d9a0, #b8874a 45%, #8b6328 100%);
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.25);
+}
+
+.curtain-graphic-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.curtain-tassel {
+  position: absolute;
+  bottom: 10%;
+  width: 26px;
+  height: auto;
+  opacity: 0.85;
+}
+
+.curtain-tassel--left {
+  left: 10%;
+}
+
+.curtain-tassel--right {
+  right: 10%;
+}
+
+.curtain-spark {
+  position: absolute;
+  font-size: 0.75rem;
+  color: rgba(245, 230, 200, 0.9);
+  text-shadow: 0 0 12px rgba(255, 215, 160, 0.5);
+}
+
+.curtain-fold {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(255, 255, 255, 0.08), transparent 70%);
+  pointer-events: none;
+}
+
+.curtain-fold--1 {
+  width: 45%;
+  height: 22%;
+  top: 18%;
+  left: 20%;
+}
+
+.curtain-fold--2 {
+  width: 38%;
+  height: 18%;
+  bottom: 28%;
+  right: 15%;
+}
+
+.curtain-fold--3 {
+  width: 40%;
+  height: 20%;
+  top: 42%;
+  left: 18%;
+}
+
+.curtain-card--minimal {
+  width: min(11.5rem, 72vw);
+  padding: 1.15rem 1rem 1rem;
+  gap: 0.25rem;
+}
+
+.curtain-card-monogram {
+  font-family: var(--script);
+  font-size: 1.35rem;
+  color: var(--madder);
+  margin-top: 0.15rem;
+}
+
+.curtain-card--minimal .curtain-cta {
+  margin-top: 0.55rem;
+  font-size: 0.52rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate-hero--animated {
+    animation: none;
+  }
 }
 
 .gate-chip {

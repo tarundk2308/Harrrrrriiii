@@ -30,15 +30,5 @@ export const invite = {
   videoSrc: "/video/invite-bg.mp4",
   videoSrcFallback: "/video/invite-bg.mov",
 
-  /** Mixed Tamil · English (not line-by-line translation) */
-  curtainLeft: "நிச்சயதார்த்தம் · Betrothal",
-  curtainRight: "Friday 04 Dec · மாலை 6:30",
-  curtainCouple: "Hariharan & Sharon Belinda",
-  curtainPlace: "Le Royal Méridien · சென்னை",
-  curtainCta: "திற · Open",
-
-  mainKicker: "உங்கள் வருகை — with love",
-  mainWhen: "Friday 04 December · மாலை 6:30 onwards",
-  mainVenueLead: "Venue · இடம்",
-  pauseLine: "அழைப்பிதழ் திறக்கிறது…",
+  pauseLine: "Just a breath — your invitation is on its way.",
 };
