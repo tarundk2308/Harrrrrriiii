@@ -1,6 +1,7 @@
 "use client";
 
 import { Countdown } from "@/components/Countdown";
+import { GroomName } from "@/components/GroomName";
 import { Jasmine } from "@/components/Jasmine";
 import { Kolam } from "@/components/Kolam";
 import { invite } from "@/lib/invite";
@@ -105,7 +106,8 @@ export function Invite({ revealed }: { revealed: boolean }) {
       <>
         <motion.div className="progress" style={{ scaleX: scrollYProgress }} aria-hidden="true" />
         <p className="sr-only">
-          Engagement of {invite.groom} and {invite.bride} on {invite.weekday}, {invite.dateLine}, at{" "}
+          Engagement of {invite.groom} aka {invite.groomAlias} and {invite.bride} on {invite.weekday},{" "}
+          {invite.dateLine}, at{" "}
           {invite.timeLine}, in {invite.city}. Everything this evening happens under the blessing of
           godfather {invite.godfather}.
         </p>
@@ -144,7 +146,9 @@ export function Invite({ revealed }: { revealed: boolean }) {
             </motion.p>
 
             <h1 id="names" className="names">
-              <Rise delay={0.45}>{invite.groom}</Rise>
+              <Rise delay={0.45}>
+                <GroomName />
+              </Rise>
               <Rise delay={0.62} className="amp">
                 &
               </Rise>
@@ -212,7 +216,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
                 </p>
                 <p className="card-invite">You are invited</p>
                 <p className="card-names">
-                  {invite.groom}
+                  <GroomName variant="card" />
                   <span className="amp">&</span>
                   {invite.bride}
                 </p>
@@ -230,7 +234,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
           <footer className="end">
             <Kolam className="kolam-small" when="view" />
             <p>
-              {invite.groom} & {invite.bride}
+              <GroomName variant="inline" /> & {invite.bride}
             </p>
             <p className="end-meta">
               {invite.city} · {invite.dateLine}

@@ -1,6 +1,7 @@
 "use client";
 
 import { invite } from "@/lib/invite";
+import { GroomName } from "@/components/GroomName";
 import { Kolam } from "@/components/Kolam";
 import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
@@ -49,7 +50,7 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
             </p>
             <p className="gate-eyebrow">Engagement</p>
             <p className="gate-names">
-              {invite.groom}
+              <GroomName variant="compact" />
               <span className="gate-amp">&</span>
               {invite.bride}
             </p>

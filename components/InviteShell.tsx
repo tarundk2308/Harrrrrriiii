@@ -1,5 +1,6 @@
 "use client";
 
+import { BackgroundVideo } from "@/components/BackgroundVideo";
 import { FallingFlowers } from "@/components/FallingFlowers";
 import { Invite } from "@/components/Invite";
 import { InviteAudio } from "@/components/InviteAudio";
@@ -11,6 +12,7 @@ export function InviteShell() {
 
   return (
     <>
+      <BackgroundVideo playing={open} />
       <InviteAudio playing={open} />
       <FallingFlowers active={open} />
       {!open ? <OpeningGate onOpen={() => setOpen(true)} /> : null}

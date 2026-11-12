@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Hariharan and Sharon — engagement, 4 December 2026, Chennai";
+export const alt = "Hariharan aka Victor and Sharon — engagement, 4 December 2026, Chennai";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -22,7 +22,9 @@ export default function OpenGraphImage() {
         <div style={{ display: "flex", fontSize: 18, letterSpacing: 7, color: "#7C3040" }}>
           ENGAGEMENT
         </div>
-        <div style={{ display: "flex", fontSize: 86, marginTop: 18, lineHeight: 1 }}>Hariharan</div>
+        <div style={{ display: "flex", fontSize: 64, marginTop: 18, lineHeight: 1.05 }}>
+          Hariharan aka Victor
+        </div>
         <div style={{ display: "flex", fontSize: 42, color: "#7C3040", marginTop: 4, marginBottom: 4 }}>
           &
         </div>

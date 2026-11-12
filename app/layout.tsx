@@ -6,16 +6,16 @@ const siteUrl =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 const description =
-  "Engagement of Hariharan and Sharon. Friday, 4 December 2026, 7:30 in the evening, Chennai. Under the blessing of godfather Sivaramakrishnan.";
+  "Engagement of Hariharan aka Victor and Sharon. Friday, 4 December 2026, 7:30 in the evening, Chennai. Under the blessing of godfather Sivaramakrishnan.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Hariharan & Sharon",
+  title: "Hariharan aka Victor & Sharon",
   description,
   applicationName: "Hariharan & Sharon",
   robots: { index: false, follow: false },
   openGraph: {
-    title: "Hariharan & Sharon",
+    title: "Hariharan aka Victor & Sharon",
     description:
       "Friday, 4 December 2026 · 7:30 in the evening · Chennai. Under the blessing of godfather Sivaramakrishnan.",
     type: "website",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hariharan & Sharon",
+    title: "Hariharan aka Victor & Sharon",
     description: "Engagement · 4 December 2026 · 7:30 pm · Chennai",
   },
 };

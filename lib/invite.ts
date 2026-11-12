@@ -4,7 +4,9 @@
  */
 export const invite = {
   groom: "Hariharan",
+  groomAlias: "Victor",
   bride: "Sharon",
+  videoSrc: "/video/invite-bg.mov",
   godfather: "Sivaramakrishnan",
   godfatherRole: "Godfather",
   city: "Chennai",
