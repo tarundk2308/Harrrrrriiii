@@ -7,6 +7,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
+const OPEN_MS = 1450;
 
 export function OpeningGate({ onOpen }: { onOpen: () => void }) {
   const reduce = useReducedMotion();
@@ -15,65 +16,65 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
   const open = () => {
     if (opening) return;
     setOpening(true);
-    window.setTimeout(() => onOpen(), reduce ? 120 : 1300);
+    window.setTimeout(() => onOpen(), reduce ? 80 : OPEN_MS);
+  };
+
+  const panelTransition = {
+    duration: reduce ? 0.15 : 1.35,
+    ease,
   };
 
   return (
-    <motion.div
-      className="gate"
-      initial={false}
-      animate={opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1 }}
-      transition={{ duration: reduce ? 0.2 : 0.6, delay: opening ? (reduce ? 0 : 0.65) : 0, ease }}
+    <div
+      className={`curtain-stage ${opening ? "curtain-stage--opening" : ""}`}
       aria-hidden={opening}
     >
-      <div className="gate-inner">
-        <motion.div
-          className="envelope"
-          animate={
-            opening
-              ? { y: reduce ? 0 : -18, scale: reduce ? 1 : 1.02, opacity: reduce ? 1 : 0.92 }
-              : { y: 0, scale: 1, opacity: 1 }
-          }
-          transition={{ duration: reduce ? 0.15 : 0.95, ease }}
-        >
-          <div className="env-lid" aria-hidden="true">
-            <div className={`env-flap ${opening ? "is-open" : ""}`} />
-            <span className="env-seal">
-              H<span>·</span>S
-            </span>
-          </div>
-
-          <div className="env-sheet">
-            <Kolam when="load" />
-            <p lang="ta" className="gate-tamil">
-              {invite.occasionTamil}
-            </p>
-            <p className="gate-eyebrow">{invite.eventTitle}</p>
-            <p className="gate-names">
-              <GroomName variant="compact" />
-              <span className="gate-amp">&</span>
-              {invite.bride}
-            </p>
-            <p className="gate-when">
-              {invite.city} · {invite.dateLine}
-            </p>
-
-            <motion.button
-              type="button"
-              className="open-pill"
-              onClick={open}
-              aria-label="Open the invitation"
-              whileTap={reduce ? undefined : { scale: 0.97 }}
-              animate={opening ? { opacity: 0 } : { opacity: 1 }}
-            >
-              <span className="open-pill-label">Open invitation</span>
-              <span className="open-pill-hint" aria-hidden="true">
-                ↓
-              </span>
-            </motion.button>
-          </div>
-        </motion.div>
+      <div className="curtain-rod" aria-hidden="true">
+        <span className="curtain-rod-shine" />
       </div>
-    </motion.div>
+
+      <div className="curtain-preview">
+        <motion.button
+          type="button"
+          className="curtain-card"
+          onClick={open}
+          disabled={opening}
+          aria-label="Open the curtains"
+          animate={opening ? { opacity: 0, scale: 0.96, y: -8 } : { opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: reduce ? 0.1 : 0.35, ease }}
+          whileTap={reduce || opening ? undefined : { scale: 0.98 }}
+        >
+          <Kolam when="load" />
+          <p lang="ta" className="curtain-tamil">
+            {invite.occasionTamil}
+          </p>
+          <p className="curtain-eyebrow">{invite.eventTitle}</p>
+          <p className="curtain-names">
+            <GroomName variant="compact" />
+            <span className="curtain-amp">&</span>
+            {invite.bride}
+          </p>
+          <p className="curtain-when">
+            {invite.city} · {invite.dateLine}
+          </p>
+          <span className="curtain-cta">Open curtains</span>
+        </motion.button>
+      </div>
+
+      <motion.div
+        className="curtain curtain--left"
+        aria-hidden="true"
+        initial={false}
+        animate={{ x: opening ? (reduce ? "-100%" : "-108%") : "0%" }}
+        transition={panelTransition}
+      />
+      <motion.div
+        className="curtain curtain--right"
+        aria-hidden="true"
+        initial={false}
+        animate={{ x: opening ? (reduce ? "100%" : "108%") : "0%" }}
+        transition={panelTransition}
+      />
+    </div>
   );
 }
