@@ -1,6 +1,6 @@
 /**
  * All of the invitation facts live here.
- * Drop background audio at public/audio/arasan-fire.mp3 (playback starts at 10s on open).
+ * Drop background audio at public/audio/arasan-fire.mp3 (playback starts at 5s on open).
  */
 export const invite = {
   groom: "Hariharan",
@@ -21,5 +21,5 @@ export const invite = {
   arasanCredit: "Vetri Maaran’s Arasan",
   arasanTamil: "வெற்றிமாறனின் அரசன்",
   audioSrc: "/audio/arasan-fire.mp3",
-  audioStartSeconds: 10,
+  audioStartSeconds: 5,
 };
