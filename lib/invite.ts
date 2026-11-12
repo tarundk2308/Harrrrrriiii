@@ -18,8 +18,6 @@ export const invite = {
   iso: "2026-12-04T19:30:00+05:30",
   occasionTamil: "நிச்சயதார்த்தம்",
   blessingTamil: "ஆசிர்வாதத்துடன்",
-  arasanCredit: "Vetri Maaran’s Arasan",
-  arasanTamil: "வெற்றிமாறனின் அரசன்",
   audioSrc: "/audio/arasan-fire.mp3",
   audioStartSeconds: 5,
 };

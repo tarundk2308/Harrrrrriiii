@@ -196,13 +196,6 @@ export function Invite({ revealed }: { revealed: boolean }) {
                 </p>
               </Reveal>
               <Countdown />
-              <p className="arasan">
-                <span className="arasan-from">From</span>
-                <strong>{invite.arasanCredit}</strong>
-                <span lang="ta" className="arasan-ta">
-                  {invite.arasanTamil}
-                </span>
-              </p>
             </div>
           </section>
 

@@ -694,8 +694,10 @@ a {
   margin-top: 0.25rem;
   font-weight: 400;
   font-style: normal;
-  font-size: 1.28rem;
+  font-size: clamp(1.05rem, 4.8vw, 1.28rem);
   letter-spacing: -0.02em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
   color: var(--ink);
 }
 
@@ -926,7 +928,7 @@ a {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: clamp(3.5rem, 10vw, 6.5rem) 1.2rem clamp(3rem, 8vw, 5rem);
+  padding: clamp(3.5rem, 10vw, 6.5rem) clamp(1.35rem, 5vw, 2rem) clamp(3rem, 8vw, 5rem);
   background:
     radial-gradient(ellipse 80% 55% at 50% 0%, rgba(166, 132, 86, 0.14), transparent 62%),
     var(--paper);
@@ -956,12 +958,15 @@ a {
 
 .crown-name {
   margin-top: 0.35rem;
+  max-width: 100%;
+  padding-inline: 0.15rem;
   font-family: var(--serif);
   font-weight: 500;
-  font-size: min(5.8rem, 17vw);
-  line-height: 0.95;
-  letter-spacing: -0.04em;
+  font-size: clamp(2rem, 8.8vw, 4.85rem);
+  line-height: 1.02;
+  letter-spacing: -0.03em;
   text-wrap: balance;
+  overflow-wrap: anywhere;
   color: var(--ink);
 }
 
@@ -1033,36 +1038,6 @@ a {
 
 .evening-light .countdown .unit span {
   color: var(--ink-soft);
-}
-
-.arasan {
-  margin-top: 2.5rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-
-.arasan strong {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 1.35rem;
-  letter-spacing: 0.01em;
-  text-transform: none;
-  color: var(--madder);
-}
-
-.arasan-ta {
-  font-family: var(--tamil);
-  font-weight: 500;
-  font-size: 1.05rem;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--madder);
 }
 
 @keyframes pill-glow {
