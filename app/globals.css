@@ -2616,8 +2616,8 @@ body:has(.invite-root.is-open)::before {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center 88%;
-  mask-image: linear-gradient(to top, black 45%, transparent 95%);
+  object-position: center bottom;
+  mask-image: linear-gradient(to top, black 70%, transparent 100%);
 }
 
 .engagement-decor {

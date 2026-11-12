@@ -36,7 +36,7 @@ export function OpeningGate({
       aria-hidden={opening}
     >
       <div className="gate-lotus-peek" aria-hidden="true">
-        <Image src="/images/lotus-gate.jpg" alt="" width={400} height={200} className="gate-lotus-peek-img" priority />
+        <Image src="/images/lotus-florals.jpg" alt="" width={1024} height={260} className="gate-lotus-peek-img" priority />
       </div>
 
       <motion.button

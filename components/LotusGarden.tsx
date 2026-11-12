@@ -28,10 +28,10 @@ export function LotusGarden() {
         transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
       >
         <Image
-          src="/images/engagement-card-reference.jpg"
+          src="/images/engagement-florals.jpg"
           alt=""
-          width={900}
-          height={500}
+          width={1024}
+          height={144}
           className="lotus-garden-img"
           priority
         />
