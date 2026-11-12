@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatedFloralStrip } from "@/components/AnimatedFloralStrip";
+import { PinterestPinArt } from "@/components/PinterestPinArt";
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
 import { useState } from "react";
@@ -36,69 +36,31 @@ export function OpeningGate({
       animate={
         opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1, pointerEvents: "auto" }
       }
-      transition={{ duration: reduce ? 0.2 : 0.55, delay: opening ? (reduce ? 0 : 0.5) : 0, ease }}
+      transition={{ duration: reduce ? 0.2 : 0.45, delay: opening ? (reduce ? 0 : 0.45) : 0, ease }}
       aria-hidden={opening}
     >
-      <div className="gate-floral-rail" aria-hidden="true">
-        <AnimatedFloralStrip
-          src="/images/lotus-florals.jpg"
-          width={1024}
-          height={260}
-          imageClassName="gate-lotus-peek-img"
-          washClassName="floral-strip-wash floral-strip-wash--gate"
-        />
-      </div>
-
       <motion.button
         type="button"
-        className="pin pin--gate"
+        className="pinterest-pin pinterest-pin--interactive"
         onClick={open}
         aria-label="Tap to open the betrothal invitation"
-        animate={
-          opening
-            ? { scale: 0.92, opacity: 0, y: 24, rotate: 2 }
-            : reduce
-              ? { scale: 1, opacity: 1, y: 0, rotate: 0 }
-              : { scale: 1, opacity: 1, y: [0, -6, 0], rotate: [-1.5, 1.5, -1.5] }
-        }
-        transition={
-          opening
-            ? { duration: reduce ? 0.12 : 0.5, ease }
-            : { duration: 4.5, repeat: Infinity, ease: "easeInOut" }
-        }
-        whileTap={reduce || opening ? undefined : { scale: 0.98 }}
+        animate={opening ? { scale: 0.97, opacity: 0, y: 12 } : { scale: 1, opacity: 1, y: 0 }}
+        transition={{ duration: reduce ? 0.12 : 0.4, ease }}
+        whileTap={reduce || opening ? undefined : { scale: 0.985 }}
       >
-        <div className="pin-cover pin-cover--gate" aria-hidden="true">
-          <div className="pin-cover-gradient" />
-          <span className="pin-chip">{invite.eventTitle}</span>
+        <PinterestPinArt />
+
+        <div className="pinterest-pin__copy">
+          <p className="pinterest-pin__eyebrow">{invite.eventTitle}</p>
+          <p className="pinterest-pin__title pinterest-pin__title--gate">
+            {invite.groomFull}
+            <span className="pinterest-pin__amp"> & </span>
+            {invite.brideFull}
+          </p>
+          <p className="pinterest-pin__meta pinterest-pin__meta--gate">{invite.dateLine}</p>
         </div>
 
-        <div className="pin-body pin-body--gate">
-          <span className="pin-name pin-name--gate">{invite.groomFull}</span>
-          <span className="pin-amp" aria-hidden="true">
-            &
-          </span>
-          <span className="pin-name pin-name--gate">{invite.brideFull}</span>
-          <span className="pin-gate-meta">{invite.dateLine}</span>
-        </div>
-
-        <motion.span
-          className="pin-tap"
-          animate={
-            opening
-              ? { opacity: 0, y: 8 }
-              : reduce
-                ? {}
-                : { opacity: [0.65, 1, 0.65], y: [0, 2, 0] }
-          }
-          transition={
-            opening
-              ? { duration: 0.3, ease }
-              : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }
-          }
-        >
-          Tap to open
-        </motion.span>
+        <span className="pinterest-pin__hint">Tap to open</span>
       </motion.button>
     </motion.div>
   );

@@ -41,7 +41,7 @@ function makeFlowers(count: number, opacityMul: number): Flower[] {
 
 export function FallingFlowers({ intense }: { intense?: boolean }) {
   const flowers = useMemo(
-    () => makeFlowers(intense ? 58 : 46, intense ? 1 : 0.88),
+    () => makeFlowers(intense ? 28 : 16, intense ? 0.55 : 0.35),
     [intense]
   );
 
