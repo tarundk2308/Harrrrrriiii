@@ -39,6 +39,22 @@ export function RingsMotif() {
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
         />
         <circle cx="72" cy="28" r="4" fill="#e8c4cf" stroke="url(#ringGold)" strokeWidth="1" />
+        <motion.path
+          d="M38 18 Q28 8 20 14"
+          fill="none"
+          stroke="#c4b5fd"
+          strokeWidth="1.2"
+          animate={reduce ? undefined : { d: ["M38 18 Q28 8 20 14", "M38 18 Q26 6 18 12", "M38 18 Q28 8 20 14"] }}
+          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        />
+        <motion.path
+          d="M82 18 Q92 8 100 14"
+          fill="none"
+          stroke="#c4b5fd"
+          strokeWidth="1.2"
+          animate={reduce ? undefined : { d: ["M82 18 Q92 8 100 14", "M82 18 Q94 6 102 12", "M82 18 Q92 8 100 14"] }}
+          transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }}
+        />
         <defs>
           <linearGradient id="ringGold" x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#d4a574" />
