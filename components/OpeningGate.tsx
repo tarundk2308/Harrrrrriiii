@@ -68,6 +68,11 @@ export function OpeningGate({
               animate={{ scale: [1, 1.4], opacity: [0.45, 0] }}
               transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
             />
+            <span className="gate-petals-ring" aria-hidden="true">
+              <span>✿</span>
+              <span>✿</span>
+              <span>✿</span>
+            </span>
             <span className="gate-heart-badge" aria-hidden="true">
               ♥
             </span>

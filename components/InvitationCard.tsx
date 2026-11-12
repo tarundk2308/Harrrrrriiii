@@ -2,14 +2,31 @@
 
 import type { InvitationCard as CardCopy } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
+import type { ReactNode } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-function unionOrder(card: CardCopy): { first: string; second: string } {
-  if (card.variant === "christian") {
-    return { first: card.bride, second: card.groom };
-  }
-  return { first: card.groom, second: card.bride };
+function CardBlock({
+  delay,
+  children,
+  className,
+}: {
+  delay: number;
+  children: ReactNode;
+  className?: string;
+}) {
+  const reduce = useReducedMotion();
+  return (
+    <motion.section
+      className={className ?? "card-section"}
+      initial={reduce ? false : { opacity: 0, y: 28, x: -8 }}
+      whileInView={{ opacity: 1, y: 0, x: 0 }}
+      viewport={{ once: true, margin: "-5% 0px" }}
+      transition={{ duration: 0.6, delay, ease, type: "spring", stiffness: 130, damping: 22 }}
+    >
+      {children}
+    </motion.section>
+  );
 }
 
 export function InvitationCard({
@@ -21,30 +38,30 @@ export function InvitationCard({
 }) {
   const reduce = useReducedMotion();
   const isReception = card.variant === "reception";
-  const { first, second } = unionOrder(card);
+  let block = 0;
 
   return (
     <motion.article
       className={`invitation-card invitation-card--${card.variant}`}
       data-chapter={chapterId}
-      initial={reduce ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-6% 0px" }}
-      transition={{ duration: 0.55, ease }}
+      initial={reduce ? false : { opacity: 0, scale: 0.96 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: "-8% 0px" }}
+      transition={{ duration: 0.65, ease, type: "spring", stiffness: 140, damping: 20 }}
     >
-      <p className="card-headline">{card.headline}</p>
+      <motion.p
+        className="card-headline"
+        initial={reduce ? false : { opacity: 0, y: 16 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, ease }}
+      >
+        {card.headline}
+      </motion.p>
 
       <div className="card-sections">
-        {card.blessings?.map((blessing) => (
-          <section key={blessing} className="card-section">
-            <p className="card-blessing" lang="ta">
-              {blessing}
-            </p>
-          </section>
-        ))}
-
         {card.hosts.length > 0 ? (
-          <section className="card-section">
+          <CardBlock delay={block++ * 0.06}>
             <div className="card-hosts-stack">
               {card.hosts.map((host) => (
                 <div key={host.family} className="card-host-block">
@@ -53,64 +70,52 @@ export function InvitationCard({
                 </div>
               ))}
             </div>
-          </section>
-        ) : null}
-
-        {!isReception ? (
-          <section className="card-section">
-            <div className="card-union">
-              <p className="card-union-name">{first}</p>
-              <p className="card-union-with">with</p>
-              <p className="card-union-name">{second}</p>
-            </div>
-          </section>
-        ) : null}
-
-        {card.eventTitle ? (
-          <section className="card-section">
-            <p className="card-reception-title">{card.eventTitle}</p>
-          </section>
+          </CardBlock>
         ) : null}
 
         {isReception && card.profiles ? (
-          <section className="card-section">
+          <CardBlock delay={block++ * 0.06}>
             <div className="card-profiles">
               {card.profiles.map((p, idx) => (
-                <div key={p.name + idx} className="card-person">
-                  <p className="card-person-name">{p.name}</p>
-                  {p.detail.map((d) => (
-                    <p key={d} className="card-person-detail">
-                      {d}
+                <motion.div
+                  key={p.role}
+                  className="card-person"
+                  initial={reduce ? false : { opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.08 + idx * 0.1, ease }}
+                >
+                  <p className="card-person-name">{p.role}</p>
+                  {p.detail.map((line) => (
+                    <p key={line} className="card-person-detail">
+                      {line}
                     </p>
                   ))}
-                </div>
+                </motion.div>
               ))}
             </div>
-          </section>
+          </CardBlock>
         ) : null}
 
-        <section className="card-section">
-          <div className="card-schedule">
-            <p className="card-schedule-line">{card.dateLine}</p>
-            <p className="card-schedule-line card-schedule-line--time">{card.timeLine}</p>
-          </div>
-        </section>
+        <CardBlock delay={block++ * 0.06}>
+          <p className="card-schedule-line card-schedule-line--time">{card.timeLine}</p>
+        </CardBlock>
 
-        <section className="card-section">
+        <CardBlock delay={block++ * 0.06}>
           <address className="card-address">
             {card.venue.map((l) => (
               <span key={l}>{l}</span>
             ))}
           </address>
-        </section>
+        </CardBlock>
 
         {card.compliments ? (
-          <section className="card-section">
+          <CardBlock delay={block++ * 0.06}>
             <footer className="card-compliments">
               <p className="card-compliments-kicker">Best Compliments From</p>
               <p className="card-compliments-names">{card.compliments}</p>
             </footer>
-          </section>
+          </CardBlock>
         ) : null}
       </div>
     </motion.article>

@@ -2,7 +2,8 @@
 
 import { InvitationCard } from "@/components/InvitationCard";
 import type { StoryChapter } from "@/lib/invite";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -14,6 +15,15 @@ export function StoryChapterSection({
   index: number;
 }) {
   const reduce = useReducedMotion();
+  const headRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: headRef,
+    offset: ["start 0.9", "start 0.45"],
+  });
+
+  const partScale = useTransform(scrollYProgress, [0, 1], [0.7, 1]);
+  const partOpacity = useTransform(scrollYProgress, [0, 0.6, 1], [0.3, 1, 1]);
+  const titleY = useTransform(scrollYProgress, [0, 1], [24, 0]);
 
   return (
     <section
@@ -21,21 +31,31 @@ export function StoryChapterSection({
       aria-labelledby={`chapter-${chapter.id}`}
       data-chapter-index={index}
     >
-      <motion.header
-        className="story-chapter-head"
-        initial={reduce ? false : { opacity: 0, y: 12 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-8% 0px" }}
-        transition={{ duration: 0.5, ease }}
-      >
-        <p className="story-part" aria-hidden="true">
+      <header ref={headRef} className="story-chapter-head">
+        <motion.p
+          className="story-part"
+          aria-hidden="true"
+          style={reduce ? undefined : { scale: partScale, opacity: partOpacity }}
+        >
           {chapter.part}
-        </p>
-        <h2 id={`chapter-${chapter.id}`} className="story-when">
+        </motion.p>
+        <motion.h2
+          id={`chapter-${chapter.id}`}
+          className="story-when"
+          style={reduce ? undefined : { y: titleY }}
+        >
           {chapter.when}
-        </h2>
-        <p className="story-beat">{chapter.subtitle}</p>
-      </motion.header>
+        </motion.h2>
+        <motion.p
+          className="story-beat"
+          initial={reduce ? false : { opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.08, ease }}
+        >
+          {chapter.subtitle}
+        </motion.p>
+      </header>
 
       <ol className="story-cards" start={1}>
         {chapter.cards.map((card) => (
@@ -46,11 +66,17 @@ export function StoryChapterSection({
       </ol>
 
       {chapter.venueUrl ? (
-        <p className="event-maps story-maps">
+        <motion.p
+          className="event-maps story-maps"
+          initial={reduce ? false : { opacity: 0, y: 12 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.45, delay: 0.15, ease }}
+        >
           <a href={chapter.venueUrl} target="_blank" rel="noopener noreferrer">
             Open in Maps
           </a>
-        </p>
+        </motion.p>
       ) : null}
 
       {index < 2 ? <p className="story-continued" aria-hidden="true" /> : null}

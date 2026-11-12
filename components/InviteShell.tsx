@@ -3,6 +3,8 @@
 import { FallingFlowers } from "@/components/FallingFlowers";
 import { HeartReveal } from "@/components/HeartReveal";
 import { Invite } from "@/components/Invite";
+import { InviteAudio } from "@/components/InviteAudio";
+import { InviteBackdrop } from "@/components/InviteBackdrop";
 import { OpeningGate } from "@/components/OpeningGate";
 import { useState } from "react";
 
@@ -18,7 +20,9 @@ export function InviteShell() {
 
   return (
     <div className={`invite-root ${open ? "is-open" : "is-gate"}`}>
+      <InviteBackdrop lush={open} />
       <FallingFlowers intense={open} />
+      <InviteAudio active={open} />
       {gateVisible ? (
         <OpeningGate
           onOpenStart={handleOpenStart}

@@ -11,15 +11,10 @@ export type HostFamily = {
 export type InvitationCard = {
   variant: CardVariant;
   headline: string;
-  blessings?: string[];
   hosts: HostFamily[];
-  bride: string;
-  groom: string;
-  dateLine: string;
   timeLine: string;
   venue: string[];
-  profiles?: { name: string; detail: string[] }[];
-  eventTitle?: string;
+  profiles?: { role: string; detail: string[] }[];
   compliments?: string;
 };
 
@@ -54,7 +49,6 @@ export const invite = {
         {
           variant: "hindu",
           headline: "Muhurtham",
-          blessings: ["Sri Vinayagar Thunai", "Sri Devi Karumariamman Thunai"],
           hosts: [
             {
               family: "Agilan",
@@ -65,10 +59,7 @@ export const invite = {
               line: "Smt. Suchitra Benedict & Dr. Benedict Xavier",
             },
           ],
-          groom: "Hariharan Agilan",
-          bride: "Sharon Belinda Benedict",
-          dateLine: "Thursday, 28th January 2027",
-          timeLine: "Muhurtham: 9:00 AM - 10:30 AM",
+          timeLine: "9:00 AM – 10:30 AM",
           venue: [
             "Lawn Venue",
             "Le Royal Méridien",
@@ -99,9 +90,6 @@ export const invite = {
               line: "Mrs. Mahalakshmi Agilan & Mr. Agilan Ramaswamy",
             },
           ],
-          bride: "Sharon Belinda Benedict",
-          groom: "Hariharan Agilan",
-          dateLine: "Thursday, 28th January 2027",
           timeLine: "3:30 pm",
           venue: ["Santhome Cathedral Basilica", "Mylapore, Chennai – 600004"],
         },
@@ -120,20 +108,17 @@ export const invite = {
           variant: "reception",
           headline: "Evening Reception",
           hosts: [],
-          dateLine: "Thursday, 28th January 2027",
-          timeLine: "7:00 PM Onwards",
-          bride: "Sharon Belinda Benedict",
-          groom: "Hariharan Agilan",
+          timeLine: "7:00 PM onwards",
           profiles: [
             {
-              name: "Sharon",
+              role: "Bride",
               detail: [
                 "Master’s in Business Analytics, UK",
                 "Operations Analyst (Comera Pay, Dubai)",
               ],
             },
             {
-              name: "Hariharan",
+              role: "Groom",
               detail: [
                 "Master’s in Business Analytics, UK",
                 "Business Analyst (Zee Entertainment, Dubai)",

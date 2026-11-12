@@ -5,7 +5,7 @@ import { Countdown } from "@/components/Countdown";
 import { Kolam } from "@/components/Kolam";
 import { StoryChapterSection } from "@/components/StoryChapter";
 import { invite } from "@/lib/invite";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 
@@ -22,11 +22,16 @@ function ChapterScrollReveal({
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.92", "start 0.35"],
+    offset: ["start 0.95", "start 0.3"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], [40, 0]);
-  const opacity = useTransform(scrollYProgress, [0, 0.4, 1], [0.4, 0.92, 1]);
+  const smooth = useSpring(scrollYProgress, { stiffness: 90, damping: 24, mass: 0.4 });
+  const fromX = index % 2 === 0 ? -48 : 48;
+  const x = useTransform(smooth, [0, 1], [fromX, 0]);
+  const y = useTransform(smooth, [0, 1], [64, 0]);
+  const scale = useTransform(smooth, [0, 1], [0.9, 1]);
+  const opacity = useTransform(smooth, [0, 0.35, 1], [0.15, 0.75, 1]);
+  const rotate = useTransform(smooth, [0, 1], [index % 2 === 0 ? -2.5 : 2.5, 0]);
 
   if (reduce) {
     return <div className="story-chapter-reveal">{children}</div>;
@@ -36,7 +41,7 @@ function ChapterScrollReveal({
     <motion.div
       ref={ref}
       className="story-chapter-reveal"
-      style={{ y, opacity }}
+      style={{ x, y, scale, opacity, rotate }}
     >
       {children}
     </motion.div>
@@ -45,8 +50,15 @@ function ChapterScrollReveal({
 
 export function Invite({ revealed, rising }: { revealed: boolean; rising?: boolean }) {
   const reduce = useReducedMotion();
+  const timelineRef = useRef<HTMLDivElement>(null);
   const { scrollY, scrollYProgress } = useScroll();
+  const { scrollYProgress: timelineProgress } = useScroll({
+    target: timelineRef,
+    offset: ["start 0.85", "end 0.2"],
+  });
+
   const cueOpacity = useTransform(scrollY, [0, 90], [1, 0]);
+  const railScaleY = useSpring(timelineProgress, { stiffness: 80, damping: 22 });
 
   return (
     <motion.div
@@ -54,11 +66,7 @@ export function Invite({ revealed, rising }: { revealed: boolean; rising?: boole
       initial={false}
       animate={
         revealed
-          ? {
-              opacity: 1,
-              scale: 1,
-              y: 0,
-            }
+          ? { opacity: 1, scale: 1, y: 0 }
           : { opacity: 0, y: 24, pointerEvents: "none" }
       }
       transition={{
@@ -79,7 +87,7 @@ export function Invite({ revealed, rising }: { revealed: boolean; rising?: boole
 
           <main className="wedding-main">
             <section className="hero hero-wedding" aria-labelledby="names">
-              <ContentPlate className="plate-hero plate-hero--compact">
+              <ContentPlate className="plate-hero plate-hero--compact plate-hero--grand">
                 <Kolam className="kolam-small" />
 
                 <motion.h1
@@ -127,7 +135,12 @@ export function Invite({ revealed, rising }: { revealed: boolean; rising?: boole
               </motion.div>
             </section>
 
-            <div className="story-timeline" aria-label="Wedding day">
+            <div ref={timelineRef} className="story-timeline" aria-label="Wedding day">
+              <motion.span
+                className="story-timeline-rail-fill"
+                style={{ scaleY: railScaleY }}
+                aria-hidden="true"
+              />
               <span className="story-timeline-rail" aria-hidden="true" />
               {invite.chapters.map((chapter, i) => (
                 <ChapterScrollReveal key={chapter.id} index={i}>
@@ -138,8 +151,8 @@ export function Invite({ revealed, rising }: { revealed: boolean; rising?: boole
 
             <footer className="end">
               <ContentPlate className="plate-end plate-end--minimal">
-                <p className="end-names">
-                  {invite.groomFull} & {invite.brideFull}
+                <p className="end-mark" aria-hidden="true">
+                  H · S
                 </p>
                 <p className="end-meta">
                   {invite.city} · {invite.weddingDateLine}

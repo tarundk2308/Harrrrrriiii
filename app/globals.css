@@ -1,19 +1,19 @@
 :root {
-  --paper: #fffefe;
-  --paper-deep: #fff1f2;
-  --ink: #1c1214;
-  --ink-soft: #4a3f41;
-  --madder: #b91c3c;
-  --gold: #9f1239;
-  --gold-soft: rgba(185, 28, 60, 0.38);
+  --paper: #fffcfd;
+  --paper-deep: #faf5ff;
+  --ink: #2d2438;
+  --ink-soft: #5c5068;
+  --madder: #a8556b;
+  --gold: #8b6cb5;
+  --gold-soft: rgba(139, 108, 181, 0.42);
   --ivory: #ffffff;
-  --pastel-rose: #ffe4e6;
-  --pastel-lilac: #fecdd3;
-  --pastel-peach: #fff1f2;
-  --pastel-mint: #ffffff;
-  --pastel-sky: #ffffff;
-  --accent-rose: #e11d48;
-  --accent-lilac: #fb7185;
+  --pastel-rose: #fce7f3;
+  --pastel-lilac: #ede9fe;
+  --pastel-peach: #ffedd5;
+  --pastel-mint: #d1fae5;
+  --pastel-sky: #e0f2fe;
+  --accent-rose: #f472b6;
+  --accent-lilac: #c4b5fd;
   --night: #10151c;
   --night-ink: #f4efe6;
   --night-soft: rgba(244, 239, 230, 0.74);
@@ -230,10 +230,39 @@ main {
   width: min(40rem, calc(100% - 1.4rem));
   margin-inline: auto;
   padding: clamp(2rem, 5.5vw, 3.25rem) clamp(1.15rem, 4vw, 1.85rem);
-  background: #ffffff;
-  border: 1px solid rgba(185, 28, 60, 0.14);
-  border-radius: 0.65rem;
-  box-shadow: 0 6px 22px rgba(28, 18, 20, 0.05);
+  background: linear-gradient(165deg, #ffffff 0%, #fffafd 55%, #faf5ff 100%);
+  border: 1px solid rgba(196, 181, 253, 0.45);
+  border-radius: 0.85rem;
+  box-shadow:
+    0 16px 40px rgba(168, 130, 180, 0.14),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+.plate::before,
+.plate::after {
+  content: "";
+  position: absolute;
+  width: 2.5rem;
+  height: 2.5rem;
+  pointer-events: none;
+  opacity: 0.55;
+  border: 1px solid var(--accent-lilac);
+}
+
+.plate::before {
+  top: 0.65rem;
+  left: 0.65rem;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0.35rem 0 0 0;
+}
+
+.plate::after {
+  right: 0.65rem;
+  bottom: 0.65rem;
+  border-left: none;
+  border-top: none;
+  border-radius: 0 0 0.35rem 0;
 }
 
 .plate,
@@ -986,13 +1015,86 @@ main {
   will-change: transform;
 }
 
+.invite-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  overflow: hidden;
+  color: var(--accent-lilac);
+}
+
+.backdrop-arch {
+  position: absolute;
+  width: min(28vw, 140px);
+  height: min(50vh, 320px);
+  opacity: 0.45;
+}
+
+.backdrop-arch--left {
+  left: 0;
+  bottom: 12%;
+}
+
+.backdrop-arch--right {
+  right: 0;
+  bottom: 18%;
+}
+
+.backdrop-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+}
+
+.backdrop-orb--a {
+  width: min(70vw, 380px);
+  height: min(70vw, 380px);
+  top: -8%;
+  left: -18%;
+  background: var(--pastel-lilac);
+  opacity: 0.55;
+}
+
+.backdrop-orb--b {
+  width: min(65vw, 340px);
+  height: min(65vw, 340px);
+  right: -16%;
+  bottom: 8%;
+  background: var(--pastel-rose);
+  opacity: 0.5;
+}
+
+.backdrop-orb--c {
+  width: min(45vw, 240px);
+  height: min(45vw, 240px);
+  left: 28%;
+  top: 38%;
+  background: var(--pastel-sky);
+  opacity: 0.45;
+}
+
+.invite-backdrop--lush .backdrop-orb--a,
+.invite-backdrop--lush .backdrop-orb--b {
+  opacity: 0.65;
+}
+
+.backdrop-sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 0%, var(--accent-rose) 70%);
+  box-shadow: 0 0 12px var(--accent-lilac);
+}
+
 .invite-root.is-gate {
   background: linear-gradient(
     165deg,
-    #ffffff 0%,
-    var(--paper) 42%,
-    #fff1f2 78%,
-    #ffe4e6 100%
+    var(--pastel-sky) 0%,
+    var(--paper) 38%,
+    var(--pastel-rose) 72%,
+    var(--pastel-lilac) 100%
   );
 }
 
@@ -1007,11 +1109,11 @@ main {
 }
 
 .invite-root.is-open {
-  background: #ffffff;
+  background: linear-gradient(180deg, #fffcfd 0%, #faf5ff 45%, #fff5f7 100%);
 }
 
 .invite-root.is-open .invite-surface {
-  background: #ffffff;
+  background: transparent;
 }
 
 .invite-root.is-open .wedding-main {
@@ -1057,7 +1159,7 @@ body:has(.invite-root.is-open)::before {
   max-height: 320px;
   top: 8%;
   left: -12%;
-  background: #fecdd3;
+  background: var(--pastel-lilac);
 }
 
 .gate-orb--b {
@@ -1067,7 +1169,7 @@ body:has(.invite-root.is-open)::before {
   max-height: 280px;
   right: -10%;
   bottom: 18%;
-  background: #ffe4e6;
+  background: var(--pastel-rose);
   animation-delay: -3s;
 }
 
@@ -1078,7 +1180,7 @@ body:has(.invite-root.is-open)::before {
   max-height: 220px;
   left: 30%;
   bottom: 5%;
-  background: #ffffff;
+  background: var(--pastel-sky);
   animation-delay: -5.5s;
 }
 
@@ -1208,7 +1310,7 @@ body:has(.invite-root.is-open)::before {
   padding: clamp(2rem, 7vw, 2.65rem) clamp(1.5rem, 5vw, 2.1rem) clamp(1.85rem, 6vw, 2.35rem);
   border: 1px solid rgba(255, 255, 255, 0.85);
   border-radius: 1.25rem;
-  background: linear-gradient(155deg, #ffffff 0%, #fff1f2 50%, #ffe4e6 100%);
+  background: linear-gradient(155deg, #ffffff 0%, #fce7f3 48%, #ede9fe 100%);
   box-shadow:
     0 20px 50px rgba(168, 130, 180, 0.22),
     0 0 0 1px rgba(201, 176, 212, 0.25),
@@ -1642,6 +1744,20 @@ body:has(.invite-root.is-open)::before {
   margin-inline: auto;
 }
 
+.plate-hero--grand {
+  animation: plate-grand-float 6s ease-in-out infinite;
+}
+
+@keyframes plate-grand-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
 .eyebrow-wedding {
   margin-bottom: 0.65rem;
 }
@@ -1742,7 +1858,20 @@ body:has(.invite-root.is-open)::before {
   top: 0.5rem;
   bottom: 2rem;
   width: 1px;
-  background: rgba(185, 28, 60, 0.22);
+  background: rgba(185, 28, 60, 0.12);
+}
+
+.story-timeline-rail-fill {
+  position: absolute;
+  left: 0.35rem;
+  top: 0.5rem;
+  bottom: 2rem;
+  width: 2px;
+  margin-left: -0.5px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--madder), var(--accent-rose));
+  transform-origin: top center;
+  z-index: 1;
 }
 
 .story-chapter-reveal {
@@ -1811,19 +1940,65 @@ body:has(.invite-root.is-open)::before {
 
 .invitation-card {
   position: relative;
-  padding: clamp(1.25rem, 4vw, 1.6rem) clamp(1rem, 3.5vw, 1.35rem);
-  border: 1px solid rgba(185, 28, 60, 0.18);
-  border-radius: 0.65rem;
-  background: #ffffff;
-  box-shadow: 0 4px 18px rgba(28, 18, 20, 0.05);
+  padding: clamp(1.35rem, 4.5vw, 1.85rem) clamp(1.15rem, 4vw, 1.55rem);
+  border: 1px solid rgba(196, 181, 253, 0.5);
+  border-radius: 0.85rem;
+  background: linear-gradient(160deg, #ffffff 0%, #fffafd 40%, #f5f3ff 100%);
+  box-shadow:
+    0 14px 36px rgba(168, 130, 180, 0.16),
+    0 0 0 1px rgba(252, 231, 243, 0.8);
   max-width: 100%;
   overflow-wrap: break-word;
+  animation: card-grand-glow 5s ease-in-out infinite;
+}
+
+.invitation-card::before,
+.invitation-card::after {
+  content: "✿";
+  position: absolute;
+  font-size: 0.85rem;
+  color: var(--accent-rose);
+  opacity: 0.65;
+  animation: card-flourish 4s ease-in-out infinite;
+}
+
+.invitation-card::before {
+  top: 0.55rem;
+  left: 0.7rem;
+}
+
+.invitation-card::after {
+  right: 0.7rem;
+  bottom: 0.55rem;
+  animation-delay: -2s;
+}
+
+@keyframes card-grand-glow {
+  0%,
+  100% {
+    box-shadow: 0 14px 36px rgba(168, 130, 180, 0.14), 0 0 0 1px rgba(252, 231, 243, 0.75);
+  }
+  50% {
+    box-shadow: 0 20px 44px rgba(244, 114, 182, 0.2), 0 0 0 1px rgba(196, 181, 253, 0.55);
+  }
+}
+
+@keyframes card-flourish {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.45;
+  }
+  50% {
+    transform: translateY(-3px) rotate(12deg);
+    opacity: 0.9;
+  }
 }
 
 .invitation-card--hindu,
 .invitation-card--christian,
 .invitation-card--reception {
-  background: #ffffff;
+  background: linear-gradient(160deg, #ffffff 0%, #fffafd 40%, #f5f3ff 100%);
 }
 
 .story-chapter--morning .story-part,
@@ -2014,9 +2189,11 @@ body:has(.invite-root.is-open)::before {
 }
 
 .card-person-name {
-  font-family: var(--serif);
-  font-size: 1.12rem;
-  color: var(--ink);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--madder);
 }
 
 .card-person-detail {
@@ -2229,9 +2406,11 @@ body:has(.invite-root.is-open)::before {
   text-align: center;
 }
 
-.end-names {
+.end-mark {
   font-family: var(--serif);
-  font-size: 1.15rem;
+  font-size: 1.35rem;
+  letter-spacing: 0.2em;
+  color: var(--madder);
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -14,12 +14,13 @@ type Flower = {
   spin: number;
 };
 
-const RED_WHITE_LOTTES = [
-  "linear-gradient(165deg, #fff5f5, #fecaca)",
-  "linear-gradient(165deg, #ffffff, #fee2e2)",
-  "linear-gradient(165deg, #fca5a5, #fef2f2)",
-  "linear-gradient(165deg, #fff1f2, #fda4af)",
-  "linear-gradient(165deg, #ffffff, #ffe4e6)",
+const PASTEL_PETALS = [
+  "linear-gradient(165deg, #fce7f3, #f9a8d4)",
+  "linear-gradient(165deg, #ede9fe, #c4b5fd)",
+  "linear-gradient(165deg, #ffedd5, #fdba74)",
+  "linear-gradient(165deg, #e0f2fe, #bae6fd)",
+  "linear-gradient(165deg, #fef3c7, #fde68a)",
+  "linear-gradient(165deg, #ffe4e6, #fda4af)",
 ];
 
 function makeFlowers(count: number, opacityMul: number): Flower[] {
@@ -27,18 +28,18 @@ function makeFlowers(count: number, opacityMul: number): Flower[] {
     id,
     left: `${2 + Math.random() * 96}%`,
     delay: `${-(Math.random() * 32).toFixed(1)}s`,
-    duration: `${12 + Math.random() * 18}s`,
-    size: 8 + Math.random() * 14,
-    drift: `${-50 + Math.random() * 100}px`,
-    opacity: (0.06 + Math.random() * 0.09) * opacityMul,
-    bg: RED_WHITE_LOTTES[id % RED_WHITE_LOTTES.length]!,
-    spin: 140 + Math.random() * 140,
+    duration: `${10 + Math.random() * 16}s`,
+    size: 10 + Math.random() * 18,
+    drift: `${-60 + Math.random() * 120}px`,
+    opacity: (0.1 + Math.random() * 0.14) * opacityMul,
+    bg: PASTEL_PETALS[id % PASTEL_PETALS.length]!,
+    spin: 120 + Math.random() * 160,
   }));
 }
 
 export function FallingFlowers({ intense }: { intense?: boolean }) {
   const flowers = useMemo(
-    () => makeFlowers(intense ? 22 : 14, intense ? 0.55 : 0.45),
+    () => makeFlowers(intense ? 56 : 38, intense ? 1 : 0.85),
     [intense]
   );
 
@@ -58,7 +59,7 @@ export function FallingFlowers({ intense }: { intense?: boolean }) {
             ["--drift" as string]: f.drift,
             ["--spin" as string]: `${f.spin}deg`,
             background: f.bg,
-            boxShadow: "0 0 10px rgba(255, 255, 255, 0.65)",
+            boxShadow: "0 0 16px rgba(255, 255, 255, 0.55)",
           }}
         />
       ))}
