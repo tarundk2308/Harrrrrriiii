@@ -99,6 +99,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
 
   return (
   <motion.div
+    className="invite-surface"
     initial={{ opacity: 0 }}
     animate={revealed ? { opacity: 1 } : { opacity: 0 }}
     transition={{ duration: reduce ? 0 : 0.85, ease }}
