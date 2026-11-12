@@ -5,13 +5,20 @@ import { useState } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-export function OpeningGate({ onOpen }: { onOpen: () => void }) {
+export function OpeningGate({
+  onOpen,
+  onPrime,
+}: {
+  onOpen: () => void;
+  onPrime?: () => void;
+}) {
   const reduce = useReducedMotion();
   const [opening, setOpening] = useState(false);
 
   const open = () => {
     if (opening) return;
     setOpening(true);
+    onPrime?.();
     onOpen();
   };
 
@@ -22,6 +29,7 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
       animate={opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1 }}
       transition={{ duration: reduce ? 0.2 : 0.5, delay: opening ? (reduce ? 0 : 0.4) : 0, ease }}
       aria-hidden={opening}
+      onPointerDown={() => onPrime?.()}
     >
       <motion.button
         type="button"
