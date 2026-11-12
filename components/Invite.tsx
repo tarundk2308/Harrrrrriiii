@@ -7,33 +7,43 @@ import { StoryChapterSection } from "@/components/StoryChapter";
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import type { ReactNode } from "react";
+import { useRef } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
-function Reveal({
+function ChapterScrollReveal({
+  index,
   children,
-  delay = 0,
-  className,
 }: {
+  index: number;
   children: ReactNode;
-  delay?: number;
-  className?: string;
 }) {
   const reduce = useReducedMotion();
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.92", "start 0.35"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], [40, 0]);
+  const opacity = useTransform(scrollYProgress, [0, 0.4, 1], [0.4, 0.92, 1]);
+
+  if (reduce) {
+    return <div className="story-chapter-reveal">{children}</div>;
+  }
+
   return (
     <motion.div
-      className={className}
-      initial={reduce ? false : { y: 28, opacity: 0.85 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      viewport={{ once: true, margin: "-4% 0px" }}
-      transition={{ duration: reduce ? 0 : 0.65, delay, ease, type: "spring", stiffness: 110, damping: 20 }}
+      ref={ref}
+      className="story-chapter-reveal"
+      style={{ y, opacity }}
     >
       {children}
     </motion.div>
   );
 }
 
-export function Invite({ revealed }: { revealed: boolean }) {
+export function Invite({ revealed, rising }: { revealed: boolean; rising?: boolean }) {
   const reduce = useReducedMotion();
   const { scrollY, scrollYProgress } = useScroll();
   const cueOpacity = useTransform(scrollY, [0, 90], [1, 0]);
@@ -44,14 +54,19 @@ export function Invite({ revealed }: { revealed: boolean }) {
       initial={false}
       animate={
         revealed
-          ? { opacity: 1, scale: 1, y: 0, filter: "blur(0px)" }
-          : { opacity: 0, scale: 0.94, y: 18, filter: "blur(6px)", pointerEvents: "none" }
+          ? {
+              opacity: 1,
+              scale: 1,
+              y: 0,
+            }
+          : { opacity: 0, y: 24, pointerEvents: "none" }
       }
       transition={{
-        duration: reduce ? 0 : 0.85,
+        duration: reduce ? 0 : rising ? 0.95 : 0.4,
+        delay: reduce ? 0 : rising ? 0.32 : 0,
         ease,
         type: "spring",
-        stiffness: 140,
+        stiffness: 120,
         damping: 22,
       }}
     >
@@ -75,14 +90,9 @@ export function Invite({ revealed }: { revealed: boolean }) {
                   transition={{ duration: 0.75, delay: 0.12, ease }}
                 >
                   <span className="names-wedding-line">{invite.groomFull}</span>
-                  <motion.span
-                    className="amp"
-                    aria-hidden="true"
-                    animate={reduce ? undefined : { scale: [1, 1.12, 1] }}
-                    transition={{ duration: 2.5, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  >
+                  <span className="amp" aria-hidden="true">
                     &
-                  </motion.span>
+                  </span>
                   <span className="names-wedding-line">{invite.brideFull}</span>
                 </motion.h1>
 
@@ -118,10 +128,11 @@ export function Invite({ revealed }: { revealed: boolean }) {
             </section>
 
             <div className="story-timeline" aria-label="Wedding day">
+              <span className="story-timeline-rail" aria-hidden="true" />
               {invite.chapters.map((chapter, i) => (
-                <Reveal key={chapter.id} delay={i * 0.08}>
+                <ChapterScrollReveal key={chapter.id} index={i}>
                   <StoryChapterSection chapter={chapter} index={i} />
-                </Reveal>
+                </ChapterScrollReveal>
               ))}
             </div>
 

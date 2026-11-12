@@ -1,6 +1,7 @@
 "use client";
 
 import { FallingFlowers } from "@/components/FallingFlowers";
+import { HeartReveal } from "@/components/HeartReveal";
 import { Invite } from "@/components/Invite";
 import { OpeningGate } from "@/components/OpeningGate";
 import { useState } from "react";
@@ -8,17 +9,24 @@ import { useState } from "react";
 export function InviteShell() {
   const [open, setOpen] = useState(false);
   const [gateVisible, setGateVisible] = useState(true);
+  const [heartActive, setHeartActive] = useState(false);
+
+  const handleOpenStart = () => {
+    setHeartActive(true);
+    setOpen(true);
+  };
 
   return (
     <div className={`invite-root ${open ? "is-open" : "is-gate"}`}>
       <FallingFlowers intense={open} />
       {gateVisible ? (
         <OpeningGate
-          onOpenStart={() => setOpen(true)}
+          onOpenStart={handleOpenStart}
           onOpenComplete={() => setGateVisible(false)}
         />
       ) : null}
-      <Invite revealed={open} />
+      <HeartReveal active={heartActive} onComplete={() => setHeartActive(false)} />
+      <Invite revealed={open} rising={heartActive || open} />
     </div>
   );
 }
