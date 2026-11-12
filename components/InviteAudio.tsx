@@ -3,6 +3,7 @@
 import { invite } from "@/lib/invite";
 import {
   forwardRef,
+  useCallback,
   useEffect,
   useImperativeHandle,
   useLayoutEffect,
@@ -10,14 +11,21 @@ import {
 } from "react";
 
 export type InviteAudioHandle = {
+  /** Muted autoplay-friendly start at the configured offset. */
   playFromStart: () => Promise<boolean>;
+  /** Unmute and play — call from a user gesture when possible. */
   ensureAudible: () => Promise<boolean>;
 };
 
-function seekToStart(el: HTMLAudioElement) {
-  el.volume = 0.42;
-  if (el.currentTime < invite.audioStartSeconds - 0.25) {
-    el.currentTime = invite.audioStartSeconds;
+function applyStartOffset(el: HTMLAudioElement) {
+  if (el.readyState < 1) return;
+  const start = invite.audioStartSeconds;
+  if (el.currentTime < start - 0.2) {
+    try {
+      el.currentTime = start;
+    } catch {
+      /* wait for more data */
+    }
   }
 }
 
@@ -26,102 +34,115 @@ export const InviteAudio = forwardRef<
   { onReady?: () => void }
 >(function InviteAudio({ onReady }, ref) {
   const audioRef = useRef<HTMLAudioElement>(null);
+  const audibleRef = useRef(false);
 
-  const playFromStart = async () => {
+  const playFromStart = useCallback(async () => {
     const el = audioRef.current;
     if (!el) return false;
-    if (!el.paused && el.currentTime >= invite.audioStartSeconds - 0.5) {
+
+    applyStartOffset(el);
+    el.volume = 0.42;
+
+    if (
+      !el.paused &&
+      el.currentTime >= invite.audioStartSeconds - 0.5 &&
+      (audibleRef.current ? !el.muted : true)
+    ) {
       return true;
     }
 
-    seekToStart(el);
-    el.muted = false;
-
-    try {
-      await el.play();
-      if (!el.paused) return true;
-    } catch {
-      /* autoplay policy — try muted so playback is armed */
+    if (!audibleRef.current) {
+      el.muted = true;
+    } else {
+      el.muted = false;
     }
 
     try {
-      el.muted = true;
       await el.play();
+      applyStartOffset(el);
+      if (!el.muted) audibleRef.current = true;
+      return !el.paused;
+    } catch {
+      if (audibleRef.current) return false;
+    }
+
+    el.muted = true;
+    try {
+      await el.play();
+      applyStartOffset(el);
       return !el.paused;
     } catch {
       return false;
     }
-  };
+  }, []);
 
-  const ensureAudible = async () => {
+  const ensureAudible = useCallback(async () => {
     const el = audioRef.current;
     if (!el) return false;
 
-    el.muted = false;
+    applyStartOffset(el);
     el.volume = 0.42;
-    if (el.currentTime < invite.audioStartSeconds - 0.25) {
-      el.currentTime = invite.audioStartSeconds;
-    }
+    el.muted = false;
 
-    if (el.paused) {
-      try {
+    try {
+      if (el.paused) {
         await el.play();
-      } catch {
-        return false;
       }
+      audibleRef.current = !el.paused && !el.muted;
+      return audibleRef.current;
+    } catch {
+      return false;
     }
+  }, []);
 
-    return !el.paused && !el.muted;
-  };
+  useImperativeHandle(ref, () => ({ playFromStart, ensureAudible }), [
+    playFromStart,
+    ensureAudible,
+  ]);
 
-  useImperativeHandle(ref, () => ({ playFromStart, ensureAudible }), []);
-
-  const kick = () => {
+  const arm = useCallback(() => {
     void playFromStart();
-    void ensureAudible();
-  };
+  }, [playFromStart]);
 
   useLayoutEffect(() => {
     const el = audioRef.current;
     if (!el) return;
-
     el.setAttribute("playsinline", "");
-    kick();
+    arm();
     onReady?.();
-  }, [onReady]);
+  }, [arm, onReady]);
 
   useEffect(() => {
     const el = audioRef.current;
     if (!el) return;
 
-    el.load();
+    const onMeta = () => {
+      applyStartOffset(el);
+      arm();
+    };
 
-    kick();
-
-    el.addEventListener("loadeddata", kick);
-    el.addEventListener("canplay", kick);
-    el.addEventListener("canplaythrough", kick);
-    el.addEventListener("playing", kick);
+    el.addEventListener("loadedmetadata", onMeta);
+    el.addEventListener("loadeddata", arm);
+    el.addEventListener("canplay", arm);
 
     const onPause = () => {
       if (document.visibilityState !== "visible") return;
-      void ensureAudible();
+      if (!audibleRef.current) arm();
     };
     el.addEventListener("pause", onPause);
 
     const watchdog = window.setInterval(() => {
-      if (el.paused || el.muted) void ensureAudible();
-    }, 900);
+      if (el.paused) arm();
+    }, 1200);
 
     return () => {
-      el.removeEventListener("loadeddata", kick);
-      el.removeEventListener("canplay", kick);
-      el.removeEventListener("canplaythrough", kick);
-      el.removeEventListener("playing", kick);
+      el.removeEventListener("loadedmetadata", onMeta);
+      el.removeEventListener("loadeddata", arm);
+      el.removeEventListener("canplay", arm);
       el.removeEventListener("pause", onPause);
       window.clearInterval(watchdog);
     };
-  }, []);
+  }, [arm]);
 
   return (
     <audio
@@ -130,6 +151,7 @@ export const InviteAudio = forwardRef<
       loop
       autoPlay
       preload="auto"
+      playsInline
       controls={false}
       className="invite-media-hidden"
       aria-hidden="true"

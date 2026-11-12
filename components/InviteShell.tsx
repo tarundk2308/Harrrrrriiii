@@ -14,79 +14,83 @@ export function InviteShell() {
   const [open, setOpen] = useState(false);
   const audioRef = useRef<InviteAudioHandle>(null);
   const videoRef = useRef<BackgroundVideoHandle>(null);
-  const startAudio = useCallback(async () => {
+
+  const armAudio = useCallback(async () => {
+    return (await audioRef.current?.playFromStart()) ?? false;
+  }, []);
+
+  const primeAudio = useCallback(async () => {
     const handle = audioRef.current;
     if (!handle) return false;
-
     await handle.playFromStart();
-    const audible = await handle.ensureAudible();
-    return audible;
+    return handle.ensureAudible();
   }, []);
 
   useLayoutEffect(() => {
-    void startAudio();
-  }, [startAudio]);
+    void armAudio();
+  }, [armAudio]);
 
   useEffect(() => {
-    void startAudio();
+    void armAudio();
     void videoRef.current?.play();
 
     let raf = 0;
     let rafCount = 0;
     const rafKick = () => {
-      if (rafCount > 240) return;
+      if (rafCount > 180) return;
       rafCount += 1;
-      void startAudio();
+      void armAudio();
       raf = window.requestAnimationFrame(rafKick);
     };
     raf = window.requestAnimationFrame(rafKick);
 
-    const kick = () => void startAudio();
+    const onGesture = () => void primeAudio();
     const events = [
       "touchstart",
       "touchend",
       "click",
       "keydown",
       "pointerdown",
-      "scroll",
-      "wheel",
     ] as const;
 
     for (const name of events) {
-      window.addEventListener(name, kick, { capture: true, passive: true });
+      window.addEventListener(name, onGesture, { capture: true, passive: true });
     }
 
     const onVisible = () => {
-      if (document.visibilityState === "visible") void startAudio();
+      if (document.visibilityState === "visible") void armAudio();
     };
-    window.addEventListener("pageshow", kick);
+    const onPageShow = () => void primeAudio();
+    window.addEventListener("pageshow", onPageShow);
     window.addEventListener("visibilitychange", onVisible);
 
-    const keepAlive = window.setInterval(() => void startAudio(), 750);
+    const keepAlive = window.setInterval(() => void armAudio(), 900);
 
     return () => {
       window.cancelAnimationFrame(raf);
       for (const name of events) {
-        window.removeEventListener(name, kick, { capture: true });
+        window.removeEventListener(name, onGesture, { capture: true });
       }
-      window.removeEventListener("pageshow", kick);
+      window.removeEventListener("pageshow", onPageShow);
       window.removeEventListener("visibilitychange", onVisible);
       window.clearInterval(keepAlive);
     };
-  }, [startAudio]);
+  }, [armAudio, primeAudio]);
 
   const handleOpen = useCallback(() => {
-    void startAudio();
+    void primeAudio();
     void videoRef.current?.play();
     setOpen(true);
-  }, [startAudio]);
+  }, [primeAudio]);
 
   return (
     <div className="invite-root">
-      <BackgroundVideo ref={videoRef} onPlaying={startAudio} />
-      <InviteAudio ref={audioRef} onReady={() => void startAudio()} />
+      <BackgroundVideo ref={videoRef} onPlaying={armAudio} />
+      <InviteAudio ref={audioRef} onReady={() => void armAudio()} />
       <FallingFlowers active={open} />
-      {!open ? <OpeningGate onOpen={handleOpen} onPrime={startAudio} /> : null}
+      {!open ? (
+        <OpeningGate onOpen={handleOpen} onPrime={primeAudio} />
+      ) : null}
       <Invite revealed={open} />
     </div>
   );
