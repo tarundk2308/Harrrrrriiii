@@ -1,3 +1,5 @@
 # Background music
 
-Background track: `arasan-fire.mp3`. Playback starts at **2 seconds** into the track.
+Deploy `arasan-fire.mp3` — the **first 5 seconds are cut off** in the file itself so playback always begins at the desired entry.
+
+Keep `arasan-fire.full.mp3` locally only if you need to re-trim (not deployed).

@@ -11,23 +11,9 @@ import {
 } from "react";
 
 export type InviteAudioHandle = {
-  /** Muted autoplay-friendly start at the configured offset. */
   playFromStart: () => Promise<boolean>;
-  /** Unmute and play — call from a user gesture when possible. */
   ensureAudible: () => Promise<boolean>;
 };
-
-function applyStartOffset(el: HTMLAudioElement) {
-  if (el.readyState < 1) return;
-  const start = invite.audioStartSeconds;
-  if (el.currentTime < start - 0.2) {
-    try {
-      el.currentTime = start;
-    } catch {
-      /* wait for more data */
-    }
-  }
-}
 
 export const InviteAudio = forwardRef<
   InviteAudioHandle,
@@ -40,26 +26,19 @@ export const InviteAudio = forwardRef<
     const el = audioRef.current;
     if (!el) return false;
 
-    applyStartOffset(el);
     el.volume = 0.42;
 
     if (
       !el.paused &&
-      el.currentTime >= invite.audioStartSeconds - 0.5 &&
       (audibleRef.current ? !el.muted : true)
     ) {
       return true;
     }
 
-    if (!audibleRef.current) {
-      el.muted = true;
-    } else {
-      el.muted = false;
-    }
+    el.muted = audibleRef.current ? false : true;
 
     try {
       await el.play();
-      applyStartOffset(el);
       if (!el.muted) audibleRef.current = true;
       return !el.paused;
     } catch {
@@ -69,7 +48,6 @@ export const InviteAudio = forwardRef<
     el.muted = true;
     try {
       await el.play();
-      applyStartOffset(el);
       return !el.paused;
     } catch {
       return false;
@@ -80,14 +58,11 @@ export const InviteAudio = forwardRef<
     const el = audioRef.current;
     if (!el) return false;
 
-    applyStartOffset(el);
     el.volume = 0.42;
     el.muted = false;
 
     try {
-      if (el.paused) {
-        await el.play();
-      }
+      if (el.paused) await el.play();
       audibleRef.current = !el.paused && !el.muted;
       return audibleRef.current;
     } catch {
@@ -116,12 +91,6 @@ export const InviteAudio = forwardRef<
     const el = audioRef.current;
     if (!el) return;
 
-    const onMeta = () => {
-      applyStartOffset(el);
-      arm();
-    };
-
-    el.addEventListener("loadedmetadata", onMeta);
     el.addEventListener("loadeddata", arm);
     el.addEventListener("canplay", arm);
 
@@ -136,7 +105,6 @@ export const InviteAudio = forwardRef<
     }, 1200);
 
     return () => {
-      el.removeEventListener("loadedmetadata", onMeta);
       el.removeEventListener("loadeddata", arm);
       el.removeEventListener("canplay", arm);
       el.removeEventListener("pause", onPause);
@@ -149,7 +117,6 @@ export const InviteAudio = forwardRef<
       ref={audioRef}
       src={invite.audioSrc}
       loop
-      autoPlay
       preload="auto"
       playsInline
       controls={false}

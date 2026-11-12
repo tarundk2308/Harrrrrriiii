@@ -7,5 +7,6 @@ out
 .env
 .env*.local
 /*.mp3
+public/audio/*.full.mp3
 /*.MOV
 /*.mov
