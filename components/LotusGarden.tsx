@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import { AnimatedFloralStrip } from "@/components/AnimatedFloralStrip";
 import { motion, useReducedMotion } from "framer-motion";
 
 export function LotusGarden() {
@@ -20,20 +20,17 @@ export function LotusGarden() {
           reduce
             ? undefined
             : {
-                x: [0, 10, -8, 6, 0],
-                y: [0, -4, 2, -3, 0],
-                rotate: [0, 0.4, -0.35, 0.25, 0],
+                y: [0, -3, 2, -2, 0],
               }
         }
-        transition={{ duration: 14, repeat: Infinity, ease: "easeInOut" }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       >
-        <Image
+        <AnimatedFloralStrip
           src="/images/engagement-florals.jpg"
-          alt=""
           width={1024}
           height={144}
-          className="lotus-garden-img"
-          priority
+          imageClassName="lotus-garden-img"
+          washClassName="floral-strip-wash floral-strip-wash--main"
         />
       </motion.div>
     </motion.div>

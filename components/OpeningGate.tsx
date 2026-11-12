@@ -2,7 +2,7 @@
 
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
-import Image from "next/image";
+import { AnimatedFloralStrip } from "@/components/AnimatedFloralStrip";
 import { useState } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -22,7 +22,11 @@ export function OpeningGate({
     if (opening) return;
     setOpening(true);
     onOpenStart();
-    window.setTimeout(() => onOpenComplete(), reduce ? 220 : OPEN_MS);
+    const touch =
+      typeof window !== "undefined" &&
+      window.matchMedia("(max-width: 640px), (hover: none) and (pointer: coarse)").matches;
+    const doneMs = reduce ? 220 : touch ? 1320 : OPEN_MS;
+    window.setTimeout(() => onOpenComplete(), doneMs);
   };
 
   return (
@@ -36,7 +40,13 @@ export function OpeningGate({
       aria-hidden={opening}
     >
       <div className="gate-lotus-peek" aria-hidden="true">
-        <Image src="/images/lotus-florals.jpg" alt="" width={1024} height={260} className="gate-lotus-peek-img" priority />
+        <AnimatedFloralStrip
+          src="/images/lotus-florals.jpg"
+          width={1024}
+          height={260}
+          imageClassName="gate-lotus-peek-img"
+          washClassName="floral-strip-wash floral-strip-wash--gate"
+        />
       </div>
 
       <motion.button

@@ -1219,6 +1219,35 @@ body:has(.invite-root.is-open)::before {
   pointer-events: none;
 }
 
+@media (max-width: 640px), (hover: none) and (pointer: coarse) {
+  .heart-reveal {
+    align-items: center;
+    justify-content: center;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+      env(safe-area-inset-left);
+  }
+
+  .heart-reveal-core {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .heart-reveal-shape {
+    font-size: clamp(5rem, 24vw, 6.75rem);
+    text-shadow: 0 6px 22px rgba(185, 28, 60, 0.32);
+  }
+
+  .heart-reveal-flash {
+    background: radial-gradient(
+      circle at 50% 46%,
+      rgba(255, 255, 255, 0.9) 0%,
+      rgba(255, 228, 230, 0.72) 38%,
+      transparent 66%
+    );
+  }
+}
+
 .gate-heart-badge {
   position: absolute;
   top: 1.1rem;
@@ -2528,20 +2557,6 @@ body:has(.invite-root.is-open)::before {
   overflow: hidden;
   pointer-events: none;
   mask-image: linear-gradient(to top, black 50%, transparent);
-  animation: lotus-peek-sway 12s ease-in-out infinite;
-}
-
-@keyframes lotus-peek-sway {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0);
-  }
-  33% {
-    transform: translate3d(6px, -3px, 0);
-  }
-  66% {
-    transform: translate3d(-5px, 2px, 0);
-  }
 }
 
 .gate-lotus-peek-img {
@@ -2554,6 +2569,71 @@ body:has(.invite-root.is-open)::before {
 .lotus-garden-inner {
   width: 100%;
   height: 100%;
+}
+
+/* Animated floral strip — per-bloom sway layers */
+.floral-strip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.floral-strip-wash {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.floral-strip-wash--main {
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(253, 248, 246, 0.5) 35%,
+    rgba(245, 232, 228, 0.92) 100%
+  );
+}
+
+.floral-strip-wash--gate {
+  background: linear-gradient(180deg, transparent 0%, rgba(253, 248, 246, 0.85) 100%);
+}
+
+.floral-strip-ghost {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.22;
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.floral-strip-slice {
+  position: absolute;
+  bottom: 0;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.floral-strip-slice-motion {
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.floral-strip-panorama {
+  position: absolute;
+  bottom: 0;
+  width: 238%;
+  height: 100%;
+}
+
+.floral-strip-panorama .lotus-garden-img,
+.floral-strip-panorama .gate-lotus-peek-img {
+  width: 100%;
+  height: 100%;
+  mask-image: none;
 }
 
 .gate-envelope--engagement {
