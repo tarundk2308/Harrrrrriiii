@@ -106,13 +106,28 @@ main {
   z-index: 1;
 }
 
+.invite-root {
+  position: relative;
+  min-height: 100svh;
+}
+
 .invite-media-hidden {
   position: fixed;
-  width: 0;
-  height: 0;
-  opacity: 0;
+  width: 1px;
+  height: 1px;
+  left: 0;
+  top: 0;
+  opacity: 0.01;
   pointer-events: none;
-  visibility: hidden;
+}
+
+.is-gate .bg-video-veil {
+  background: linear-gradient(
+    180deg,
+    rgba(243, 238, 230, 0.08) 0%,
+    rgba(243, 238, 230, 0.14) 55%,
+    rgba(243, 238, 230, 0.22) 100%
+  );
 }
 
 .bg-video {
@@ -914,49 +929,37 @@ main {
   inset: 0;
   z-index: 120;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: clamp(1.25rem, 5vw, 2.5rem);
+  padding: max(1.1rem, env(safe-area-inset-bottom)) 1rem 1.35rem;
   background: transparent;
+  pointer-events: none;
 }
 
-.gate-inner {
-  width: min(23rem, 100%);
-}
-
-.gate-card {
+.gate-chip {
   display: flex;
-  width: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 0;
-  padding: clamp(2.1rem, 6vw, 2.85rem) clamp(1.5rem, 5vw, 2rem) clamp(1.85rem, 5vw, 2.35rem);
-  border: 1px solid rgba(166, 132, 86, 0.55);
-  background: var(--ivory);
-  box-shadow:
-    0 20px 52px rgba(35, 28, 22, 0.12),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+  gap: 0.35rem;
+  min-width: 9.5rem;
+  padding: 0.72rem 1.15rem 0.68rem;
+  border: 1px solid rgba(247, 243, 236, 0.8);
+  border-radius: 999px;
+  background: rgba(247, 243, 236, 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 28px rgba(35, 28, 22, 0.2);
   cursor: pointer;
   font: inherit;
-  color: inherit;
+  color: var(--ink);
   text-align: center;
-  transition:
-    transform 0.3s var(--ease),
-    box-shadow 0.3s var(--ease);
-}
-
-.gate-card:hover {
-  box-shadow:
-    0 24px 58px rgba(35, 28, 22, 0.15),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+  pointer-events: auto;
 }
 
 .gate-mark {
-  margin-bottom: 1.15rem;
   font-family: var(--serif);
-  font-size: 1rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
   color: var(--ink-soft);
 }
 
@@ -964,76 +967,11 @@ main {
   color: var(--gold);
 }
 
-.gate-card .kolam {
-  width: 54px;
-  height: 54px;
-  margin-bottom: 1.25rem;
-}
-
-.gate-tamil {
-  margin: 0 0 0.35rem;
-  font-family: var(--tamil);
-  font-weight: 500;
-  font-size: 1.18rem;
-  color: var(--madder);
-}
-
-.gate-eyebrow {
-  margin: 0 0 1.35rem;
-  font-size: 0.62rem;
-  font-weight: 400;
-  letter-spacing: 0.42em;
-  text-indent: 0.42em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-
-.gate-rule {
-  display: block;
-  width: 3.5rem;
-  height: 1px;
-  margin: 0 0 1.35rem;
-  background: var(--gold);
-}
-
-.gate-rule-short {
-  width: 2.25rem;
-  margin: 1.35rem 0 1rem;
-}
-
-.gate-names {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: clamp(1.45rem, 5.2vw, 1.85rem);
-  line-height: 1.25;
-  letter-spacing: -0.02em;
-  color: var(--ink);
-}
-
-.gate-amp {
-  display: block;
-  margin: 0.35rem 0;
-  font-style: italic;
-  font-size: 0.72em;
-  color: var(--madder);
-  line-height: 1.1;
-}
-
-.gate-when {
-  margin: 1.1rem 0 0;
-  font-size: 0.66rem;
-  font-weight: 500;
-  line-height: 1.85;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
-}
-
 .gate-open {
-  font-size: 0.66rem;
-  font-weight: 400;
-  letter-spacing: 0.36em;
-  text-indent: 0.36em;
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
   text-transform: uppercase;
   color: var(--madder);
   animation: pulse-cta 2.6s ease-in-out infinite;

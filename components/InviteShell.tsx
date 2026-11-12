@@ -14,32 +14,62 @@ export function InviteShell() {
   const [open, setOpen] = useState(false);
   const audioRef = useRef<InviteAudioHandle>(null);
   const videoRef = useRef<BackgroundVideoHandle>(null);
+  const audioOnRef = useRef(false);
 
-  const startAudio = useCallback(() => {
-    void audioRef.current?.playFromStart();
+  const startAudio = useCallback(async () => {
+    if (audioOnRef.current) return;
+    const ok = await audioRef.current?.playFromStart();
+    if (ok) audioOnRef.current = true;
   }, []);
 
   useEffect(() => {
-    startAudio();
+    void startAudio();
     void videoRef.current?.play();
 
-    const onInteract = () => startAudio();
-    window.addEventListener("pointerdown", onInteract, { once: true });
-    return () => window.removeEventListener("pointerdown", onInteract);
+    const kick = () => void startAudio();
+    const events = ["touchstart", "touchend", "click", "keydown", "pointerdown"] as const;
+
+    for (const name of events) {
+      window.addEventListener(name, kick, { capture: true });
+    }
+
+    const onVisible = () => {
+      if (document.visibilityState === "visible") void startAudio();
+    };
+    window.addEventListener("pageshow", kick);
+    window.addEventListener("visibilitychange", onVisible);
+
+    const retry = window.setInterval(() => {
+      if (audioOnRef.current) {
+        window.clearInterval(retry);
+        return;
+      }
+      void startAudio();
+    }, 600);
+    window.setTimeout(() => window.clearInterval(retry), 5000);
+
+    return () => {
+      for (const name of events) {
+        window.removeEventListener(name, kick, { capture: true });
+      }
+      window.removeEventListener("pageshow", kick);
+      window.removeEventListener("visibilitychange", onVisible);
+      window.clearInterval(retry);
+    };
   }, [startAudio]);
 
   const handleOpen = useCallback(() => {
-    startAudio();
+    void startAudio();
     setOpen(true);
   }, [startAudio]);
 
   return (
-    <>
+    <div className={open ? "invite-root" : "invite-root is-gate"}>
       <BackgroundVideo ref={videoRef} />
       <InviteAudio ref={audioRef} />
       <FallingFlowers active={open} />
       {!open ? <OpeningGate onOpen={handleOpen} /> : null}
       <Invite revealed={open} />
-    </>
+    </div>
   );
 }

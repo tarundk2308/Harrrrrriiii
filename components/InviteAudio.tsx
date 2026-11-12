@@ -4,7 +4,7 @@ import { invite } from "@/lib/invite";
 import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 
 export type InviteAudioHandle = {
-  playFromStart: () => Promise<void>;
+  playFromStart: () => Promise<boolean>;
 };
 
 export const InviteAudio = forwardRef<InviteAudioHandle>(function InviteAudio(_props, ref) {
@@ -12,13 +12,16 @@ export const InviteAudio = forwardRef<InviteAudioHandle>(function InviteAudio(_p
 
   const playFromStart = async () => {
     const el = audioRef.current;
-    if (!el) return;
+    if (!el) return false;
     el.volume = 0.42;
-    el.currentTime = invite.audioStartSeconds;
+    if (el.currentTime < invite.audioStartSeconds - 0.25) {
+      el.currentTime = invite.audioStartSeconds;
+    }
     try {
       await el.play();
+      return !el.paused;
     } catch {
-      /* retried from shell if needed */
+      return false;
     }
   };
 
@@ -28,6 +31,9 @@ export const InviteAudio = forwardRef<InviteAudioHandle>(function InviteAudio(_p
     const el = audioRef.current;
     if (!el) return;
     el.setAttribute("playsinline", "");
+    const onReady = () => void playFromStart();
+    el.addEventListener("canplaythrough", onReady, { once: true });
+    return () => el.removeEventListener("canplaythrough", onReady);
   }, []);
 
   return (
