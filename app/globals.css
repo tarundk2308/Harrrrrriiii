@@ -36,12 +36,16 @@ html {
 
 html,
 body {
+  background-color: transparent;
+}
+
+html,
+body {
   overflow-x: clip;
 }
 
 body {
   min-height: 100svh;
-  background: var(--paper);
   color: var(--ink);
   font-family: var(--sans);
   font-weight: 300;
@@ -99,6 +103,7 @@ a {
   position: relative;
   z-index: 20;
   isolation: isolate;
+  background: transparent;
 }
 
 main {
@@ -121,14 +126,6 @@ main {
   pointer-events: none;
 }
 
-.is-gate .bg-video-veil {
-  background: linear-gradient(
-    180deg,
-    rgba(243, 238, 230, 0.08) 0%,
-    rgba(243, 238, 230, 0.14) 55%,
-    rgba(243, 238, 230, 0.22) 100%
-  );
-}
 
 .bg-video {
   position: fixed;
@@ -143,6 +140,13 @@ main {
   visibility: visible;
 }
 
+.bg-video-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
 .bg-video-media {
   position: absolute;
   inset: 0;
@@ -153,14 +157,46 @@ main {
   opacity: 1;
   filter: saturate(1.08) contrast(1.04);
   pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-.bg-video-media::-webkit-media-controls,
-.bg-video-media::-webkit-media-controls-enclosure,
-.bg-video-media::-webkit-media-controls-panel,
+.bg-video-media::-webkit-media-controls {
+  display: none !important;
+  opacity: 0 !important;
+}
+
+.bg-video-media::-webkit-media-controls-enclosure {
+  display: none !important;
+}
+
+.bg-video-media::-webkit-media-controls-panel {
+  display: none !important;
+}
+
 .bg-video-media::-webkit-media-controls-start-playback-button {
   display: none !important;
   -webkit-appearance: none;
+  opacity: 0 !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.bg-video-media::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  -webkit-appearance: none;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.bg-video-media::-webkit-media-controls-overlay-enclosure {
+  display: none !important;
+}
+
+.invite-media-hidden::-webkit-media-controls {
+  display: none !important;
 }
 
 .bg-video-veil {
@@ -168,9 +204,9 @@ main {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(243, 238, 230, 0.28) 0%,
-    rgba(243, 238, 230, 0.38) 50%,
-    rgba(243, 238, 230, 0.48) 100%
+    rgba(243, 238, 230, 0.08) 0%,
+    rgba(243, 238, 230, 0.14) 55%,
+    rgba(243, 238, 230, 0.2) 100%
   );
 }
 
@@ -181,12 +217,12 @@ main {
   width: min(40rem, calc(100% - 1.4rem));
   margin-inline: auto;
   padding: clamp(2rem, 5.5vw, 3.25rem) clamp(1.15rem, 4vw, 1.85rem);
-  background: var(--ivory);
-  border: 1px solid rgba(166, 132, 86, 0.55);
+  background: rgba(247, 243, 236, 0.58);
+  border: 1px solid rgba(166, 132, 86, 0.45);
   border-radius: 2px;
-  box-shadow:
-    0 16px 48px rgba(35, 28, 22, 0.14),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+  box-shadow: 0 12px 36px rgba(35, 28, 22, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 .plate,
@@ -778,7 +814,9 @@ main {
   margin: 0 auto;
   padding: 2.7rem 1.35rem 2.15rem;
   border: 1px solid var(--gold-soft);
-  background: var(--ivory);
+  background: rgba(247, 243, 236, 0.58);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: relative;
 }
 

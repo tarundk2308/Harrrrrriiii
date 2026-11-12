@@ -42,6 +42,7 @@ export const InviteAudio = forwardRef<InviteAudioHandle>(function InviteAudio(_p
       src={invite.audioSrc}
       loop
       preload="auto"
+      controls={false}
       className="invite-media-hidden"
       aria-hidden="true"
     />

@@ -60,11 +60,12 @@ export function InviteShell() {
 
   const handleOpen = useCallback(() => {
     void startAudio();
+    void videoRef.current?.play();
     setOpen(true);
   }, [startAudio]);
 
   return (
-    <div className={open ? "invite-root" : "invite-root is-gate"}>
+    <div className="invite-root">
       <BackgroundVideo ref={videoRef} />
       <InviteAudio ref={audioRef} />
       <FallingFlowers active={open} />

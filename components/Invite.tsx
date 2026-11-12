@@ -102,7 +102,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
     className="invite-surface"
     initial={{ opacity: 0 }}
     animate={revealed ? { opacity: 1 } : { opacity: 0 }}
-    transition={{ duration: reduce ? 0 : 0.85, ease }}
+    transition={{ duration: reduce ? 0 : 0.45, ease }}
   >
     {revealed ? (
       <>
