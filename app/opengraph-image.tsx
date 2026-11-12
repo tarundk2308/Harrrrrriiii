@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Hariharan aka Victor and Sharon — engagement, 4 December 2026, Chennai";
+export const alt = "Hariharan Agilan and Sharon Belinda Benedict — wedding, 28 January 2027, Chennai";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,15 +20,25 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", fontSize: 18, letterSpacing: 7, color: "#7C3040" }}>
-          ENGAGEMENT
+          WEDDING
         </div>
-        <div style={{ display: "flex", fontSize: 64, marginTop: 18, lineHeight: 1.05 }}>
-          Hariharan aka Victor
+        <div style={{ display: "flex", fontSize: 52, marginTop: 18, lineHeight: 1.05, textAlign: "center" }}>
+          Hariharan Agilan
         </div>
-        <div style={{ display: "flex", fontSize: 42, color: "#7C3040", marginTop: 4, marginBottom: 4 }}>
+        <div
+          style={{
+            display: "flex",
+            fontSize: 42,
+            color: "#7C3040",
+            marginTop: 4,
+            marginBottom: 4,
+          }}
+        >
           &
         </div>
-        <div style={{ display: "flex", fontSize: 86, lineHeight: 1 }}>Sharon</div>
+        <div style={{ display: "flex", fontSize: 48, lineHeight: 1.1, textAlign: "center" }}>
+          Sharon Belinda Benedict
+        </div>
         <div
           style={{
             display: "flex",
@@ -40,10 +50,10 @@ export default function OpenGraphImage() {
           }}
         />
         <div style={{ display: "flex", fontSize: 26, letterSpacing: 1 }}>
-          Friday, 4 December 2026 · 7:30 pm · Chennai
+          Thursday, 28 January 2027 · Chennai
         </div>
-        <div style={{ display: "flex", fontSize: 22, marginTop: 18, color: "#5C5148" }}>
-          Under the blessing of godfather Sivaramakrishnan
+        <div style={{ display: "flex", fontSize: 20, marginTop: 18, color: "#5C5148" }}>
+          Hindu · Nuptial Mass · Reception
         </div>
       </div>
     ),

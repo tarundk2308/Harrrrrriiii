@@ -3,7 +3,7 @@
 import { invite } from "@/lib/invite";
 import { useEffect, useState } from "react";
 
-const TARGET = new Date(invite.iso).getTime();
+const TARGET = new Date(invite.countdownIso).getTime();
 
 function parts(diff: number) {
   const total = Math.max(0, diff);
@@ -38,7 +38,7 @@ export function Countdown() {
 
   const diff = TARGET - now;
   if (diff <= 0) {
-    return <p className="mood-light">This evening is here.</p>;
+    return <p className="countdown-done">The celebrations begin.</p>;
   }
 
   const { days, hours, minutes, seconds } = parts(diff);

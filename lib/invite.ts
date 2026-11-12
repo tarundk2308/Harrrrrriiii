@@ -1,27 +1,143 @@
-/**
- * All of the invitation facts live here.
- * Background audio: public/audio/arasan-fire.mp3 (file trimmed; first 5s removed).
- */
+/** Event facts from the wedding cards — no invitation boilerplate. */
+
+export type CardVariant = "hindu" | "christian" | "reception";
+
+export type InvitationCard = {
+  variant: CardVariant;
+  headline: string;
+  blessings?: string[];
+  hosts: string[];
+  bride: string;
+  groom: string;
+  brideRelation?: string;
+  groomRelation?: string;
+  sacrament?: string;
+  dateLine: string;
+  timeLine: string;
+  venue: string[];
+  profiles?: { name: string; detail: string[] }[];
+  eventTitle?: string;
+  compliments?: string;
+};
+
+export type StoryChapter = {
+  id: "morning" | "afternoon" | "evening";
+  part: string;
+  when: string;
+  subtitle: string;
+  iso: string;
+  venueUrl?: string;
+  cards: InvitationCard[];
+};
+
 export const invite = {
-  groom: "Hariharan",
-  groomAlias: "Victor",
-  bride: "Sharon",
-  videoSrc: "/video/invite-bg.mp4",
-  videoSrcFallback: "/video/invite-bg.mov",
-  /** Skip the opening of the background clip (seconds). */
-  videoStartSeconds: 2,
-  godfather: "Sivaramakrishnan",
-  godfatherRole: "Godfather",
+  groomFull: "Hariharan Agilan",
+  brideFull: "Sharon Belinda Benedict",
   city: "Chennai",
-  cityTamil: "சென்னை",
-  venue: "" as string,
-  venueUrl: "" as string,
-  weekday: "Friday",
-  dateLine: "4 December 2026",
-  timeLine: "7:30 in the evening",
-  timeDisplay: "7:30",
-  iso: "2026-12-04T19:30:00+05:30",
-  occasionTamil: "நிச்சயதார்த்தம்",
-  blessingTamil: "ஆசிர்வாதத்துடன்",
-  audioSrc: "/audio/arasan-fire.mp3",
+  weddingDateLine: "Thursday, 28th January 2027",
+  countdownIso: "2027-01-28T09:00:00+05:30",
+  storyLead: "Morning, afternoon, and evening — three celebrations in Chennai.",
+
+  chapters: [
+    {
+      id: "morning",
+      part: "I",
+      when: "Morning",
+      subtitle: "Hindu wedding · Muhurtham",
+      iso: "2027-01-28T09:00:00+05:30",
+      venueUrl:
+        "https://maps.google.com/?q=Le+Royal+M%C3%A9ridien+Chennai+GST+Road",
+      cards: [
+        {
+          variant: "hindu",
+          headline: "Hindu Wedding · Muhurtham",
+          blessings: ["Sri Vinayagar Thunai", "Sri Devi Karumariamman Thunai"],
+          hosts: [
+            "Smt. Mahalakshmi Agilan & Sri. Agilan Ramaswamy",
+            "Smt. Suchitra Benedict & Dr. Benedict Xavier",
+          ],
+          groom: "Hariharan Agilan",
+          bride: "Sharon Belinda Benedict",
+          groomRelation: "Son of Smt. Mahalakshmi Agilan & Sri. Agilan Ramaswamy",
+          brideRelation: "Daughter of Smt. Suchitra Benedict & Dr. Benedict Xavier",
+          dateLine: "Thursday, 28th January 2027",
+          timeLine: "Muhurtham: 9:00 AM - 10:30 AM",
+          venue: [
+            "Lawn Venue",
+            "Le Royal Méridien",
+            "1, (GST) Road, Alandur, St. Thomas Mount,",
+            "Chennai - 600016",
+          ],
+        },
+      ],
+    },
+    {
+      id: "afternoon",
+      part: "II",
+      when: "Afternoon",
+      subtitle: "Nuptial Mass · Holy Matrimony",
+      iso: "2027-01-28T15:30:00+05:30",
+      venueUrl: "https://maps.google.com/?q=Santhome+Cathedral+Basilica+Chennai",
+      cards: [
+        {
+          variant: "christian",
+          headline: "Holy Matrimony · Nuptial Mass",
+          hosts: [
+            "Mrs. Suchitra Benedict & Dr. Benedict Xavier",
+            "Mrs. Mahalakshmi Agilan & Mr. Agilan Ramaswamy",
+          ],
+          bride: "Sharon Belinda Benedict",
+          groom: "Hariharan Agilan",
+          brideRelation: "Daughter of Mrs. Suchitra Benedict & Dr. Benedict Xavier",
+          groomRelation: "Son of Mrs. Mahalakshmi Agilan & Mr. Agilan Ramaswamy",
+          sacrament: "IN THE SACRAMENT OF HOLY MATRIMONY",
+          dateLine: "Thursday, 28th January 2027",
+          timeLine: "3:30 pm",
+          venue: ["Santhome Cathedral Basilica", "Mylapore, Chennai – 600004"],
+        },
+      ],
+    },
+    {
+      id: "evening",
+      part: "III",
+      when: "Evening",
+      subtitle: "Reception",
+      iso: "2027-01-28T19:00:00+05:30",
+      venueUrl:
+        "https://maps.google.com/?q=Le+Royal+M%C3%A9ridien+Chennai+GST+Road",
+      cards: [
+        {
+          variant: "reception",
+          headline: "Evening Reception",
+          hosts: [],
+          bride: "Sharon Belinda Benedict",
+          groom: "Hariharan Agilan",
+          dateLine: "Thursday, 28th January 2027",
+          timeLine: "7:00 PM Onwards",
+          profiles: [
+            {
+              name: "Sharon",
+              detail: [
+                "Master’s in Business Analytics, UK",
+                "Operations Analyst (Comera Pay, Dubai)",
+              ],
+            },
+            {
+              name: "Hariharan",
+              detail: [
+                "Master’s in Business Analytics, UK",
+                "Business Analyst (Zee Entertainment, Dubai)",
+              ],
+            },
+          ],
+          venue: [
+            "Le Royal Méridien",
+            "Grand Madras Ballroom",
+            "1, (GST) Road, Alandur, St. Thomas Mount, Chennai – 600016",
+          ],
+          compliments: "Varshini Benedict & Sowmya Agilan",
+        },
+      ],
+    },
+  ] as const satisfies readonly StoryChapter[],
 };

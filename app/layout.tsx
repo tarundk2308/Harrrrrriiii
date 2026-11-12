@@ -6,30 +6,29 @@ const siteUrl =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 const description =
-  "Engagement of Hariharan aka Victor and Sharon. Friday, 4 December 2026, 7:30 in the evening, Chennai. Under the blessing of godfather Sivaramakrishnan.";
+  "Hariharan Agilan & Sharon Belinda Benedict — wedding celebrations in Chennai, 28 January 2027.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Hariharan aka Victor & Sharon",
+  title: "Hariharan Agilan & Sharon Belinda Benedict",
   description,
   applicationName: "Hariharan & Sharon",
   robots: { index: false, follow: false },
   openGraph: {
-    title: "Hariharan aka Victor & Sharon",
-    description:
-      "Friday, 4 December 2026 · 7:30 in the evening · Chennai. Under the blessing of godfather Sivaramakrishnan.",
+    title: "Hariharan Agilan & Sharon Belinda Benedict",
+    description: "Thursday, 28 January 2027 · Chennai",
     type: "website",
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hariharan aka Victor & Sharon",
-    description: "Engagement · 4 December 2026 · 7:30 pm · Chennai",
+    title: "Hariharan Agilan & Sharon Belinda Benedict",
+    description: "Wedding · 28 January 2027 · Chennai",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#F3EEE6",
+  themeColor: "#FDF8FB",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
