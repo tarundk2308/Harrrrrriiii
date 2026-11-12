@@ -1,16 +1,13 @@
 "use client";
 
 import { invite } from "@/lib/invite";
-import { forwardRef, useImperativeHandle, useRef } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 
 export type BackgroundVideoHandle = {
   play: () => Promise<void>;
 };
 
-export const BackgroundVideo = forwardRef<
-  BackgroundVideoHandle,
-  { visible: boolean }
->(function BackgroundVideo({ visible }, ref) {
+export const BackgroundVideo = forwardRef<BackgroundVideoHandle>(function BackgroundVideo(_props, ref) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   const play = async () => {
@@ -21,20 +18,25 @@ export const BackgroundVideo = forwardRef<
     try {
       await el.play();
     } catch {
-      /* retried from shell if needed */
+      /* retried on first interaction */
     }
   };
 
   useImperativeHandle(ref, () => ({ play }), []);
 
+  useEffect(() => {
+    void play();
+  }, []);
+
   return (
-    <div className={`bg-video${visible ? " is-on" : ""}`} aria-hidden="true">
+    <div className="bg-video is-on" aria-hidden="true">
       <video
         ref={videoRef}
         className="bg-video-media"
         muted
         loop
         playsInline
+        autoPlay
         preload="auto"
         disablePictureInPicture
         disableRemotePlayback

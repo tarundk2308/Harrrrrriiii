@@ -124,12 +124,6 @@ main {
   height: 100dvh;
   pointer-events: none;
   overflow: hidden;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.65s var(--ease), visibility 0.65s var(--ease);
-}
-
-.bg-video.is-on {
   opacity: 1;
   visibility: visible;
 }
@@ -159,9 +153,9 @@ main {
   inset: 0;
   background: linear-gradient(
     180deg,
-    rgba(243, 238, 230, 0.22) 0%,
-    rgba(243, 238, 230, 0.34) 52%,
-    rgba(243, 238, 230, 0.42) 100%
+    rgba(243, 238, 230, 0.28) 0%,
+    rgba(243, 238, 230, 0.38) 50%,
+    rgba(243, 238, 230, 0.48) 100%
   );
 }
 
@@ -923,7 +917,7 @@ main {
   align-items: center;
   justify-content: center;
   padding: clamp(1.25rem, 5vw, 2.5rem);
-  background: var(--paper);
+  background: transparent;
 }
 
 .gate-inner {

@@ -8,22 +8,34 @@ import { FallingFlowers } from "@/components/FallingFlowers";
 import { Invite } from "@/components/Invite";
 import { InviteAudio, type InviteAudioHandle } from "@/components/InviteAudio";
 import { OpeningGate } from "@/components/OpeningGate";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export function InviteShell() {
   const [open, setOpen] = useState(false);
   const audioRef = useRef<InviteAudioHandle>(null);
   const videoRef = useRef<BackgroundVideoHandle>(null);
 
-  const handleOpen = useCallback(() => {
+  const startAudio = useCallback(() => {
     void audioRef.current?.playFromStart();
-    void videoRef.current?.play();
-    setOpen(true);
   }, []);
+
+  useEffect(() => {
+    startAudio();
+    void videoRef.current?.play();
+
+    const onInteract = () => startAudio();
+    window.addEventListener("pointerdown", onInteract, { once: true });
+    return () => window.removeEventListener("pointerdown", onInteract);
+  }, [startAudio]);
+
+  const handleOpen = useCallback(() => {
+    startAudio();
+    setOpen(true);
+  }, [startAudio]);
 
   return (
     <>
-      <BackgroundVideo ref={videoRef} visible={open} />
+      <BackgroundVideo ref={videoRef} />
       <InviteAudio ref={audioRef} />
       <FallingFlowers active={open} />
       {!open ? <OpeningGate onOpen={handleOpen} /> : null}
