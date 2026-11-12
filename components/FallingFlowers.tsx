@@ -17,10 +17,10 @@ type Flower = {
 
 const PASTEL_LOTTES = [
   "linear-gradient(165deg, #ffe4ec, #f9a8d4)",
-  "linear-gradient(165deg, #ede9fe, #e9d5ff)",
-  "linear-gradient(165deg, #ffedd5, #fecdd3)",
-  "linear-gradient(165deg, #ecfdf5, #a7f3d0)",
-  "linear-gradient(165deg, #fff1f2, #fda4af)",
+  "linear-gradient(165deg, #ede9fe, #c4b5fd)",
+  "linear-gradient(165deg, #ffedd5, #fdba74)",
+  "linear-gradient(165deg, #ecfdf5, #6ee7b7)",
+  "linear-gradient(165deg, #e0f2fe, #7dd3fc)",
   "linear-gradient(165deg, #fce7f3, #f0abfc)",
 ];
 

@@ -2734,35 +2734,72 @@ body:has(.invite-root.is-open)::before {
 .pinterest-pin__media {
   position: relative;
   aspect-ratio: 4 / 5;
-  background: linear-gradient(180deg, #fff5f7 0%, #fafafa 42%, #f3f3f3 100%);
   overflow: hidden;
+  background: #fafafa;
 }
 
-.pinterest-pin__photo {
+.pinterest-pin__media--fresh {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.pinterest-pin__sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    165deg,
+    #fff5f7 0%,
+    #faf5ff 38%,
+    #fff7ed 72%,
+    #f0fdf4 100%
+  );
+}
+
+.pinterest-pin__sky--compact {
+  background: linear-gradient(165deg, #fdf4ff 0%, #fff5f7 55%, #ecfdf5 100%);
+}
+
+.fresh-floral {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.fresh-floral--compact {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  width: 100%;
-  height: 46%;
-  object-fit: cover;
-  object-position: center bottom;
+  opacity: 0.55;
+  transform: scale(1.05);
+  pointer-events: none;
 }
 
 .pinterest-pin__media--compact {
+  position: relative;
   aspect-ratio: 1 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(165deg, #fff5f7 0%, #fafafa 100%);
+  overflow: hidden;
 }
 
 .pinterest-pin__date-card {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
   gap: 0.15rem;
+  padding: 1.25rem 1rem;
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 1rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  margin: 0 1rem;
 }
 
 .pinterest-pin__date-weekday {

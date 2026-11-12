@@ -1,5 +1,6 @@
 "use client";
 
+import { FreshFloralIllustration } from "@/components/FreshFloralIllustration";
 import { PinterestPinArt } from "@/components/PinterestPinArt";
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
@@ -37,6 +38,8 @@ export function EngagementInvite() {
           transition={{ duration: 0.55, delay: 0.08, ease }}
         >
           <div className="pinterest-pin__media pinterest-pin__media--compact" aria-hidden="true">
+            <div className="pinterest-pin__sky pinterest-pin__sky--compact" />
+            <FreshFloralIllustration variant="compact" />
             <div className="pinterest-pin__date-card">
               <span className="pinterest-pin__date-weekday">{invite.dateWeekday}</span>
               <span className="pinterest-pin__date-num">{invite.dateDay}</span>

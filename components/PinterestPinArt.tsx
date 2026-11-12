@@ -1,17 +1,13 @@
-import Image from "next/image";
+"use client";
 
-/** Tall Pinterest-style pin artwork: soft pastel top, lotus photo at bottom. */
+import { FreshFloralIllustration } from "@/components/FreshFloralIllustration";
+
+/** Pin header art — custom pastel florals (no photo assets). */
 export function PinterestPinArt() {
   return (
-    <div className="pinterest-pin__media">
-      <Image
-        src="/images/lotus-florals.jpg"
-        alt=""
-        width={1024}
-        height={260}
-        className="pinterest-pin__photo"
-        priority
-      />
+    <div className="pinterest-pin__media pinterest-pin__media--fresh">
+      <div className="pinterest-pin__sky" aria-hidden="true" />
+      <FreshFloralIllustration variant="hero" />
     </div>
   );
 }
