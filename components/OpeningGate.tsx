@@ -1,8 +1,8 @@
 "use client";
 
+import { AnimatedFloralStrip } from "@/components/AnimatedFloralStrip";
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
-import { AnimatedFloralStrip } from "@/components/AnimatedFloralStrip";
 import { useState } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -31,7 +31,7 @@ export function OpeningGate({
 
   return (
     <motion.div
-      className="gate gate--engagement"
+      className="gate gate--pinterest"
       initial={false}
       animate={
         opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1, pointerEvents: "auto" }
@@ -39,7 +39,7 @@ export function OpeningGate({
       transition={{ duration: reduce ? 0.2 : 0.55, delay: opening ? (reduce ? 0 : 0.5) : 0, ease }}
       aria-hidden={opening}
     >
-      <div className="gate-lotus-peek" aria-hidden="true">
+      <div className="gate-floral-rail" aria-hidden="true">
         <AnimatedFloralStrip
           src="/images/lotus-florals.jpg"
           width={1024}
@@ -51,67 +51,50 @@ export function OpeningGate({
 
       <motion.button
         type="button"
-        className="gate-envelope gate-envelope--engagement"
+        className="pin pin--gate"
         onClick={open}
-        aria-label="Tap to open the engagement invitation"
+        aria-label="Tap to open the betrothal invitation"
         animate={
           opening
-            ? { scale: 0.9, opacity: 0, y: 20 }
+            ? { scale: 0.92, opacity: 0, y: 24, rotate: 2 }
             : reduce
-              ? { scale: 1, opacity: 1, y: 0 }
-              : { scale: 1, opacity: 1, y: [0, -6, 0] }
+              ? { scale: 1, opacity: 1, y: 0, rotate: 0 }
+              : { scale: 1, opacity: 1, y: [0, -6, 0], rotate: [-1.5, 1.5, -1.5] }
         }
         transition={
           opening
             ? { duration: reduce ? 0.12 : 0.5, ease }
-            : { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 4.5, repeat: Infinity, ease: "easeInOut" }
         }
-        whileTap={reduce || opening ? undefined : { scale: 0.97 }}
+        whileTap={reduce || opening ? undefined : { scale: 0.98 }}
       >
-        {!reduce && !opening ? (
-          <motion.span
-            className="gate-pulse"
-            aria-hidden="true"
-            animate={{ scale: [1, 1.35], opacity: [0.35, 0] }}
-            transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
-          />
-        ) : null}
+        <div className="pin-cover pin-cover--gate" aria-hidden="true">
+          <div className="pin-cover-gradient" />
+          <span className="pin-chip">{invite.eventTitle}</span>
+        </div>
 
-        <motion.div
-          className="gate-monogram-hero"
-          aria-hidden="true"
-          animate={reduce ? undefined : { scale: [1, 1.03, 1] }}
-          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-        >
-          <span>H</span>
-          <span className="gate-monogram-dot">·</span>
-          <span>S</span>
-        </motion.div>
-
-        <span className="gate-couple gate-couple--script">
-          {invite.brideShort}
-          <span className="gate-amp-gold">&</span>
-          {invite.groomShort}
-        </span>
-
-        <span className="gate-when gate-when--engagement">{invite.eventTitle}</span>
-        <span className="gate-when-sub">{invite.dateLine}</span>
-
-        <span className="gate-divider" aria-hidden="true" />
+        <div className="pin-body pin-body--gate">
+          <span className="pin-name pin-name--gate">{invite.groomFull}</span>
+          <span className="pin-amp" aria-hidden="true">
+            &
+          </span>
+          <span className="pin-name pin-name--gate">{invite.brideFull}</span>
+          <span className="pin-gate-meta">{invite.dateLine}</span>
+        </div>
 
         <motion.span
-          className="gate-open gate-open--hero"
+          className="pin-tap"
           animate={
             opening
-              ? { y: -20, opacity: 0 }
+              ? { opacity: 0, y: 8 }
               : reduce
                 ? {}
-                : { letterSpacing: ["0.26em", "0.34em", "0.26em"] }
+                : { opacity: [0.65, 1, 0.65], y: [0, 2, 0] }
           }
           transition={
             opening
-              ? { duration: 0.35, ease }
-              : { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
+              ? { duration: 0.3, ease }
+              : { duration: 2.2, repeat: Infinity, ease: "easeInOut" }
           }
         >
           Tap to open

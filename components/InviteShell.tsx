@@ -6,6 +6,7 @@ import { Invite } from "@/components/Invite";
 import { InviteAudio } from "@/components/InviteAudio";
 import { InviteBackdrop } from "@/components/InviteBackdrop";
 import { OpeningGate } from "@/components/OpeningGate";
+import { PastelCornerBlooms } from "@/components/PastelCornerBlooms";
 import { useState } from "react";
 
 export function InviteShell() {
@@ -21,6 +22,7 @@ export function InviteShell() {
   return (
     <div className={`invite-root ${open ? "is-open" : "is-gate"}`}>
       <InviteBackdrop lush={open} />
+      <PastelCornerBlooms />
       <FallingFlowers intense={open} />
       <InviteAudio active={open} />
       {gateVisible ? (

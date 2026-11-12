@@ -16,10 +16,12 @@ type Flower = {
 };
 
 const PASTEL_LOTTES = [
-  "linear-gradient(165deg, #fce7f3, #f9a8d4)",
+  "linear-gradient(165deg, #ffe4ec, #f9a8d4)",
+  "linear-gradient(165deg, #ede9fe, #e9d5ff)",
   "linear-gradient(165deg, #ffedd5, #fecdd3)",
-  "linear-gradient(165deg, #fce7f3, #fbcfe8)",
+  "linear-gradient(165deg, #ecfdf5, #a7f3d0)",
   "linear-gradient(165deg, #fff1f2, #fda4af)",
+  "linear-gradient(165deg, #fce7f3, #f0abfc)",
 ];
 
 function makeFlowers(count: number, opacityMul: number): Flower[] {
@@ -39,7 +41,7 @@ function makeFlowers(count: number, opacityMul: number): Flower[] {
 
 export function FallingFlowers({ intense }: { intense?: boolean }) {
   const flowers = useMemo(
-    () => makeFlowers(intense ? 52 : 40, intense ? 0.95 : 0.8),
+    () => makeFlowers(intense ? 58 : 46, intense ? 1 : 0.88),
     [intense]
   );
 

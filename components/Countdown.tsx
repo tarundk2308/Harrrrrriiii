@@ -1,9 +1,8 @@
 "use client";
 
-import { invite } from "@/lib/invite";
 import { useEffect, useState } from "react";
 
-const TARGET = new Date(invite.countdownIso).getTime();
+const TARGET = new Date("2026-12-04T18:30:00+05:30").getTime();
 
 function parts(diff: number) {
   const total = Math.max(0, diff);

@@ -1,182 +1,107 @@
 "use client";
 
-import { ContentPlate } from "@/components/ContentPlate";
-import { Countdown } from "@/components/Countdown";
-import { EngagementDecor } from "@/components/EngagementDecor";
+import { AnimatedFloralStrip } from "@/components/AnimatedFloralStrip";
 import { LotusGarden } from "@/components/LotusGarden";
-import { RingsMotif } from "@/components/RingsMotif";
 import { invite } from "@/lib/invite";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
+const stagger = 0.1;
 
-function Section({
+function PinSection({
   children,
+  className = "",
   delay = 0,
-  className,
 }: {
   children: ReactNode;
-  delay?: number;
   className?: string;
+  delay?: number;
 }) {
   const reduce = useReducedMotion();
   return (
-    <motion.section
-      className={className ?? "engagement-block"}
-      initial={reduce ? false : { opacity: 0, y: 28 }}
+    <motion.div
+      className={className}
+      initial={reduce ? false : { opacity: 0, y: 22 }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-8% 0px" }}
-      transition={{ duration: 0.7, delay, ease, type: "spring", stiffness: 110, damping: 20 }}
+      viewport={{ once: true, margin: "-5% 0px" }}
+      transition={{ duration: 0.65, delay, ease }}
     >
       {children}
-    </motion.section>
+    </motion.div>
   );
-}
-
-function Ornament() {
-  return <span className="engagement-ornament" aria-hidden="true" />;
 }
 
 export function EngagementInvite() {
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll();
-  const cardY = useTransform(scrollYProgress, [0, 0.4], [0, -12]);
-  const cardScale = useTransform(scrollYProgress, [0, 0.35], [1, 1.01]);
 
   return (
-    <main className="engagement-main">
-      <EngagementDecor />
+    <main className="pin-board">
       <LotusGarden />
 
-      <motion.div
-        className="engagement-scroll"
-        style={reduce ? undefined : { y: cardY, scale: cardScale }}
-      >
-        <motion.div
-          className="engagement-watermark"
-          aria-hidden="true"
-          initial={reduce ? false : { opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 0.12, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.2, ease }}
+      <div className="pin-masonry">
+        <motion.article
+          className="pin pin--hero"
+          initial={reduce ? false : { opacity: 0, y: 28, rotate: -1.2 }}
+          animate={{ opacity: 1, y: 0, rotate: 0 }}
+          transition={{ duration: 0.9, ease }}
         >
-          H · S
-        </motion.div>
+          <div className="pin-cover" aria-hidden="true">
+            <AnimatedFloralStrip
+              src="/images/engagement-florals.jpg"
+              width={1024}
+              height={144}
+              imageClassName="pin-cover-florals"
+              washClassName="pin-cover-wash"
+            />
+            <span className="pin-chip">{invite.eventTitle}</span>
+          </div>
 
-        <ContentPlate className="engagement-plate">
-          <motion.div
-            className="engagement-plate-shimmer"
-            aria-hidden="true"
-            animate={reduce ? undefined : { x: ["-120%", "140%"] }}
-            transition={{ duration: 4.5, repeat: Infinity, ease: "linear", repeatDelay: 2 }}
-          />
-
-          <Section className="engagement-block engagement-block--hero" delay={0.05}>
-            <RingsMotif />
-            <motion.p
-              className="engagement-kicker"
-              animate={reduce ? undefined : { scale: [1, 1.02, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            >
-              {invite.eventTitle}
-            </motion.p>
-          </Section>
-
-          <Ornament />
-
-          <Section delay={0.12}>
-            <p className="engagement-block-label">With the families of</p>
-            <p className="engagement-hosts">{invite.hostsGroom}</p>
-            <p className="engagement-hosts-and">&</p>
-            <p className="engagement-hosts">{invite.hostsBride}</p>
-            <p className="engagement-lead">{invite.inviteLine}</p>
-          </Section>
-
-          <Ornament />
-
-          <Section delay={0.08}>
-            <motion.div
-              className="engagement-couple"
-              initial={reduce ? false : { opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease }}
-            >
-              <motion.p
-                className="engagement-name"
-                initial={reduce ? false : { opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.75, delay: 0.1, ease }}
-              >
-                {invite.groomFull}
-              </motion.p>
-              <motion.p
-                className="engagement-amp"
-                animate={reduce ? undefined : { scale: [1, 1.15, 1], rotate: [0, 4, 0] }}
-                transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}
-              >
+          <div className="pin-body">
+            <h1 className="pin-couple">
+              <span className="pin-name">{invite.groomFull}</span>
+              <span className="pin-amp" aria-hidden="true">
                 &
-              </motion.p>
-              <motion.p
-                className="engagement-name"
-                initial={reduce ? false : { opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.75, delay: 0.22, ease }}
-              >
-                {invite.brideFull}
-              </motion.p>
+              </span>
+              <span className="pin-name">{invite.brideFull}</span>
+            </h1>
+          </div>
+        </motion.article>
+
+        <motion.div
+          className="pin-row"
+          initial={reduce ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: stagger, ease }}
+        >
+          <PinSection className="pin pin--tile pin--date" delay={stagger}>
+            <p className="pin-tile-label">When</p>
+            <motion.div className="pin-date-line" aria-label={invite.dateLine}>
+              <span>{invite.dateWeekday}</span>
+              <strong>{invite.dateDay}</strong>
+              <span>{invite.dateMonthYear}</span>
             </motion.div>
-          </Section>
+            <p className="pin-time">{invite.timeLine}</p>
+          </PinSection>
 
-          <Ornament />
-
-          <Section delay={0.1}>
-            <motion.div
-              className="engagement-date-block"
-              whileInView={reduce ? undefined : { scale: [0.94, 1] }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.65, ease }}
-            >
-              <span className="engagement-date-side">{invite.dateWeekday}</span>
-              <motion.span
-                className="engagement-date-day"
-                animate={reduce ? undefined : { scale: [1, 1.04, 1] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              >
-                {invite.dateDay}
-              </motion.span>
-              <span className="engagement-date-side">{invite.dateMonthYear}</span>
-            </motion.div>
-            <p className="engagement-time">{invite.timeLine}</p>
-          </Section>
-
-          <Ornament />
-
-          <Section delay={0.08}>
-            <p className="engagement-venue-label">Venue</p>
-            <address className="engagement-venue-lines">
-              {invite.venue.map((line) => (
-                <span key={line}>{line}</span>
-              ))}
+          <PinSection className="pin pin--tile pin--venue" delay={stagger * 2}>
+            <p className="pin-tile-label pin-tile-label--script">Venue</p>
+            <address className="pin-venue">
+              <span>{invite.venueName}</span>
+              <span>{invite.venueRoom}</span>
+              <span>{invite.venueAddress}</span>
             </address>
-          </Section>
-
-          <Ornament />
-
-          <Section className="engagement-block engagement-block--footer" delay={0.05}>
-            <p className="engagement-countdown-wrap">
-              <Countdown />
-            </p>
-            <p className="event-maps engagement-maps">
-              <a href={invite.venueUrl} target="_blank" rel="noopener noreferrer">
-                Open in Maps
-              </a>
-            </p>
-          </Section>
-        </ContentPlate>
-      </motion.div>
+            <a
+              className="pin-save"
+              href={invite.venueUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Get directions
+            </a>
+          </PinSection>
+        </motion.div>
+      </div>
     </main>
   );
 }
