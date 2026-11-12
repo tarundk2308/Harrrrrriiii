@@ -22,7 +22,7 @@ function makeFlowers(count: number): Flower[] {
     duration: `${14 + Math.random() * 16}s`,
     size: 7 + Math.random() * 12,
     drift: `${-40 + Math.random() * 80}px`,
-    opacity: 0.18 + Math.random() * 0.32,
+    opacity: 0.12 + Math.random() * 0.18,
     hue: Math.random() > 0.5 ? 38 : 350,
     spin: 160 + Math.random() * 120,
   }));

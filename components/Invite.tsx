@@ -1,5 +1,6 @@
 "use client";
 
+import { ContentPlate } from "@/components/ContentPlate";
 import { Countdown } from "@/components/Countdown";
 import { GroomName } from "@/components/GroomName";
 import { Jasmine } from "@/components/Jasmine";
@@ -114,62 +115,66 @@ export function Invite({ revealed }: { revealed: boolean }) {
 
         <main>
           <section className="blessing-crown" aria-label="Blessing">
-            <Jasmine />
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 28 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: reduce ? 0 : 1.05, delay: 0.12, ease }}
-            >
-              <p className="crown-lead">Everything this evening happens under the blessing of</p>
-              <p className="crown-role">{invite.godfatherRole}</p>
-              <p className="crown-name">{invite.godfather}</p>
-              <p lang="ta" className="crown-tamil">
-                {invite.blessingTamil}
-              </p>
-            </motion.div>
+            <ContentPlate className="plate-blessing">
+              <Jasmine />
+              <motion.div
+                initial={reduce ? false : { opacity: 0, y: 28 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: reduce ? 0 : 1.05, delay: 0.12, ease }}
+              >
+                <p className="crown-lead">Everything this evening happens under the blessing of</p>
+                <p className="crown-role">{invite.godfatherRole}</p>
+                <p className="crown-name">{invite.godfather}</p>
+                <p lang="ta" className="crown-tamil">
+                  {invite.blessingTamil}
+                </p>
+              </motion.div>
+            </ContentPlate>
           </section>
 
           <section className="hero" aria-labelledby="names">
-            <div className="hero-glow" aria-hidden="true" />
-            <Kolam />
+            <ContentPlate className="plate-hero">
+              <div className="hero-glow" aria-hidden="true" />
+              <Kolam />
 
-            <motion.p
-              className="eyebrow"
-              initial={reduce ? false : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.35, ease }}
-            >
-              <span lang="ta" className="tamil">
-                {invite.occasionTamil}
-              </span>
-              <span className="eyebrow-en">Engagement</span>
-            </motion.p>
+              <motion.p
+                className="eyebrow"
+                initial={reduce ? false : { opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.35, ease }}
+              >
+                <span lang="ta" className="tamil">
+                  {invite.occasionTamil}
+                </span>
+                <span className="eyebrow-en">Engagement</span>
+              </motion.p>
 
-            <h1 id="names" className="names">
-              <Rise delay={0.45}>
-                <GroomName />
-              </Rise>
-              <Rise delay={0.62} className="amp">
-                &
-              </Rise>
-              <Rise delay={0.78}>{invite.bride}</Rise>
-            </h1>
+              <h1 id="names" className="names type-crisp">
+                <Rise delay={0.45}>
+                  <GroomName />
+                </Rise>
+                <Rise delay={0.62} className="amp">
+                  &
+                </Rise>
+                <Rise delay={0.78}>{invite.bride}</Rise>
+              </h1>
 
-            <motion.span
-              className="rule"
-              aria-hidden="true"
-              initial={reduce ? false : { scaleX: 0 }}
-              animate={{ scaleX: 1 }}
-              transition={{ duration: 0.9, delay: 1.05, ease }}
-            />
+              <motion.span
+                className="rule"
+                aria-hidden="true"
+                initial={reduce ? false : { scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 0.9, delay: 1.05, ease }}
+              />
 
-            <motion.div
-              initial={reduce ? false : { opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 1.15, ease }}
-            >
-              <Facts />
-            </motion.div>
+              <motion.div
+                initial={reduce ? false : { opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.15, ease }}
+              >
+                <Facts />
+              </motion.div>
+            </ContentPlate>
 
             <motion.div className="scroll-cue" style={{ opacity: cueOpacity }} aria-hidden="true">
               <span>Scroll</span>
@@ -178,7 +183,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
           </section>
 
           <section className="evening-light" aria-label="The evening">
-            <div className="evening-light-inner">
+            <ContentPlate className="plate-evening evening-light-inner type-crisp">
               <Reveal>
                 <p className="kicker-light">The evening</p>
               </Reveal>
@@ -200,7 +205,7 @@ export function Invite({ revealed }: { revealed: boolean }) {
                 </p>
               </Reveal>
               <Countdown />
-            </div>
+            </ContentPlate>
           </section>
 
           <section className="keepsake" aria-label="Invitation card">
@@ -232,13 +237,15 @@ export function Invite({ revealed }: { revealed: boolean }) {
           </section>
 
           <footer className="end">
-            <Kolam className="kolam-small" when="view" />
-            <p>
-              <GroomName variant="inline" /> & {invite.bride}
-            </p>
-            <p className="end-meta">
-              {invite.city} · {invite.dateLine}
-            </p>
+            <ContentPlate className="plate-end">
+              <Kolam className="kolam-small" when="view" />
+              <p>
+                <GroomName variant="inline" /> & {invite.bride}
+              </p>
+              <p className="end-meta">
+                {invite.city} · {invite.dateLine}
+              </p>
+            </ContentPlate>
           </footer>
         </main>
       </>

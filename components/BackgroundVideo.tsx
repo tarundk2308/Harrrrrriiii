@@ -25,16 +25,10 @@ export function BackgroundVideo({ playing }: { playing: boolean }) {
 
   return (
     <div className="bg-video" aria-hidden="true">
-      <video
-        ref={ref}
-        className="bg-video-media"
-        src={invite.videoSrc}
-        muted
-        loop
-        playsInline
-        autoPlay
-        preload="auto"
-      />
+      <video ref={ref} className="bg-video-media" muted loop playsInline autoPlay preload="auto">
+        <source src={invite.videoSrc} type="video/mp4" />
+        {invite.videoSrcFallback ? <source src={invite.videoSrcFallback} type="video/quicktime" /> : null}
+      </video>
       <div className="bg-video-veil" />
     </div>
   );

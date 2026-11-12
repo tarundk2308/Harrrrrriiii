@@ -2,7 +2,7 @@
   --paper: #f3eee6;
   --paper-deep: #e7dece;
   --ink: #231c16;
-  --ink-soft: rgba(35, 28, 22, 0.74);
+  --ink-soft: rgba(35, 28, 22, 0.88);
   --madder: #7c3040;
   --gold: #a68456;
   --gold-soft: rgba(166, 132, 86, 0.55);
@@ -57,7 +57,7 @@ body::before {
   inset: 0;
   pointer-events: none;
   z-index: 11;
-  opacity: 0.12;
+  opacity: 0.05;
   mix-blend-mode: multiply;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/></svg>");
 }
@@ -118,16 +118,60 @@ main {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  opacity: 0.36;
-  transform: scale(1.04);
+  opacity: 1;
+  filter: saturate(1.08) contrast(1.04);
 }
 
 .bg-video-veil {
   position: absolute;
   inset: 0;
-  background:
-    linear-gradient(180deg, rgba(243, 238, 230, 0.52) 0%, rgba(243, 238, 230, 0.74) 42%, rgba(243, 238, 230, 0.86) 100%),
-    radial-gradient(ellipse 120% 80% at 50% 30%, rgba(255, 255, 255, 0.35), transparent 60%);
+  background: linear-gradient(
+    180deg,
+    rgba(243, 238, 230, 0.1) 0%,
+    rgba(243, 238, 230, 0.18) 48%,
+    rgba(243, 238, 230, 0.26) 100%
+  );
+}
+
+.plate {
+  position: relative;
+  z-index: 2;
+  width: min(40rem, calc(100% - 1.4rem));
+  margin-inline: auto;
+  padding: clamp(2rem, 5.5vw, 3.25rem) clamp(1.15rem, 4vw, 1.85rem);
+  background: rgba(247, 243, 236, 0.95);
+  border: 1px solid rgba(166, 132, 86, 0.42);
+  box-shadow: 0 14px 42px rgba(35, 28, 22, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.plate-blessing,
+.plate-hero,
+.plate-evening,
+.plate-end {
+  text-align: center;
+}
+
+.plate-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.plate .names,
+.plate .crown-name,
+.plate .time-light,
+.plate .card-names,
+.plate .mood-light,
+.plate .time-sub-light {
+  color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.72);
+}
+
+.type-crisp {
+  color: var(--ink);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.65);
 }
 
 .groom-alias {
@@ -314,7 +358,7 @@ main {
   flex-direction: column;
   gap: 0.38rem;
   font-size: 0.78rem;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--ink);
@@ -670,7 +714,7 @@ main {
   margin: 0 auto;
   padding: 2.7rem 1.35rem 2.15rem;
   border: 1px solid var(--gold-soft);
-  background: rgba(247, 243, 236, 0.82);
+  background: rgba(247, 243, 236, 0.96);
   position: relative;
 }
 
@@ -774,7 +818,7 @@ main {
 }
 
 .end {
-  padding: 4.5rem 1.2rem 3.4rem;
+  padding: clamp(2rem, 6vw, 3.5rem) 0.65rem 3rem;
   text-align: center;
 }
 
@@ -1000,10 +1044,8 @@ main {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: clamp(3.5rem, 10vw, 6.5rem) clamp(1.35rem, 5vw, 2rem) clamp(3rem, 8vw, 5rem);
-  background:
-    radial-gradient(ellipse 80% 55% at 50% 0%, rgba(166, 132, 86, 0.14), transparent 62%),
-    rgba(243, 238, 230, 0.58);
+  padding: clamp(2.25rem, 7vw, 4.5rem) 0.65rem;
+  background: transparent;
 }
 
 .crown-lead {
@@ -1015,7 +1057,7 @@ main {
   max-width: 14em;
   margin: 0 auto;
   text-wrap: balance;
-  color: var(--ink-soft);
+  color: var(--ink);
 }
 
 .crown-role {
@@ -1054,8 +1096,8 @@ main {
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 6.5rem 1.35rem 7rem;
-  background: rgba(231, 222, 206, 0.62);
+  padding: clamp(2.25rem, 7vw, 4.5rem) 0.65rem;
+  background: transparent;
 }
 
 .evening-light-inner {
@@ -1097,7 +1139,7 @@ main {
   font-style: italic;
   font-size: 1.15rem;
   line-height: 1.45;
-  color: var(--ink-soft);
+  color: var(--ink);
 }
 
 .evening-light .countdown {
