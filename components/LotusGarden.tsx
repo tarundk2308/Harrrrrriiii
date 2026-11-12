@@ -16,13 +16,7 @@ export function LotusGarden() {
     >
       <motion.div
         className="lotus-garden-inner"
-        animate={
-          reduce
-            ? undefined
-            : {
-                y: [0, -3, 2, -2, 0],
-              }
-        }
+        animate={reduce ? undefined : { y: [0, -3, 2, -2, 0] }}
         transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
       >
         <AnimatedFloralStrip
