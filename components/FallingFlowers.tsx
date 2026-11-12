@@ -14,13 +14,11 @@ type Flower = {
   spin: number;
 };
 
-const PASTEL_PETALS = [
+const PASTEL_LOTTES = [
   "linear-gradient(165deg, #fce7f3, #f9a8d4)",
-  "linear-gradient(165deg, #ede9fe, #c4b5fd)",
-  "linear-gradient(165deg, #ffedd5, #fdba74)",
-  "linear-gradient(165deg, #e0f2fe, #bae6fd)",
-  "linear-gradient(165deg, #fef3c7, #fde68a)",
-  "linear-gradient(165deg, #ffe4e6, #fda4af)",
+  "linear-gradient(165deg, #ffedd5, #fecdd3)",
+  "linear-gradient(165deg, #fce7f3, #fbcfe8)",
+  "linear-gradient(165deg, #fff1f2, #fda4af)",
 ];
 
 function makeFlowers(count: number, opacityMul: number): Flower[] {
@@ -29,17 +27,17 @@ function makeFlowers(count: number, opacityMul: number): Flower[] {
     left: `${2 + Math.random() * 96}%`,
     delay: `${-(Math.random() * 32).toFixed(1)}s`,
     duration: `${10 + Math.random() * 16}s`,
-    size: 10 + Math.random() * 18,
-    drift: `${-60 + Math.random() * 120}px`,
-    opacity: (0.1 + Math.random() * 0.14) * opacityMul,
-    bg: PASTEL_PETALS[id % PASTEL_PETALS.length]!,
-    spin: 120 + Math.random() * 160,
+    size: 10 + Math.random() * 16,
+    drift: `${-50 + Math.random() * 100}px`,
+    opacity: (0.08 + Math.random() * 0.12) * opacityMul,
+    bg: PASTEL_LOTTES[id % PASTEL_LOTTES.length]!,
+    spin: 120 + Math.random() * 140,
   }));
 }
 
 export function FallingFlowers({ intense }: { intense?: boolean }) {
   const flowers = useMemo(
-    () => makeFlowers(intense ? 56 : 38, intense ? 1 : 0.85),
+    () => makeFlowers(intense ? 50 : 36, intense ? 0.9 : 0.75),
     [intense]
   );
 
@@ -59,7 +57,7 @@ export function FallingFlowers({ intense }: { intense?: boolean }) {
             ["--drift" as string]: f.drift,
             ["--spin" as string]: `${f.spin}deg`,
             background: f.bg,
-            boxShadow: "0 0 16px rgba(255, 255, 255, 0.55)",
+            boxShadow: "0 0 14px rgba(255, 255, 255, 0.55)",
           }}
         />
       ))}

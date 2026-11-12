@@ -6,29 +6,29 @@ const siteUrl =
   (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000");
 
 const description =
-  "Hariharan Agilan & Sharon Belinda Benedict — wedding celebrations in Chennai, 28 January 2027.";
+  "Betrothal of Hariharan Agilan & Sharon Belinda Benedict · Friday, 4 December 2026 · Chennai.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Hariharan Agilan & Sharon Belinda Benedict",
+  title: "Betrothal · Hariharan & Sharon",
   description,
   applicationName: "Hariharan & Sharon",
   robots: { index: false, follow: false },
   openGraph: {
-    title: "Hariharan Agilan & Sharon Belinda Benedict",
-    description: "Thursday, 28 January 2027 · Chennai",
+    title: "Betrothal · Hariharan & Sharon",
+    description: "Friday, 4 December 2026 · Chennai",
     type: "website",
     locale: "en_IN",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hariharan Agilan & Sharon Belinda Benedict",
-    description: "Wedding · 28 January 2027 · Chennai",
+    title: "Betrothal · Hariharan & Sharon",
+    description: "4 December 2026 · Chennai",
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#FFFCFD",
+  themeColor: "#FDF6F4",
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
@@ -41,7 +41,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Noto+Serif+Tamil:wght@400;500;600&family=Outfit:wght@300;400;500&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400&family=Great+Vibes&family=Outfit:wght@400;500&display=swap"
           rel="stylesheet"
         />
       </head>

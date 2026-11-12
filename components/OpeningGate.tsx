@@ -2,6 +2,7 @@
 
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
 import { useState } from "react";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -26,7 +27,7 @@ export function OpeningGate({
 
   return (
     <motion.div
-      className="gate"
+      className="gate gate--engagement"
       initial={false}
       animate={
         opening ? { opacity: 0, pointerEvents: "none" } : { opacity: 1, pointerEvents: "auto" }
@@ -34,61 +35,57 @@ export function OpeningGate({
       transition={{ duration: reduce ? 0.2 : 0.55, delay: opening ? (reduce ? 0 : 0.5) : 0, ease }}
       aria-hidden={opening}
     >
-      <div className="gate-sky" aria-hidden="true">
-        <span className="gate-orb gate-orb--a" />
-        <span className="gate-orb gate-orb--b" />
-        <span className="gate-orb gate-orb--c" />
+      <div className="gate-lotus-peek" aria-hidden="true">
+        <Image src="/images/lotus-gate.jpg" alt="" width={400} height={200} className="gate-lotus-peek-img" priority />
       </div>
 
       <motion.button
         type="button"
-        className="gate-envelope"
+        className="gate-envelope gate-envelope--engagement"
         onClick={open}
-        aria-label="Tap to open the invitation"
+        aria-label="Tap to open the engagement invitation"
         animate={
           opening
-            ? { scale: 0.92, opacity: 0, y: 12 }
+            ? { scale: 0.9, opacity: 0, y: 20 }
             : reduce
               ? { scale: 1, opacity: 1, y: 0 }
-              : { scale: 1, opacity: 1, y: [0, -8, 0] }
+              : { scale: 1, opacity: 1, y: [0, -6, 0] }
         }
         transition={
           opening
             ? { duration: reduce ? 0.12 : 0.5, ease }
-            : { duration: 3.6, repeat: Infinity, ease: "easeInOut" }
+            : { duration: 3.5, repeat: Infinity, ease: "easeInOut" }
         }
-        whileTap={reduce || opening ? undefined : { scale: 0.96 }}
-        whileHover={reduce || opening ? undefined : { scale: 1.03 }}
+        whileTap={reduce || opening ? undefined : { scale: 0.97 }}
       >
         {!reduce && !opening ? (
-          <>
-            <motion.span
-              className="gate-pulse"
-              aria-hidden="true"
-              animate={{ scale: [1, 1.4], opacity: [0.45, 0] }}
-              transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
-            />
-            <span className="gate-petals-ring" aria-hidden="true">
-              <span>✿</span>
-              <span>✿</span>
-              <span>✿</span>
-            </span>
-            <span className="gate-heart-badge" aria-hidden="true">
-              ♥
-            </span>
-          </>
+          <motion.span
+            className="gate-pulse"
+            aria-hidden="true"
+            animate={{ scale: [1, 1.35], opacity: [0.35, 0] }}
+            transition={{ duration: 2.2, repeat: Infinity, ease: "easeOut" }}
+          />
         ) : null}
 
-        <span className="gate-mark gate-mark--hero" aria-hidden="true">
-          H<span>·</span>S
+        <motion.div
+          className="gate-monogram-hero"
+          aria-hidden="true"
+          animate={reduce ? undefined : { scale: [1, 1.03, 1] }}
+          transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <span>H</span>
+          <span className="gate-monogram-dot">·</span>
+          <span>S</span>
+        </motion.div>
+
+        <span className="gate-couple gate-couple--script">
+          {invite.brideShort}
+          <span className="gate-amp-gold">&</span>
+          {invite.groomShort}
         </span>
 
-        <span className="gate-couple">
-          {invite.groomFull.split(" ")[0]} & {invite.brideFull.split(" ")[0]}
-        </span>
-
-        <span className="gate-when">{invite.weddingDateLine}</span>
-        <span className="gate-when-sub">{invite.city}</span>
+        <span className="gate-when gate-when--engagement">{invite.eventTitle}</span>
+        <span className="gate-when-sub">{invite.dateLine}</span>
 
         <span className="gate-divider" aria-hidden="true" />
 
@@ -96,20 +93,19 @@ export function OpeningGate({
           className="gate-open gate-open--hero"
           animate={
             opening
-              ? { y: -24, opacity: 0 }
+              ? { y: -20, opacity: 0 }
               : reduce
                 ? {}
-                : { letterSpacing: ["0.28em", "0.36em", "0.28em"] }
+                : { letterSpacing: ["0.26em", "0.34em", "0.26em"] }
           }
           transition={
             opening
               ? { duration: 0.35, ease }
-              : { duration: 2.6, repeat: Infinity, ease: "easeInOut" }
+              : { duration: 2.5, repeat: Infinity, ease: "easeInOut" }
           }
         >
           Tap to open
         </motion.span>
-        <span className="gate-hint">Your invitation awaits inside</span>
       </motion.button>
     </motion.div>
   );
