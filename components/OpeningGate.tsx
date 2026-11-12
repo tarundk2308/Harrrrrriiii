@@ -1,6 +1,6 @@
 "use client";
 
-import { GroomName } from "@/components/GroomName";
+import { CurtainDecor } from "@/components/CurtainDecor";
 import { Kolam } from "@/components/Kolam";
 import { invite } from "@/lib/invite";
 import { motion, useReducedMotion } from "framer-motion";
@@ -29,6 +29,7 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
       className={`curtain-stage ${opening ? "curtain-stage--opening" : ""}`}
       aria-hidden={opening}
     >
+      <CurtainDecor />
       <div className="curtain-rod" aria-hidden="true">
         <span className="curtain-rod-shine" />
       </div>
@@ -43,14 +44,12 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
         animate={{ x: opening ? "-105vw" : "0vw" }}
         transition={panelTransition}
       >
-        <span className="curtain-lettering curtain-lettering--left" aria-hidden="true">
-          <span className="curtain-line curtain-line--tamil" lang="ta">
-            {invite.occasionTamil}
-          </span>
-          <span className="curtain-line curtain-line--kicker">{invite.eventTitle}</span>
+        <span className="curtain-lettering curtain-lettering--left">
+          <span className="curtain-line curtain-line--mix">{invite.curtainLeft}</span>
           <span className="curtain-line curtain-line--name">{invite.groom}</span>
         </span>
       </motion.button>
+
       <motion.button
         type="button"
         className="curtain curtain--right"
@@ -61,41 +60,27 @@ export function OpeningGate({ onOpen }: { onOpen: () => void }) {
         animate={{ x: opening ? "105vw" : "0vw" }}
         transition={panelTransition}
       >
-        <span className="curtain-lettering curtain-lettering--right" aria-hidden="true">
+        <span className="curtain-lettering curtain-lettering--right">
+          <span className="curtain-line curtain-line--mix">{invite.curtainRight}</span>
           <span className="curtain-line curtain-line--name">{invite.bride}</span>
-          <span className="curtain-line curtain-line--when">
-            {invite.weekday} {invite.dateDay} {invite.dateMonthYear}
-          </span>
-          <span className="curtain-line curtain-line--time">{invite.timeLine}</span>
-          <span className="curtain-line curtain-line--city">{invite.city}</span>
+          <span className="curtain-line curtain-line--place">{invite.curtainPlace}</span>
         </span>
       </motion.button>
 
       <div className="curtain-preview">
         <motion.button
           type="button"
-          className="curtain-card"
+          className="curtain-card curtain-card--minimal"
           onClick={open}
           disabled={opening}
           aria-label="Open the curtains"
-          animate={opening ? { opacity: 0, scale: 0.96, y: -8 } : { opacity: 1, scale: 1, y: 0 }}
+          animate={opening ? { opacity: 0, scale: 0.96 } : { opacity: 1, scale: 1 }}
           transition={{ duration: reduce ? 0.1 : 0.35, ease }}
           whileTap={reduce || opening ? undefined : { scale: 0.98 }}
         >
           <Kolam when="load" />
-          <p lang="ta" className="curtain-tamil">
-            {invite.occasionTamil}
-          </p>
-          <p className="curtain-eyebrow">{invite.eventTitle}</p>
-          <p className="curtain-names">
-            <GroomName variant="compact" />
-            <span className="curtain-amp">&</span>
-            {invite.bride}
-          </p>
-          <p className="curtain-when">
-            {invite.city} · {invite.dateLine}
-          </p>
-          <span className="curtain-cta">Open curtains</span>
+          <p className="curtain-center-mix">{invite.curtainCouple}</p>
+          <span className="curtain-cta">{invite.curtainCta}</span>
         </motion.button>
       </div>
     </div>
