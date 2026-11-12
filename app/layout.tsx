@@ -1,28 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Noto_Serif_Tamil, Outfit } from "next/font/google";
 import "./globals.css";
-
-const serif = Fraunces({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-fraunces",
-});
-
-const sans = Outfit({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  display: "swap",
-  variable: "--font-sans",
-});
-
-const tamil = Noto_Serif_Tamil({
-  subsets: ["tamil"],
-  weight: ["400", "500", "600"],
-  display: "swap",
-  variable: "--font-tamil",
-});
 
 const siteUrl =
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -60,7 +37,15 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${serif.variable} ${sans.variable} ${tamil.variable}`}>
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..600;1,9..144,300..600&family=Noto+Serif+Tamil:wght@400;500;600&family=Outfit:wght@300;400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );

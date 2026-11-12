@@ -12,9 +12,9 @@
   --night-soft: rgba(244, 239, 230, 0.74);
   --warm: #e7c79a;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --serif: var(--font-fraunces), "Iowan Old Style", Palatino, "Palatino Linotype", serif;
-  --sans: var(--font-sans), "Avenir Next", "Segoe UI", sans-serif;
-  --tamil: var(--font-tamil), "Tamil MN", "Noto Serif Tamil", serif;
+  --serif: "Fraunces", "Iowan Old Style", Palatino, "Palatino Linotype", serif;
+  --sans: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
+  --tamil: "Noto Serif Tamil", "Tamil MN", serif;
 }
 
 *,
