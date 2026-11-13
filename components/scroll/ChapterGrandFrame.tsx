@@ -1,5 +1,6 @@
 "use client";
 
+import { FrameFloralAccents } from "@/components/floral/FrameFloralAccents";
 import { motion } from "framer-motion";
 import { type ReactNode, useMemo } from "react";
 
@@ -67,6 +68,7 @@ export function ChapterGrandFrame({
       <svg className="chapter__arch" viewBox="0 0 280 40" aria-hidden="true">
         <path d="M8 32 Q140 4 272 32" fill="none" stroke="currentColor" strokeWidth="1" />
       </svg>
+      <FrameFloralAccents seed={decorSeed} />
       {petals.map((p) => (
         <span
           key={p.id}

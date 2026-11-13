@@ -128,7 +128,7 @@ export function ScrollChapters({
 
   const venueSection =
     scrollRef ? (
-      <ScrollSection container={scrollRef} className="chapter--venue">
+      <ScrollSection container={scrollRef} className="chapter--venue chapter--venue-stack">
         <ChapterGrandFrame decorSeed="venue" className="chapter__frame--mint">
           <p className="chapter__kicker">When &amp; where</p>
           <motion.p
@@ -184,31 +184,22 @@ export function ScrollChapters({
             Open in Maps
           </motion.a>
         </ChapterGrandFrame>
-      </ScrollSection>
-    ) : (
-      <section className="chapter chapter--venue">
-        <ChapterGrandFrame decorSeed="venue" className="chapter__frame--mint">
-          <p className="chapter__kicker">When &amp; where</p>
-        </ChapterGrandFrame>
-      </section>
-    );
-
-  const countdownSection =
-    scrollRef ? (
-      <ScrollSection container={scrollRef} className="chapter chapter--countdown">
         <motion.div
-          className="countdown-strip"
-          initial={{ opacity: 0, y: 18 }}
+          className="countdown-strip countdown-strip--below"
+          initial={{ opacity: 0, y: 14 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: false, amount: 0.55 }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{ duration: 0.55, delay: 0.05 }}
         >
           <Countdown />
         </motion.div>
       </ScrollSection>
     ) : (
-      <section className="chapter chapter--countdown">
-        <div className="countdown-strip">
+      <section className="chapter chapter--venue chapter--venue-stack">
+        <ChapterGrandFrame decorSeed="venue" className="chapter__frame--mint">
+          <p className="chapter__kicker">When &amp; where</p>
+        </ChapterGrandFrame>
+        <div className="countdown-strip countdown-strip--below">
           <Countdown />
         </div>
       </section>
@@ -226,7 +217,6 @@ export function ScrollChapters({
         <div className="scroll-bridge scroll-bridge--static" />
       )}
       {venueSection}
-      {countdownSection}
     </div>
   );
 }

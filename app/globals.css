@@ -54,29 +54,16 @@ body {
   overflow: clip;
 }
 
-.lotus-gate__wash {
+.lotus-gate__pink-fill {
   position: absolute;
   inset: 0;
-  z-index: 28;
-  background: linear-gradient(
-    168deg,
-    rgba(250, 232, 240, 0.75) 0%,
-    rgba(245, 218, 228, 0.82) 50%,
-    rgba(240, 210, 222, 0.88) 100%
-  );
-  pointer-events: none;
-}
-
-.lotus-gate__pastel-blink {
-  position: absolute;
-  inset: 0;
-  z-index: 35;
+  z-index: 34;
   background: linear-gradient(
     175deg,
-    #faf0f4 0%,
-    #f3dce6 42%,
-    var(--blush) 72%,
-    var(--cream) 100%
+    #fdf2f7 0%,
+    #f5d9e4 38%,
+    var(--blush) 68%,
+    #f7ebe8 100%
   );
   pointer-events: none;
 }
@@ -393,7 +380,7 @@ body {
 
 .chapter__inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -769,11 +756,16 @@ body {
   margin-top: 0;
 }
 
-.chapter--countdown {
-  min-height: 62svh;
-  padding: 2rem 1.35rem 3.75rem;
-  align-items: center;
+.chapter--venue-stack {
+  flex-direction: column;
   justify-content: center;
+  gap: 1.15rem;
+  padding-top: 4.25rem;
+  padding-bottom: 2.75rem;
+}
+
+.chapter--venue-stack .chapter__frame {
+  flex-shrink: 0;
 }
 
 .countdown-strip {
@@ -787,6 +779,10 @@ body {
   border-radius: 1rem;
   backdrop-filter: blur(6px);
   box-shadow: 0 12px 36px rgba(18, 18, 18, 0.04);
+}
+
+.countdown-strip--below {
+  margin-top: 0.15rem;
 }
 
 .chapter {
@@ -1046,9 +1042,25 @@ body {
   align-items: stretch;
 }
 
-.chapter__frame--grand > :not(.chapter__petal) {
+.chapter__frame--grand > :not(.chapter__petal):not(.frame-florals) {
   position: relative;
   z-index: 1;
+}
+
+.frame-florals {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: inherit;
+}
+
+.frame-florals__img {
+  position: absolute;
+  height: auto;
+  filter: drop-shadow(0 4px 10px rgba(18, 18, 18, 0.04));
+  user-select: none;
 }
 
 .chapter__frame--blush {

@@ -17,7 +17,7 @@ import { useCallback, useRef, useState } from "react";
 
 const BLOOM_S = 1.55;
 const ZOOM_AT = 0.38;
-const REVEAL_AT = 0.92;
+const REVEAL_AT = 0.58;
 
 function smoothstep(x: number) {
   const t = Math.max(0, Math.min(1, x));
@@ -38,16 +38,11 @@ export function LotusGate({
   const idleStart = useRef<number | null>(null);
   const revealedRef = useRef(false);
 
-  const washOpacity = useTransform(progress, (t) => {
-    if (t < ZOOM_AT - 0.06) return 0;
-    return smoothstep((t - (ZOOM_AT - 0.06)) / (1 - (ZOOM_AT - 0.06))) * 0.75;
-  });
-
-  const blinkOpacity = useTransform(progress, (t) => {
-    if (t < 0.58) return 0;
-    const u = (t - 0.58) / 0.42;
-    if (u < 0.55) return smoothstep(u / 0.55) * 0.92;
-    return 0.92 + smoothstep((u - 0.55) / 0.45) * 0.08;
+  /** Full pastel pink by 50% progress, held through the end. */
+  const pinkFill = useTransform(progress, (t) => {
+    if (t < 0.28) return 0;
+    if (t <= 0.5) return smoothstep((t - 0.28) / 0.22);
+    return 1;
   });
 
   const ringScale = useTransform(progress, (t) => 1 + bloomHint(t) * 0.08);
@@ -101,8 +96,7 @@ export function LotusGate({
       animate={phase === "done" ? { opacity: 0 } : { opacity: 1 }}
       transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1], delay: phase === "done" ? 0.05 : 0 }}
     >
-      <motion.div className="lotus-gate__wash" style={{ opacity: washOpacity }} aria-hidden="true" />
-      <motion.div className="lotus-gate__pastel-blink" style={{ opacity: blinkOpacity }} aria-hidden="true" />
+      <motion.div className="lotus-gate__pink-fill" style={{ opacity: pinkFill }} aria-hidden="true" />
 
       {reduce ? null : (
         <PressedFlowerField
