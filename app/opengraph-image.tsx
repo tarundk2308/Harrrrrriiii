@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Betrothal of Hariharan Agilan & Sharon Belinda Benedict · 4 December 2026";
+export const alt = "Engagement of Hariharan Agilan & Sharon Belinda Benedict · 4 December 2026";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -20,7 +20,7 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", fontSize: 20, letterSpacing: 8, color: "#7A2E3F" }}>
-          BETROTHAL
+          ENGAGEMENT
         </div>
         <div style={{ display: "flex", fontSize: 46, marginTop: 20, lineHeight: 1.05, textAlign: "center" }}>
           Hariharan & Sharon

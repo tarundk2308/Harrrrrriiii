@@ -1,5 +1,5 @@
-import { InviteShell } from "@/components/InviteShell";
+import { InviteExperience } from "@/components/InviteExperience";
 
 export default function Page() {
-  return <InviteShell />;
+  return <InviteExperience />;
 }

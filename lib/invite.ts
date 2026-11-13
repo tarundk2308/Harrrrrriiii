@@ -1,10 +1,20 @@
-/** Invitation copy + media paths. */
+/** Engagement invitation copy. */
 
 export const invite = {
   groom: "Hariharan Agilan",
   bride: "Sharon Belinda Benedict",
+  monogram: "H & S",
 
-  eventTitle: "Betrothal",
+  groomParents: {
+    father: "Agilan Ramaswamy",
+    mother: "Mahalakshmi Agilan",
+  },
+  brideParents: {
+    father: "Dr. Benedict Xavier",
+    mother: "Suchitra Benedict",
+  },
+
+  eventTitle: "Engagement",
   occasionTamil: "நிச்சயதார்த்தம்",
 
   weekday: "Friday",
@@ -12,12 +22,7 @@ export const invite = {
   dateMonthYear: "December 2026",
   dateLine: "4 December 2026",
   timeLine: "6:30 PM onwards",
-  timeDisplay: "6:30 PM",
   countdownIso: "2026-12-04T18:30:00+05:30",
-  iso: "2026-12-04T18:30:00+05:30",
-
-  city: "Chennai",
-  cityTamil: "சென்னை",
 
   venueLines: [
     "Le Royal Méridien",
@@ -27,8 +32,5 @@ export const invite = {
   venueUrl:
     "https://maps.google.com/?q=Le+Royal+M%C3%A9ridien+Chennai+Grand+Madras+Ballroom",
 
-  videoSrc: "/video/invite-bg.mp4",
-  videoSrcFallback: "/video/invite-bg.mov",
-
-  pauseLine: "Just a breath — your invitation is on its way.",
+  gateCta: "Touch to open",
 };
