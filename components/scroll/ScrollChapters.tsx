@@ -1,5 +1,6 @@
 "use client";
 
+import { Countdown } from "@/components/Countdown";
 import { ChapterGrandFrame } from "@/components/scroll/ChapterGrandFrame";
 import { ScrollBridge } from "@/components/scroll/ScrollBridge";
 import { ScrollSection } from "@/components/scroll/ScrollSection";
@@ -8,27 +9,26 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import type { RefObject } from "react";
 
 function PersonBlock({
-  role,
   name,
   parentTitle,
   father,
   mother,
+  fromLeft,
 }: {
-  role: string;
   name: string;
   parentTitle: string;
   father: string;
   mother: string;
+  fromLeft: boolean;
 }) {
   return (
     <motion.div
       className="person-block"
-      initial={{ opacity: 0, x: role === "Groom" ? -22 : 22 }}
+      initial={{ opacity: 0, x: fromLeft ? -22 : 22 }}
       whileInView={{ opacity: 1, x: 0 }}
       viewport={{ once: false, amount: 0.55 }}
       transition={{ duration: 0.65, delay: 0.12 }}
     >
-      <p className="chapter__kicker">{role}</p>
       <h2 className="chapter__name">{name}</h2>
       <p className="parents__lead">{parentTitle}</p>
       <ul className="parents__list">
@@ -78,7 +78,7 @@ export function ScrollChapters({
           </motion.p>
           <p className="title-mini">{invite.monogram}</p>
           <PersonBlock
-            role="Groom"
+            fromLeft
             name={invite.groom}
             parentTitle="Son of"
             father={invite.groomParents.father}
@@ -86,7 +86,7 @@ export function ScrollChapters({
           />
           <div className="chapter__rule chapter__rule--gold" aria-hidden="true" />
           <PersonBlock
-            role="Bride"
+            fromLeft={false}
             name={invite.bride}
             parentTitle="Daughter of"
             father={invite.brideParents.father}
@@ -129,6 +129,14 @@ export function ScrollChapters({
           >
             {invite.timeLine}
           </motion.p>
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.55, delay: 0.08 }}
+          >
+            <Countdown />
+          </motion.div>
           <div className="chapter__rule chapter__rule--gold" aria-hidden="true" />
           <motion.ul
             className="venue"

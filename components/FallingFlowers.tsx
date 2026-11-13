@@ -1,12 +1,21 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import type { RefObject } from "react";
 import { useMemo } from "react";
 
 const COUNT = 18;
 
-export function FallingFlowers() {
+export function FallingFlowers({
+  container,
+}: {
+  container: RefObject<HTMLElement | null>;
+}) {
   const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ container });
+  const layerY = useTransform(scrollYProgress, [0, 1], [0, -90]);
+  const layerX = useTransform(scrollYProgress, [0, 0.5, 1], [0, 12, -8]);
+
   const petals = useMemo(
     () =>
       Array.from({ length: COUNT }, (_, i) => ({
@@ -23,7 +32,7 @@ export function FallingFlowers() {
   if (reduce) return null;
 
   return (
-    <div className="falling-flowers" aria-hidden="true">
+    <motion.div className="falling-flowers" style={{ y: layerY, x: layerX }} aria-hidden="true">
       {petals.map((p) => (
         <motion.span
           key={p.id}
@@ -34,7 +43,7 @@ export function FallingFlowers() {
             y: ["-12vh", "112vh"],
             x: [0, p.drift, -p.drift * 0.6, p.drift * 0.4],
             rotate: [0, 140, 280, 420],
-            opacity: [0, 0.55, 0.45, 0],
+            opacity: [0, 0.62, 0.5, 0],
           }}
           transition={{
             duration: p.duration,
@@ -44,6 +53,6 @@ export function FallingFlowers() {
           }}
         />
       ))}
-    </div>
+    </motion.div>
   );
 }

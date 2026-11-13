@@ -18,9 +18,9 @@ export function EngagementScroll() {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.45 }}
     >
-      <MainFloralBackdrop />
+      <MainFloralBackdrop container={scrollRef} />
       <ScrollMotionDecor container={scrollRef} />
-      <FallingFlowers />
+      <FallingFlowers container={scrollRef} />
       <ScrollProgressBar container={scrollRef} />
       <div className="scroll-doc scroll-doc--plain" ref={scrollRef}>
         <ScrollChapters scrollRef={scrollRef} />

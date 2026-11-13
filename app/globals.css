@@ -3,10 +3,10 @@
   --blush: #f0e4e8;
   --mint: #e2ebe4;
   --lilac: #e8e4f0;
-  --ink: #121212;
-  --ink-soft: #4a4a4a;
-  --line: rgba(18, 18, 18, 0.12);
-  --gold: #9a8b72;
+  --ink: #0f0f0f;
+  --ink-soft: #2c2c2c;
+  --line: rgba(18, 18, 18, 0.16);
+  --gold: #756654;
   --display: "Cormorant Garamond", "Times New Roman", serif;
   --sans: "Nunito", system-ui, sans-serif;
   --tamil: "Noto Serif Tamil", "Tamil MN", serif;
@@ -54,11 +54,24 @@ body {
   overflow: hidden;
 }
 
-.lotus-gate__flash {
+.lotus-gate__wash {
   position: absolute;
   inset: 0;
-  z-index: 30;
-  background: linear-gradient(180deg, #fffefb 0%, #ffffff 55%, #fff9fc 100%);
+  z-index: 28;
+  background: linear-gradient(
+    168deg,
+    rgba(247, 243, 239, 0.92) 0%,
+    rgba(240, 228, 232, 0.88) 50%,
+    rgba(226, 235, 228, 0.86) 100%
+  );
+  pointer-events: none;
+}
+
+.lotus-gate__pastel-blink {
+  position: absolute;
+  inset: 0;
+  z-index: 32;
+  background: linear-gradient(175deg, var(--cream) 0%, var(--blush) 48%, var(--mint) 100%);
   pointer-events: none;
 }
 
@@ -72,8 +85,9 @@ body {
 
 .lotus-gate__ring {
   position: absolute;
+  display: block;
   border-radius: 50%;
-  border: 1px solid rgba(18, 18, 18, 0.08);
+  border: 1px solid rgba(18, 18, 18, 0.1);
 }
 
 .lotus-gate__ring--a {
@@ -170,10 +184,10 @@ body {
 .lotus-gate__sub {
   margin: 0.35rem 0 1rem;
   font-size: 0.68rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.24em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--ink);
 }
 
 .lotus-gate__cta {
@@ -288,7 +302,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4.5rem 1.25rem 3.5rem;
+  padding: 5rem 1.35rem 4rem;
   box-sizing: border-box;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -298,7 +312,7 @@ body {
 .chapter__frame {
   position: relative;
   width: 100%;
-  padding: clamp(1.75rem, 5vw, 2.35rem) clamp(1.35rem, 4vw, 1.85rem);
+  padding: clamp(2rem, 5.5vw, 2.65rem) clamp(1.45rem, 4.2vw, 2rem);
   background: var(--cream);
   border: 1px solid var(--line);
   border-radius: 1rem;
@@ -312,7 +326,7 @@ body {
   height: calc(100% - 1.3rem);
   color: var(--gold);
   pointer-events: none;
-  opacity: 0.7;
+  opacity: 0.88;
 }
 
 .chapter__inner {
@@ -325,10 +339,10 @@ body {
   flex-direction: column;
   gap: 0.35rem;
   font-size: 0.72rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--ink-soft);
+  color: var(--ink);
 }
 
 .eyebrow span:first-child {
@@ -369,11 +383,11 @@ body {
 
 .chapter__kicker {
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: var(--ink-soft);
-  margin-bottom: 0.55rem;
+  color: var(--ink);
+  margin-bottom: 0.75rem;
 }
 
 .chapter__name {
@@ -381,23 +395,28 @@ body {
   font-size: clamp(1.75rem, 7vw, 2.15rem);
   font-weight: 600;
   color: var(--ink);
-  margin-bottom: 1.1rem;
+  margin-bottom: 1.25rem;
 }
 
 .parents__lead {
   font-size: 0.65rem;
+  font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-soft);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.55rem;
 }
 
 .parents__list {
   list-style: none;
   font-family: var(--display);
   font-size: 1.15rem;
-  line-height: 1.55;
+  line-height: 1.62;
   color: var(--ink);
+}
+
+.parents__list li + li {
+  margin-top: 0.2rem;
 }
 
 .when__day {
@@ -419,13 +438,14 @@ body {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-top: 0.55rem;
+  margin-top: 0.65rem;
   color: var(--ink);
 }
 
 .when__note {
   margin-top: 0.85rem;
   font-size: 0.8rem;
+  font-weight: 600;
   color: var(--ink-soft);
 }
 
@@ -488,8 +508,12 @@ body {
   background: var(--cream);
 }
 
+.person-block {
+  padding: 0.15rem 0;
+}
+
 .person-block + .chapter__rule {
-  margin: 1.35rem auto;
+  margin: 1.65rem auto;
 }
 
 .chapter__rule {
@@ -500,7 +524,7 @@ body {
 }
 
 .person-block + .person-block {
-  margin-top: 0.25rem;
+  margin-top: 0.85rem;
 }
 
 .main-floral {
@@ -508,7 +532,47 @@ body {
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  background: linear-gradient(175deg, var(--cream) 0%, var(--blush) 48%, var(--mint) 100%);
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.main-floral__wash {
+  position: absolute;
+  inset: -18%;
+  background: linear-gradient(175deg, var(--cream) 0%, var(--blush) 46%, var(--mint) 100%);
+  transform-origin: 50% 38%;
+}
+
+.main-floral__blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.72;
+  will-change: transform;
+}
+
+.main-floral__blob--a {
+  width: min(72vw, 18rem);
+  height: min(72vw, 18rem);
+  top: 8%;
+  left: -12%;
+  background: radial-gradient(circle, rgba(240, 196, 216, 0.55) 0%, transparent 68%);
+}
+
+.main-floral__blob--b {
+  width: min(78vw, 20rem);
+  height: min(78vw, 20rem);
+  right: -14%;
+  top: 38%;
+  background: radial-gradient(circle, rgba(196, 224, 210, 0.5) 0%, transparent 70%);
+}
+
+.main-floral__blob--c {
+  width: min(64vw, 16rem);
+  height: min(64vw, 16rem);
+  left: 22%;
+  bottom: 6%;
+  background: radial-gradient(circle, rgba(232, 212, 228, 0.48) 0%, transparent 72%);
 }
 
 .falling-flowers {
@@ -534,8 +598,60 @@ body {
   font-family: var(--display);
   font-size: clamp(1.85rem, 8vw, 2.35rem);
   color: var(--ink);
-  margin: 0.35rem 0 1.1rem;
+  margin: 0.45rem 0 1.45rem;
   letter-spacing: 0.06em;
+}
+
+.countdown {
+  margin: 1.15rem 0 1.35rem;
+}
+
+.countdown__lead {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--ink);
+  margin-bottom: 0.65rem;
+}
+
+.countdown__grid {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+}
+
+.countdown__unit {
+  min-width: 3.35rem;
+  padding: 0.55rem 0.35rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.countdown__unit strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.1;
+}
+
+.countdown__unit span {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.chapter__rule--gold + .venue,
+.chapter__rule--gold + .countdown {
+  margin-top: 0.25rem;
 }
 
 .chapter {
@@ -572,7 +688,19 @@ body {
 .scroll-motion__ring--b {
   width: min(92vw, 24rem);
   height: min(92vw, 24rem);
-  opacity: 0.55;
+  opacity: 0.72;
+}
+
+.scroll-motion__halo {
+  position: absolute;
+  top: 22%;
+  left: 50%;
+  translate: -50% 0;
+  width: min(88vw, 22rem);
+  height: min(50vw, 12rem);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(247, 230, 218, 0.65) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .scroll-motion__arch {
@@ -580,7 +708,7 @@ body {
   width: 3.25rem;
   height: auto;
   color: var(--gold);
-  opacity: 0.55;
+  opacity: 0.78;
 }
 
 .scroll-motion__arch--left {
@@ -601,8 +729,8 @@ body {
 .scroll-motion__spark {
   position: absolute;
   top: 38%;
-  font-size: 0.8rem;
-  color: rgba(18, 18, 18, 0.45);
+  font-size: 0.85rem;
+  color: var(--gold);
 }
 
 .scroll-motion__track {
@@ -612,7 +740,7 @@ body {
   left: 50%;
   width: 2px;
   transform: translateX(-50%);
-  opacity: 0.35;
+  opacity: 0.48;
 }
 
 .scroll-motion__track-line {
@@ -640,7 +768,7 @@ body {
   translate: -50% 0;
   display: flex;
   gap: 0.45rem;
-  opacity: 0.5;
+  opacity: 0.68;
 }
 
 .scroll-motion__band-petal {
@@ -775,6 +903,11 @@ body {
   overflow: hidden;
 }
 
+.chapter__frame--grand > :not(.chapter__petal) {
+  position: relative;
+  z-index: 1;
+}
+
 .chapter__frame--blush {
   background: linear-gradient(165deg, #fdf9fa 0%, var(--blush) 100%);
 }
@@ -803,35 +936,11 @@ body {
 
 .chapter__petal {
   position: absolute;
+  z-index: 0;
   width: 1rem;
   height: 1.35rem;
   border-radius: 58% 58% 48% 48%;
-  background: linear-gradient(160deg, #f0c4d8, #e4a8c0);
-  opacity: 0.45;
-}
-
-.chapter__petal--tl {
-  top: 0.85rem;
-  left: 0.75rem;
-  transform: rotate(-25deg);
-}
-
-.chapter__petal--tr {
-  top: 0.85rem;
-  right: 0.75rem;
-  transform: rotate(25deg);
-}
-
-.chapter__petal--bl {
-  bottom: 0.85rem;
-  left: 0.75rem;
-  transform: rotate(15deg);
-}
-
-.chapter__petal--br {
-  bottom: 0.85rem;
-  right: 0.75rem;
-  transform: rotate(-15deg);
+  pointer-events: none;
 }
 
 .chapter__rule--gold {
