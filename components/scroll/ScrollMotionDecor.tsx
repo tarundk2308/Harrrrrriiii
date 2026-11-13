@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTime, useTransform } from "framer-motion";
 import type { RefObject } from "react";
 
 const SPARK_COUNT = 5;
@@ -8,6 +8,7 @@ const SPARK_COUNT = 5;
 export function ScrollMotionDecor({ container }: { container: RefObject<HTMLElement | null> }) {
   const { scrollYProgress } = useScroll({ container });
   const smooth = useSpring(scrollYProgress, { stiffness: 72, damping: 24, mass: 0.38 });
+  const time = useTime();
 
   const ringScale = useTransform(smooth, [0, 0.45, 1], [0.94, 1.1, 0.97]);
   const ringRotateA = useTransform(smooth, [0, 1], [0, 110]);
@@ -25,7 +26,9 @@ export function ScrollMotionDecor({ container }: { container: RefObject<HTMLElem
   const bandRotate = useTransform(smooth, [0, 1], [-8, 12]);
   const haloOpacity = useTransform(smooth, [0, 0.35, 0.7, 1], [0.55, 0.9, 0.7, 0.5]);
   const haloScale = useTransform(smooth, [0, 1], [0.88, 1.06]);
-  const haloY = useTransform(smooth, [0, 1], [30, -55]);
+  const haloY = useTransform([smooth, time], ([s, t]) => (s as number) * -55 + 30 + Math.sin((t as number) / 5000) * 10);
+  const ringPulse = useTransform(time, (t) => 1 + Math.sin(t / 4200) * 0.03);
+  const ringScaleA = useTransform([ringScale, ringPulse], ([a, b]) => (a as number) * (b as number));
 
   return (
     <div className="scroll-motion" aria-hidden="true">
@@ -35,11 +38,11 @@ export function ScrollMotionDecor({ container }: { container: RefObject<HTMLElem
       />
       <motion.div
         className="scroll-motion__ring scroll-motion__ring--a"
-        style={{ scale: ringScale, rotate: ringRotateA }}
+        style={{ scale: ringScaleA, rotate: ringRotateA }}
       />
       <motion.div
         className="scroll-motion__ring scroll-motion__ring--b"
-        style={{ scale: ringScale, rotate: ringRotateB }}
+        style={{ scale: ringScaleA, rotate: ringRotateB }}
       />
 
       <motion.svg

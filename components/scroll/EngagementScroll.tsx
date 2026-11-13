@@ -20,7 +20,13 @@ export function EngagementScroll() {
       transition={{ duration: 0.45 }}
     >
       <MainFloralBackdrop container={scrollRef} />
-      <PressedFlowerField flowers={MAIN_FLOWERS} container={scrollRef} className="pressed-flower-layer--main" />
+      <PressedFlowerField
+        flowers={MAIN_FLOWERS}
+        container={scrollRef}
+        ambient
+        preload
+        className="pressed-flower-layer--main"
+      />
       <ScrollMotionDecor container={scrollRef} />
       <ScrollProgressBar container={scrollRef} />
       <div className="scroll-doc scroll-doc--plain" ref={scrollRef}>
