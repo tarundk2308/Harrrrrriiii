@@ -9,12 +9,14 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import type { RefObject } from "react";
 
 function PersonBlock({
+  kicker,
   name,
   parentTitle,
   father,
   mother,
   fromLeft,
 }: {
+  kicker: string;
   name: string;
   parentTitle: string;
   father: string;
@@ -29,6 +31,7 @@ function PersonBlock({
       viewport={{ once: false, amount: 0.55 }}
       transition={{ duration: 0.65, delay: 0.12 }}
     >
+      <p className="chapter__kicker">{kicker}</p>
       <h2 className="chapter__name">{name}</h2>
       <p className="parents__lead">{parentTitle}</p>
       <ul className="parents__list">
@@ -76,9 +79,9 @@ export function ScrollChapters({
             <span lang="ta">{invite.occasionTamil}</span>
             <span>{invite.eventTitle}</span>
           </motion.p>
-          <p className="title-mini">{invite.monogram}</p>
           <PersonBlock
             fromLeft
+            kicker="Groom"
             name={invite.groom}
             parentTitle="Son of"
             father={invite.groomParents.father}
@@ -87,6 +90,7 @@ export function ScrollChapters({
           <div className="chapter__rule chapter__rule--gold" aria-hidden="true" />
           <PersonBlock
             fromLeft={false}
+            kicker="Bride"
             name={invite.bride}
             parentTitle="Daughter of"
             father={invite.brideParents.father}
@@ -101,7 +105,23 @@ export function ScrollChapters({
             <span lang="ta">{invite.occasionTamil}</span>
             <span>{invite.eventTitle}</span>
           </p>
-          <p className="title-mini">{invite.monogram}</p>
+          <PersonBlock
+            fromLeft
+            kicker="Groom"
+            name={invite.groom}
+            parentTitle="Son of"
+            father={invite.groomParents.father}
+            mother={invite.groomParents.mother}
+          />
+          <div className="chapter__rule chapter__rule--gold" aria-hidden="true" />
+          <PersonBlock
+            fromLeft={false}
+            kicker="Bride"
+            name={invite.bride}
+            parentTitle="Daughter of"
+            father={invite.brideParents.father}
+            mother={invite.brideParents.mother}
+          />
         </ChapterGrandFrame>
       </section>
     );

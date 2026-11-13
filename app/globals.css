@@ -390,6 +390,10 @@ body {
   margin-bottom: 0.75rem;
 }
 
+.person-block .chapter__kicker {
+  margin-bottom: 0.55rem;
+}
+
 .chapter__name {
   font-family: var(--display);
   font-size: clamp(1.75rem, 7vw, 2.15rem);
