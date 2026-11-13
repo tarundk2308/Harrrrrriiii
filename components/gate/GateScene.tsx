@@ -3,7 +3,7 @@
 import { BackdropOrnaments } from "@/components/ambient/BackdropOrnaments";
 import { GateStaticFlorals } from "@/components/gate/GateStaticFlorals";
 import { invite } from "@/lib/invite";
-import { T } from "@/lib/motionSpeed";
+import { A, T } from "@/lib/motionSpeed";
 import { motion, useTime, useTransform } from "framer-motion";
 
 const LOTUS_SRC = "/images/lotus-reference.png";
@@ -16,10 +16,10 @@ export function GateScene({
   disabled?: boolean;
 }) {
   const time = useTime();
-  const lotusY = useTransform(time, (t) => Math.sin(t / T(5000)) * 10);
-  const lotusScale = useTransform(time, (t) => 1 + Math.sin(t / T(5600)) * 0.018);
-  const cardY = useTransform(time, (t) => Math.cos(t / T(4800)) * 5);
-  const ctaGlow = useTransform(time, (t) => 0.92 + Math.sin(t / T(2200)) * 0.08);
+  const lotusY = useTransform(time, (t) => Math.sin(t / T(5000)) * A(10));
+  const lotusScale = useTransform(time, (t) => 1 + Math.sin(t / T(5600)) * A(0.018));
+  const cardY = useTransform(time, (t) => Math.cos(t / T(4800)) * A(5));
+  const ctaGlow = useTransform(time, (t) => 0.92 + Math.sin(t / T(2200)) * A(0.08));
 
   return (
     <div className="gate-scene">

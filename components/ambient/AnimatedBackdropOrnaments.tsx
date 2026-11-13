@@ -1,6 +1,6 @@
 "use client";
 
-import { T } from "@/lib/motionSpeed";
+import { A, T } from "@/lib/motionSpeed";
 import { motion, useScroll, useSpring, useTime, useTransform } from "framer-motion";
 import type { RefObject } from "react";
 
@@ -10,15 +10,15 @@ export function AnimatedBackdropOrnaments({ container }: { container: RefObject<
   const smooth = useSpring(scrollYProgress, { stiffness: 62, damping: 22, mass: 0.4 });
   const time = useTime();
 
-  const bandY = useTransform([smooth, time], ([s, t]) => (s as number) * -40 + Math.sin((t as number) / T(5400)) * 18);
-  const bandX = useTransform(time, (t) => Math.cos(t / T(6200)) * 22);
-  const arcLeft = useTransform([smooth, time], ([s, t]) => (s as number) * 28 + Math.sin((t as number) / T(4800)) * 14);
-  const arcRight = useTransform([smooth, time], ([s, t]) => -(s as number) * 24 + Math.cos((t as number) / T(5100)) * 12);
-  const washRotate = useTransform([smooth, time], ([s, t]) => (s as number) * 8 + Math.sin((t as number) / T(8000)) * 5);
-  const glowAx = useTransform(time, (t) => Math.sin(t / T(4500)) * 30);
-  const glowAy = useTransform([smooth, time], ([s, t]) => (s as number) * 35 + Math.cos((t as number) / T(5200)) * 20);
-  const glowBx = useTransform(time, (t) => Math.cos(t / T(5000)) * -26);
-  const glowBy = useTransform([smooth, time], ([s, t]) => -(s as number) * 30 + Math.sin((t as number) / T(4700)) * 18);
+  const bandY = useTransform([smooth, time], ([s, t]) => (s as number) * -40 + Math.sin((t as number) / T(5400)) * A(18));
+  const bandX = useTransform(time, (t) => Math.cos(t / T(6200)) * A(22));
+  const arcLeft = useTransform([smooth, time], ([s, t]) => (s as number) * 28 + Math.sin((t as number) / T(4800)) * A(14));
+  const arcRight = useTransform([smooth, time], ([s, t]) => -(s as number) * 24 + Math.cos((t as number) / T(5100)) * A(12));
+  const washRotate = useTransform([smooth, time], ([s, t]) => (s as number) * 8 + Math.sin((t as number) / T(8000)) * A(5));
+  const glowAx = useTransform(time, (t) => Math.sin(t / T(4500)) * A(30));
+  const glowAy = useTransform([smooth, time], ([s, t]) => (s as number) * 35 + Math.cos((t as number) / T(5200)) * A(20));
+  const glowBx = useTransform(time, (t) => Math.cos(t / T(5000)) * A(-26));
+  const glowBy = useTransform([smooth, time], ([s, t]) => -(s as number) * 30 + Math.sin((t as number) / T(4700)) * A(18));
 
   return (
     <div className="backdrop-ornaments-anim" aria-hidden="true">

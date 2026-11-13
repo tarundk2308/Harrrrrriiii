@@ -1,7 +1,7 @@
 "use client";
 
 import type { FlowerPlace } from "@/lib/pressedFlowers";
-import { T } from "@/lib/motionSpeed";
+import { A, T } from "@/lib/motionSpeed";
 import {
   motion,
   useMotionValue,
@@ -40,29 +40,29 @@ function FlowerSprite({
 
   const spread = useTransform([progress, time], ([p, t]) => {
     const zoom = 1 + zoomPhase(p as number) * (0.22 + place.depth * 0.4);
-    const breathe = ambient ? 1 + Math.sin((t as number) / T(4500) + place.delay) * 0.04 : 1;
+    const breathe = ambient ? 1 + Math.sin((t as number) / T(4500) + place.delay) * A(0.04) : 1;
     return zoom * breathe;
   });
 
   const driftX = useTransform([progress, scrollY, time], ([p, s, t]) => {
     const z = zoomPhase(p as number);
     const scrollDrift = ((place.x - 48) * z * 2.4) / 1;
-    const parallax = ambient ? ((s as number) - 0.5) * (18 + place.depth * 24) : 0;
-    const wave = ambient ? Math.sin((t as number) / T(3600) + place.delay * 2) * (12 + place.depth * 6) : 0;
+    const parallax = ambient ? ((s as number) - 0.5) * A(18 + place.depth * 24) : 0;
+    const wave = ambient ? Math.sin((t as number) / T(3600) + place.delay * 2) * A(12 + place.depth * 6) : 0;
     return scrollDrift + parallax + wave;
   });
 
   const driftY = useTransform([progress, scrollY, time], ([p, s, t]) => {
     const z = zoomPhase(p as number);
     const dy = ((place.y - 48) * z * 2.0) / 1;
-    const parallax = ((s as number) * (22 + place.depth * 38)) / 1;
-    const wave = ambient ? Math.cos((t as number) / T(4200) + place.delay) * (10 + place.depth * 7) : 0;
+    const parallax = ((s as number) * A(22 + place.depth * 38)) / 1;
+    const wave = ambient ? Math.cos((t as number) / T(4200) + place.delay) * A(10 + place.depth * 7) : 0;
     return dy - parallax + wave;
   });
 
   const sway = useTransform([scrollY, time], ([s, t]) => {
     const scrollSway = (s as number) * place.float * 0.5;
-    const idle = ambient ? Math.sin((t as number) / T(3200) + place.delay) * 4 : 0;
+    const idle = ambient ? Math.sin((t as number) / T(3200) + place.delay) * A(4) : 0;
     return place.rot + scrollSway + idle;
   });
 

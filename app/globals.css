@@ -12,7 +12,7 @@
   --tamil: "Noto Serif Tamil", "Tamil MN", serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   /* Match lib/motionSpeed.ts MOTION_TIME */
-  --motion-time: 0.58;
+  --motion-time: 0.42;
 }
 
 *,
@@ -312,6 +312,41 @@ body {
 
 .backdrop-ornaments--main .backdrop-ornaments__pin {
   opacity: 0.45;
+  animation: gate-pin-twinkle calc(4.2s * var(--motion-time)) ease-in-out infinite;
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__orb {
+  animation: gate-orb-drift calc(7.5s * var(--motion-time)) ease-in-out infinite;
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__orb--2 {
+  animation-duration: calc(6.2s * var(--motion-time));
+  animation-delay: 0.35s;
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__orb--4 {
+  animation-duration: calc(6.8s * var(--motion-time));
+  animation-delay: 0.2s;
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__veil {
+  animation: gate-veil-drift calc(9.5s * var(--motion-time)) ease-in-out infinite;
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__rule {
+  animation: main-rule-sway calc(8s * var(--motion-time)) ease-in-out infinite;
+}
+
+@keyframes main-rule-sway {
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateX(calc(-50% + 12px)) translateY(4px);
+    opacity: 1;
+  }
 }
 
 .backdrop-ornaments-anim {
@@ -442,7 +477,7 @@ body {
     transform: translate(0, 0);
   }
   50% {
-    transform: translate(14px, -12px);
+    transform: translate(24px, -20px);
   }
 }
 
@@ -452,7 +487,7 @@ body {
     transform: translate(0, 0) scale(1);
   }
   50% {
-    transform: translate(10px, 8px) scale(1.03);
+    transform: translate(18px, 14px) scale(1.05);
   }
 }
 
@@ -544,7 +579,7 @@ body {
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-6px);
+    transform: translateY(-12px);
   }
 }
 

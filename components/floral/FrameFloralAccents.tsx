@@ -1,7 +1,7 @@
 "use client";
 
 import { PRESSED_FLOWER_IDS } from "@/lib/pressedFlowers";
-import { T } from "@/lib/motionSpeed";
+import { A, T } from "@/lib/motionSpeed";
 import { motion, useTime, useTransform } from "framer-motion";
 import { useMemo } from "react";
 
@@ -64,8 +64,8 @@ function pickAccents(seed: string): Accent[] {
 
 function AccentImg({ accent }: { accent: Accent }) {
   const time = useTime();
-  const x = useTransform(time, (t) => Math.sin((t + accent.phase * 1000) / T(3800)) * 8);
-  const y = useTransform(time, (t) => Math.cos((t + accent.phase * 1000) / T(4200)) * 7);
+  const x = useTransform(time, (t) => Math.sin((t + accent.phase * 1000) / T(3800)) * A(8));
+  const y = useTransform(time, (t) => Math.cos((t + accent.phase * 1000) / T(4200)) * A(7));
 
   return (
     <motion.img

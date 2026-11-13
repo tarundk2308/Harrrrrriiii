@@ -1,6 +1,6 @@
 "use client";
 
-import { T } from "@/lib/motionSpeed";
+import { A, T } from "@/lib/motionSpeed";
 import { motion, useScroll, useSpring, useTime, useTransform } from "framer-motion";
 import type { RefObject } from "react";
 
@@ -12,26 +12,26 @@ export function ScrollMotionDecor({ container }: { container: RefObject<HTMLElem
   const time = useTime();
 
   const ringScale = useTransform(smooth, [0, 0.45, 1], [0.94, 1.1, 0.97]);
-  const ringRotateA = useTransform([smooth, time], ([s, t]) => (s as number) * 110 + Math.sin((t as number) / T(9000)) * 14);
-  const ringRotateB = useTransform([smooth, time], ([s, t]) => (s as number) * -135 + Math.cos((t as number) / T(11000)) * -12);
-  const leftY = useTransform([smooth, time], ([s, t]) => (s as number) * -175 + 48 + Math.sin((t as number) / T(5200)) * 22);
-  const rightY = useTransform([smooth, time], ([s, t]) => (s as number) * 165 - 36 + Math.cos((t as number) / T(4800)) * 20);
-  const leftX = useTransform([smooth, time], ([s, t]) => (s as number) * 18 + Math.sin((t as number) / T(6100)) * 12);
-  const rightX = useTransform([smooth, time], ([s, t]) => -(s as number) * 16 + Math.cos((t as number) / T(5800)) * 10);
+  const ringRotateA = useTransform([smooth, time], ([s, t]) => (s as number) * 110 + Math.sin((t as number) / T(9000)) * A(14));
+  const ringRotateB = useTransform([smooth, time], ([s, t]) => (s as number) * -135 + Math.cos((t as number) / T(11000)) * A(-12));
+  const leftY = useTransform([smooth, time], ([s, t]) => (s as number) * -175 + 48 + Math.sin((t as number) / T(5200)) * A(22));
+  const rightY = useTransform([smooth, time], ([s, t]) => (s as number) * 165 - 36 + Math.cos((t as number) / T(4800)) * A(20));
+  const leftX = useTransform([smooth, time], ([s, t]) => (s as number) * 18 + Math.sin((t as number) / T(6100)) * A(12));
+  const rightX = useTransform([smooth, time], ([s, t]) => -(s as number) * 16 + Math.cos((t as number) / T(5800)) * A(10));
   const sparkOpacity = useTransform(smooth, [0, 0.15, 0.5, 0.85, 1], [0.35, 0.82, 1, 0.82, 0.38]);
-  const sparkY = useTransform([smooth, time], ([s, t]) => (s as number) * -125 + 36 + Math.sin((t as number) / T(4400)) * 14);
-  const sparkX = useTransform([smooth, time], ([s, t]) => (s as number) * 14 - 8 + Math.cos((t as number) / T(5000)) * 10);
+  const sparkY = useTransform([smooth, time], ([s, t]) => (s as number) * -125 + 36 + Math.sin((t as number) / T(4400)) * A(14));
+  const sparkX = useTransform([smooth, time], ([s, t]) => (s as number) * 14 - 8 + Math.cos((t as number) / T(5000)) * A(10));
   const lineScale = useTransform(smooth, [0, 0.5, 1], [0.58, 1, 0.76]);
   const dotTop = useTransform(smooth, (v) => `${v * 100}%`);
-  const petalX = useTransform([smooth, time], ([s, t]) => (s as number) * 42 - 42 + Math.sin((t as number) / T(6500)) * 16);
-  const bandRotate = useTransform([smooth, time], ([s, t]) => (s as number) * 20 - 8 + Math.sin((t as number) / T(7200)) * 6);
+  const petalX = useTransform([smooth, time], ([s, t]) => (s as number) * 42 - 42 + Math.sin((t as number) / T(6500)) * A(16));
+  const bandRotate = useTransform([smooth, time], ([s, t]) => (s as number) * 20 - 8 + Math.sin((t as number) / T(7200)) * A(6));
   const haloOpacity = useTransform(smooth, [0, 0.35, 0.7, 1], [0.55, 0.9, 0.7, 0.5]);
-  const haloScale = useTransform([smooth, time], ([s, t]) => 0.88 + (s as number) * 0.18 + Math.sin((t as number) / T(6000)) * 0.04);
-  const haloY = useTransform([smooth, time], ([s, t]) => (s as number) * -55 + 30 + Math.sin((t as number) / T(5000)) * 16);
-  const ringPulse = useTransform(time, (t) => 1 + Math.sin(t / T(4200)) * 0.05);
+  const haloScale = useTransform([smooth, time], ([s, t]) => 0.88 + (s as number) * 0.18 + Math.sin((t as number) / T(6000)) * A(0.04));
+  const haloY = useTransform([smooth, time], ([s, t]) => (s as number) * -55 + 30 + Math.sin((t as number) / T(5000)) * A(16));
+  const ringPulse = useTransform(time, (t) => 1 + Math.sin(t / T(4200)) * A(0.05));
   const ringScaleA = useTransform([ringScale, ringPulse], ([a, b]) => (a as number) * (b as number));
   const haloSoftOpacity = useTransform(haloOpacity, (v) => (v as number) * 0.72);
-  const haloSoftY = useTransform([smooth, time], ([s, t]) => (s as number) * 40 - 20 + Math.cos((t as number) / T(5600)) * 18);
+  const haloSoftY = useTransform([smooth, time], ([s, t]) => (s as number) * 40 - 20 + Math.cos((t as number) / T(5600)) * A(18));
 
   return (
     <div className="scroll-motion" aria-hidden="true">
