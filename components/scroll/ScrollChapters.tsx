@@ -68,7 +68,7 @@ export function ScrollChapters({
   const coupleSection =
     scrollRef ? (
       <ScrollSection container={scrollRef} className="chapter--couple">
-        <ChapterGrandFrame index="I" className="chapter__frame--blush">
+        <ChapterGrandFrame decorSeed="couple" className="chapter__frame--blush">
           <motion.p
             className="eyebrow"
             initial={{ opacity: 0, y: 10 }}
@@ -100,7 +100,7 @@ export function ScrollChapters({
       </ScrollSection>
     ) : (
       <section className="chapter chapter--couple">
-        <ChapterGrandFrame index="I" className="chapter__frame--blush">
+        <ChapterGrandFrame decorSeed="couple" className="chapter__frame--blush">
           <p className="eyebrow">
             <span lang="ta">{invite.occasionTamil}</span>
             <span>{invite.eventTitle}</span>
@@ -129,7 +129,7 @@ export function ScrollChapters({
   const venueSection =
     scrollRef ? (
       <ScrollSection container={scrollRef} className="chapter--venue">
-        <ChapterGrandFrame index="II" className="chapter__frame--mint">
+        <ChapterGrandFrame decorSeed="venue" className="chapter__frame--mint">
           <p className="chapter__kicker">When &amp; where</p>
           <motion.p
             className="when__day"
@@ -195,7 +195,7 @@ export function ScrollChapters({
       </ScrollSection>
     ) : (
       <section className="chapter chapter--venue">
-        <ChapterGrandFrame index="II" className="chapter__frame--mint">
+        <ChapterGrandFrame decorSeed="venue" className="chapter__frame--mint">
           <p className="chapter__kicker">When &amp; where</p>
         </ChapterGrandFrame>
       </section>

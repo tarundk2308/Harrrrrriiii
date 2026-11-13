@@ -1,6 +1,8 @@
 "use client";
 
+import { PressedFlowerField } from "@/components/floral/PressedFlowerField";
 import { LotusReferenceBloom } from "@/components/gate/LotusReferenceBloom";
+import { GATE_FLOWERS } from "@/lib/pressedFlowers";
 import { invite } from "@/lib/invite";
 import {
   animate,
@@ -101,6 +103,10 @@ export function LotusGate({
     >
       <motion.div className="lotus-gate__wash" style={{ opacity: washOpacity }} aria-hidden="true" />
       <motion.div className="lotus-gate__pastel-blink" style={{ opacity: blinkOpacity }} aria-hidden="true" />
+
+      {reduce ? null : (
+        <PressedFlowerField flowers={GATE_FLOWERS} progress={progress} className="pressed-flower-layer--gate" />
+      )}
 
       <div className="lotus-gate__orbit" aria-hidden="true">
         <motion.span

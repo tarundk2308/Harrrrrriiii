@@ -1,7 +1,8 @@
 "use client";
 
-import { FallingFlowers } from "@/components/FallingFlowers";
+import { PressedFlowerField } from "@/components/floral/PressedFlowerField";
 import { MainFloralBackdrop } from "@/components/scroll/MainFloralBackdrop";
+import { MAIN_FLOWERS } from "@/lib/pressedFlowers";
 import { ScrollChapters } from "@/components/scroll/ScrollChapters";
 import { ScrollMotionDecor } from "@/components/scroll/ScrollMotionDecor";
 import { ScrollProgressBar } from "@/components/scroll/ScrollProgressBar";
@@ -19,8 +20,8 @@ export function EngagementScroll() {
       transition={{ duration: 0.45 }}
     >
       <MainFloralBackdrop container={scrollRef} />
+      <PressedFlowerField flowers={MAIN_FLOWERS} container={scrollRef} className="pressed-flower-layer--main" />
       <ScrollMotionDecor container={scrollRef} />
-      <FallingFlowers container={scrollRef} />
       <ScrollProgressBar container={scrollRef} />
       <div className="scroll-doc scroll-doc--plain" ref={scrollRef}>
         <ScrollChapters scrollRef={scrollRef} />

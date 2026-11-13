@@ -46,15 +46,15 @@ function framePetals(seed: string) {
 }
 
 export function ChapterGrandFrame({
-  index,
   children,
   className = "",
+  decorSeed = "frame",
 }: {
-  index: string;
   children: ReactNode;
   className?: string;
+  decorSeed?: string;
 }) {
-  const petals = useMemo(() => framePetals(index), [index]);
+  const petals = useMemo(() => framePetals(decorSeed), [decorSeed]);
 
   return (
     <motion.div
@@ -64,9 +64,6 @@ export function ChapterGrandFrame({
       viewport={{ once: false, amount: 0.48, margin: "-5% 0px -5% 0px" }}
       transition={{ duration: 0.8, ease, type: "spring", stiffness: 90, damping: 18 }}
     >
-      <span className="chapter__index" aria-hidden="true">
-        {index}
-      </span>
       <svg className="chapter__arch" viewBox="0 0 280 40" aria-hidden="true">
         <path d="M8 32 Q140 4 272 32" fill="none" stroke="currentColor" strokeWidth="1" />
       </svg>

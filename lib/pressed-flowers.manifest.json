@@ -1,0 +1,74 @@
+[
+  {
+    "id": "hydrangea-pink-a",
+    "src": "/images/flowers/hydrangea-pink-a.png",
+    "w": 290,
+    "h": 340
+  },
+  {
+    "id": "hydrangea-pink-b",
+    "src": "/images/flowers/hydrangea-pink-b.png",
+    "w": 305,
+    "h": 266
+  },
+  {
+    "id": "yellow-bloom-a",
+    "src": "/images/flowers/yellow-bloom-a.png",
+    "w": 240,
+    "h": 220
+  },
+  {
+    "id": "burgundy-daisy",
+    "src": "/images/flowers/burgundy-daisy.png",
+    "w": 187,
+    "h": 190
+  },
+  {
+    "id": "lavender",
+    "src": "/images/flowers/lavender.png",
+    "w": 208,
+    "h": 144
+  },
+  {
+    "id": "white-daisy",
+    "src": "/images/flowers/white-daisy.png",
+    "w": 175,
+    "h": 113
+  },
+  {
+    "id": "yellow-bloom-b",
+    "src": "/images/flowers/yellow-bloom-b.png",
+    "w": 195,
+    "h": 184
+  },
+  {
+    "id": "pink-cluster-mid",
+    "src": "/images/flowers/pink-cluster-mid.png",
+    "w": 235,
+    "h": 203
+  },
+  {
+    "id": "cream-daisy",
+    "src": "/images/flowers/cream-daisy.png",
+    "w": 205,
+    "h": 151
+  },
+  {
+    "id": "babys-breath",
+    "src": "/images/flowers/babys-breath.png",
+    "w": 145,
+    "h": 152
+  },
+  {
+    "id": "pink-wide-bottom",
+    "src": "/images/flowers/pink-wide-bottom.png",
+    "w": 275,
+    "h": 264
+  },
+  {
+    "id": "mix-bottom",
+    "src": "/images/flowers/mix-bottom.png",
+    "w": 318,
+    "h": 218
+  }
+]

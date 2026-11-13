@@ -121,10 +121,41 @@ body {
   }
 }
 
+.pressed-flower-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+.pressed-flower-layer--gate {
+  z-index: 1;
+}
+
+.pressed-flower-layer--main {
+  z-index: 0;
+}
+
+.pressed-flower-wrap {
+  position: absolute;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.pressed-flower {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: drop-shadow(0 10px 22px rgba(18, 18, 18, 0.08));
+  user-select: none;
+}
+
 .lotus-gate__bloom {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -152,7 +183,7 @@ body {
 .lotus-gate__ui {
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -302,7 +333,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5rem 1.35rem 4rem;
+  padding: 5.25rem 1.5rem 4.5rem;
   box-sizing: border-box;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -528,7 +559,7 @@ body {
 }
 
 .person-block + .person-block {
-  margin-top: 0.85rem;
+  margin-top: 1.15rem;
 }
 
 .main-floral {
@@ -607,49 +638,55 @@ body {
 }
 
 .countdown {
-  margin: 1.15rem 0 1.35rem;
+  margin: 1.45rem 0 1.65rem;
 }
 
 .countdown__lead {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  color: var(--ink);
-  margin-bottom: 0.65rem;
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  color: var(--ink-soft);
+  margin-bottom: 0.85rem;
 }
 
 .countdown__grid {
   list-style: none;
   display: flex;
   justify-content: center;
-  gap: 0.55rem;
+  flex-wrap: wrap;
+  gap: 0.85rem 1rem;
 }
 
 .countdown__unit {
-  min-width: 3.35rem;
-  padding: 0.55rem 0.35rem 0.5rem;
+  min-width: 3.75rem;
+  padding: 0.7rem 0.55rem 0.65rem;
   border: 1px solid var(--line);
-  border-radius: 0.65rem;
-  background: rgba(255, 255, 255, 0.7);
+  border-radius: 0.75rem;
+  background: rgba(255, 255, 255, 0.82);
 }
 
 .countdown__unit strong {
   display: block;
-  font-family: var(--display);
-  font-size: 1.35rem;
+  font-family: var(--sans);
+  font-size: 1.55rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--ink);
-  line-height: 1.1;
+  line-height: 1;
+  letter-spacing: 0.02em;
 }
 
 .countdown__unit span {
   display: block;
-  margin-top: 0.2rem;
-  font-size: 0.52rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  margin-top: 0.35rem;
+  font-family: var(--sans);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: capitalize;
   color: var(--ink-soft);
 }
 
@@ -918,16 +955,6 @@ body {
 
 .chapter__frame--mint {
   background: linear-gradient(165deg, #f8fbf9 0%, var(--mint) 100%);
-}
-
-.chapter__index {
-  position: absolute;
-  top: 0.65rem;
-  right: 0.85rem;
-  font-family: var(--display);
-  font-size: 1.75rem;
-  color: rgba(18, 18, 18, 0.12);
-  line-height: 1;
 }
 
 .chapter__arch {
