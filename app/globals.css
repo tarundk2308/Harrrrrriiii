@@ -51,7 +51,7 @@ body {
   inset: 0;
   z-index: 50;
   background: linear-gradient(165deg, var(--cream) 0%, var(--blush) 55%, var(--lilac) 100%);
-  overflow: hidden;
+  overflow: clip;
 }
 
 .lotus-gate__wash {
@@ -60,9 +60,9 @@ body {
   z-index: 28;
   background: linear-gradient(
     168deg,
-    rgba(247, 243, 239, 0.92) 0%,
-    rgba(240, 228, 232, 0.88) 50%,
-    rgba(226, 235, 228, 0.86) 100%
+    rgba(250, 232, 240, 0.75) 0%,
+    rgba(245, 218, 228, 0.82) 50%,
+    rgba(240, 210, 222, 0.88) 100%
   );
   pointer-events: none;
 }
@@ -70,8 +70,14 @@ body {
 .lotus-gate__pastel-blink {
   position: absolute;
   inset: 0;
-  z-index: 32;
-  background: linear-gradient(175deg, var(--cream) 0%, var(--blush) 48%, var(--mint) 100%);
+  z-index: 35;
+  background: linear-gradient(
+    175deg,
+    #faf0f4 0%,
+    #f3dce6 42%,
+    var(--blush) 72%,
+    var(--cream) 100%
+  );
   pointer-events: none;
 }
 
@@ -150,17 +156,42 @@ body {
   height: auto;
   filter: drop-shadow(0 10px 22px rgba(18, 18, 18, 0.08));
   user-select: none;
+  animation: pressed-flower-float 6.5s ease-in-out infinite;
+}
+
+.pressed-flower-wrap:nth-child(3n) .pressed-flower {
+  animation-duration: 5.2s;
+}
+
+.pressed-flower-wrap:nth-child(3n + 1) .pressed-flower {
+  animation-duration: 7.2s;
+  animation-delay: 0.4s;
+}
+
+@keyframes pressed-flower-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 .lotus-gate__bloom {
   position: absolute;
   inset: 0;
-  z-index: 3;
+  z-index: 4;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0 0.75rem 10vh;
   pointer-events: none;
+  overflow: visible;
+}
+
+.lotus-ref--zoom {
+  transform-origin: 50% 48%;
 }
 
 .lotus-ref {
@@ -317,7 +348,7 @@ body {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: 28rem;
+  max-width: 26.5rem;
   margin: 0 auto;
 }
 
@@ -327,13 +358,13 @@ body {
 
 .chapter {
   width: 100%;
-  max-width: 28rem;
+  max-width: 26.5rem;
   margin: 0 auto;
   min-height: 100svh;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 5.25rem 1.5rem 4.5rem;
+  padding: 5.5rem 1.35rem 4.75rem;
   box-sizing: border-box;
   scroll-snap-align: start;
   scroll-snap-stop: always;
@@ -343,7 +374,7 @@ body {
 .chapter__frame {
   position: relative;
   width: 100%;
-  padding: clamp(2rem, 5.5vw, 2.65rem) clamp(1.45rem, 4.2vw, 2rem);
+  padding: clamp(2.1rem, 5.5vw, 2.75rem) clamp(1.5rem, 4.5vw, 2.15rem);
   background: var(--cream);
   border: 1px solid var(--line);
   border-radius: 1rem;
@@ -362,13 +393,21 @@ body {
 
 .chapter__inner {
   position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
 .eyebrow {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
+  align-items: center;
+  gap: 0.45rem;
+  width: 100%;
+  margin-bottom: 1.85rem;
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.2em;
@@ -418,11 +457,16 @@ body {
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--ink);
-  margin-bottom: 0.75rem;
+  margin: 0 0 0.65rem;
+  width: 100%;
 }
 
 .person-block .chapter__kicker {
-  margin-bottom: 0.55rem;
+  margin-bottom: 0.5rem;
+}
+
+.chapter--venue .chapter__kicker {
+  margin-bottom: 1rem;
 }
 
 .chapter__name {
@@ -430,7 +474,9 @@ body {
   font-size: clamp(1.75rem, 7vw, 2.15rem);
   font-weight: 600;
   color: var(--ink);
-  margin-bottom: 1.25rem;
+  line-height: 1.2;
+  margin: 0 0 1rem;
+  max-width: 20rem;
 }
 
 .parents__lead {
@@ -446,18 +492,23 @@ body {
   list-style: none;
   font-family: var(--display);
   font-size: 1.15rem;
-  line-height: 1.62;
+  line-height: 1.58;
   color: var(--ink);
+  width: 100%;
+  max-width: 20rem;
 }
 
 .parents__list li + li {
-  margin-top: 0.2rem;
+  margin-top: 0.35rem;
 }
 
 .when__day {
   font-family: var(--display);
   font-size: clamp(1.45rem, 6vw, 1.85rem);
+  line-height: 1.25;
   color: var(--ink);
+  margin: 0;
+  max-width: 20rem;
 }
 
 .venue__headline {
@@ -473,7 +524,7 @@ body {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  margin-top: 0.65rem;
+  margin: 0.75rem 0 0;
   color: var(--ink);
 }
 
@@ -488,17 +539,21 @@ body {
   list-style: none;
   font-family: var(--display);
   font-size: clamp(1.1rem, 4.5vw, 1.35rem);
-  line-height: 1.5;
+  line-height: 1.55;
   color: var(--ink);
+  width: 100%;
+  max-width: 20rem;
+  margin: 0.25rem auto 0;
+  padding: 0;
 }
 
 .venue li + li {
-  margin-top: 0.25rem;
+  margin-top: 0.45rem;
 }
 
 .maps-btn {
   display: inline-block;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
   font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.18em;
@@ -544,22 +599,34 @@ body {
 }
 
 .person-block {
-  padding: 0.15rem 0;
+  width: 100%;
+  max-width: 20rem;
+  padding: 0.1rem 0;
 }
 
 .person-block + .chapter__rule {
-  margin: 1.65rem auto;
+  margin: 1.85rem auto;
 }
 
 .chapter__rule {
   display: block;
   width: 3.5rem;
   height: 1px;
+  margin-left: auto;
+  margin-right: auto;
   background: var(--line);
 }
 
+.chapter__rule--gold {
+  margin-top: 1.1rem;
+  margin-bottom: 1.15rem;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  height: 1px;
+  width: 5rem;
+}
+
 .person-block + .person-block {
-  margin-top: 1.15rem;
+  margin-top: 0.35rem;
 }
 
 .main-floral {
@@ -641,6 +708,10 @@ body {
   margin: 1.45rem 0 1.65rem;
 }
 
+.countdown--standalone {
+  margin: 0;
+}
+
 .countdown__lead {
   font-family: var(--display);
   font-size: 1.05rem;
@@ -654,18 +725,22 @@ body {
 
 .countdown__grid {
   list-style: none;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 0.85rem 1rem;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 19rem;
+  margin: 0 auto;
+  padding: 0;
 }
 
 .countdown__unit {
-  min-width: 3.75rem;
-  padding: 0.7rem 0.55rem 0.65rem;
+  min-width: 0;
+  padding: 0.7rem 0.35rem 0.62rem;
   border: 1px solid var(--line);
   border-radius: 0.75rem;
   background: rgba(255, 255, 255, 0.82);
+  text-align: center;
 }
 
 .countdown__unit strong {
@@ -690,9 +765,28 @@ body {
   color: var(--ink-soft);
 }
 
-.chapter__rule--gold + .venue,
-.chapter__rule--gold + .countdown {
-  margin-top: 0.25rem;
+.chapter__rule--gold + .venue {
+  margin-top: 0;
+}
+
+.chapter--countdown {
+  min-height: 62svh;
+  padding: 2rem 1.35rem 3.75rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.countdown-strip {
+  width: 100%;
+  max-width: 26.5rem;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 1.85rem) clamp(1.35rem, 4vw, 1.65rem) clamp(1.55rem, 4vw, 1.75rem);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.58);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 12px 36px rgba(18, 18, 18, 0.04);
 }
 
 .chapter {
@@ -770,8 +864,13 @@ body {
 .scroll-motion__spark {
   position: absolute;
   top: 38%;
-  font-size: 0.85rem;
-  color: var(--gold);
+}
+
+.scroll-motion__dot {
+  width: 0.35rem;
+  height: 0.35rem;
+  border-radius: 50%;
+  background: var(--gold);
 }
 
 .scroll-motion__track {
@@ -942,6 +1041,9 @@ body {
 
 .chapter__frame--grand {
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .chapter__frame--grand > :not(.chapter__petal) {
@@ -959,8 +1061,10 @@ body {
 
 .chapter__arch {
   width: 72%;
-  margin: 0 auto 1rem;
+  max-width: 14rem;
+  margin: 0 auto 1.35rem;
   display: block;
+  flex-shrink: 0;
   color: var(--gold);
   opacity: 0.75;
 }
@@ -972,12 +1076,6 @@ body {
   height: 1.35rem;
   border-radius: 58% 58% 48% 48%;
   pointer-events: none;
-}
-
-.chapter__rule--gold {
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  height: 1px;
-  width: 5rem;
 }
 
 .scroll-fallback .chapter {

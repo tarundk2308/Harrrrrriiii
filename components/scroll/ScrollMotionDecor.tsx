@@ -3,7 +3,7 @@
 import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import type { RefObject } from "react";
 
-const SPARKS = ["✦", "❀", "✦", "❀", "✦"] as const;
+const SPARK_COUNT = 5;
 
 export function ScrollMotionDecor({ container }: { container: RefObject<HTMLElement | null> }) {
   const { scrollYProgress } = useScroll({ container });
@@ -61,10 +61,8 @@ export function ScrollMotionDecor({ container }: { container: RefObject<HTMLElem
       </motion.svg>
 
       <motion.div className="scroll-motion__sparkles" style={{ opacity: sparkOpacity, y: sparkY, x: sparkX }}>
-        {SPARKS.map((mark, i) => (
-          <span key={i} className="scroll-motion__spark" style={{ left: `${12 + i * 19}%` }}>
-            {mark}
-          </span>
+        {Array.from({ length: SPARK_COUNT }, (_, i) => (
+          <span key={i} className="scroll-motion__spark scroll-motion__dot" style={{ left: `${12 + i * 19}%` }} />
         ))}
       </motion.div>
 

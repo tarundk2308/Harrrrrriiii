@@ -32,7 +32,7 @@ export function Countdown() {
   ] as const;
 
   return (
-    <div className="countdown" aria-live="polite">
+    <div className="countdown countdown--standalone" aria-live="polite">
       <p className="countdown__lead">Countdown</p>
       <ul className="countdown__grid">
         {units.map(({ label, value }) => (

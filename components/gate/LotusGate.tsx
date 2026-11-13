@@ -15,9 +15,9 @@ import {
 } from "framer-motion";
 import { useCallback, useRef, useState } from "react";
 
-const BLOOM_S = 1.35;
-const ZOOM_AT = 0.42;
-const REVEAL_AT = 0.8;
+const BLOOM_S = 1.55;
+const ZOOM_AT = 0.38;
+const REVEAL_AT = 0.92;
 
 function smoothstep(x: number) {
   const t = Math.max(0, Math.min(1, x));
@@ -39,15 +39,15 @@ export function LotusGate({
   const revealedRef = useRef(false);
 
   const washOpacity = useTransform(progress, (t) => {
-    if (t < ZOOM_AT - 0.04) return 0;
-    return smoothstep((t - (ZOOM_AT - 0.04)) / (1 - (ZOOM_AT - 0.04))) * 0.62;
+    if (t < ZOOM_AT - 0.06) return 0;
+    return smoothstep((t - (ZOOM_AT - 0.06)) / (1 - (ZOOM_AT - 0.06))) * 0.75;
   });
 
   const blinkOpacity = useTransform(progress, (t) => {
-    if (t < 0.7) return 0;
-    const u = (t - 0.7) / 0.3;
-    if (u < 0.5) return smoothstep(u / 0.5);
-    return 1;
+    if (t < 0.58) return 0;
+    const u = (t - 0.58) / 0.42;
+    if (u < 0.55) return smoothstep(u / 0.55) * 0.92;
+    return 0.92 + smoothstep((u - 0.55) / 0.45) * 0.08;
   });
 
   const ringScale = useTransform(progress, (t) => 1 + bloomHint(t) * 0.08);
@@ -89,7 +89,7 @@ export function LotusGate({
           onReveal();
         }
         setPhase("done");
-        window.setTimeout(() => onExit(), 220);
+        window.setTimeout(() => onExit(), 280);
       },
     });
   }, [onExit, onReveal, phase, progress, reduce]);
@@ -105,7 +105,12 @@ export function LotusGate({
       <motion.div className="lotus-gate__pastel-blink" style={{ opacity: blinkOpacity }} aria-hidden="true" />
 
       {reduce ? null : (
-        <PressedFlowerField flowers={GATE_FLOWERS} progress={progress} className="pressed-flower-layer--gate" />
+        <PressedFlowerField
+          flowers={GATE_FLOWERS}
+          progress={progress}
+          preload
+          className="pressed-flower-layer--gate"
+        />
       )}
 
       <div className="lotus-gate__orbit" aria-hidden="true">

@@ -26,8 +26,8 @@ function PersonBlock({
   return (
     <motion.div
       className="person-block"
-      initial={{ opacity: 0, x: fromLeft ? -22 : 22 }}
-      whileInView={{ opacity: 1, x: 0 }}
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, amount: 0.55 }}
       transition={{ duration: 0.65, delay: 0.12 }}
     >
@@ -149,14 +149,6 @@ export function ScrollChapters({
           >
             {invite.timeLine}
           </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: false }}
-            transition={{ duration: 0.55, delay: 0.08 }}
-          >
-            <Countdown />
-          </motion.div>
           <div className="chapter__rule chapter__rule--gold" aria-hidden="true" />
           <motion.ul
             className="venue"
@@ -201,6 +193,27 @@ export function ScrollChapters({
       </section>
     );
 
+  const countdownSection =
+    scrollRef ? (
+      <ScrollSection container={scrollRef} className="chapter chapter--countdown">
+        <motion.div
+          className="countdown-strip"
+          initial={{ opacity: 0, y: 18 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.55 }}
+          transition={{ duration: 0.6 }}
+        >
+          <Countdown />
+        </motion.div>
+      </ScrollSection>
+    ) : (
+      <section className="chapter chapter--countdown">
+        <div className="countdown-strip">
+          <Countdown />
+        </div>
+      </section>
+    );
+
   return (
     <div className={wrapClass}>
       {coupleSection}
@@ -213,6 +226,7 @@ export function ScrollChapters({
         <div className="scroll-bridge scroll-bridge--static" />
       )}
       {venueSection}
+      {countdownSection}
     </div>
   );
 }

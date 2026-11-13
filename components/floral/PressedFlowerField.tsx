@@ -9,7 +9,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import type { RefObject } from "react";
+import { type RefObject, useEffect } from "react";
 
 const ZOOM_AT = 0.42;
 
@@ -32,51 +32,45 @@ function FlowerSprite({
   progress: MotionValue<number>;
   scrollY: MotionValue<number>;
 }) {
-  const spread = useTransform(progress, (p) => 1 + zoomPhase(p) * (0.28 + place.depth * 0.5));
-  const zPx = useTransform(progress, (p) => zoomPhase(p) * (60 + place.depth * 280));
-
-  const left = useTransform(progress, (p) => {
+  const spread = useTransform(progress, (p) => 1 + zoomPhase(p) * (0.35 + place.depth * 0.65));
+  const driftX = useTransform(progress, (p) => {
     const z = zoomPhase(p);
-    const dx = (place.x - 48) * z * 0.35;
-    return `${place.x + dx}%`;
+    return ((place.x - 48) * z * 3.2) / 1;
   });
-
-  const top = useTransform([progress, scrollY], ([p, s]) => {
+  const driftY = useTransform([progress, scrollY], ([p, s]) => {
     const z = zoomPhase(p as number);
-    const dy = (place.y - 48) * z * 0.28;
-    const parallax = (s as number) * (8 + place.depth * 14);
-    return `${place.y + dy - parallax}%`;
+    const dy = ((place.y - 48) * z * 2.6) / 1;
+    const parallax = ((s as number) * (10 + place.depth * 22)) / 1;
+    return dy - parallax;
   });
-
-  const sway = useTransform(scrollY, [0, 1], [place.rot, place.rot + place.float * 0.4]);
+  const zPx = useTransform(progress, (p) => zoomPhase(p) * (40 + place.depth * 220));
 
   return (
     <motion.div
       className="pressed-flower-wrap"
       style={{
-        left,
-        top,
+        left: `${place.x}%`,
+        top: `${place.y}%`,
         width: place.size,
         opacity: place.opacity,
         zIndex: place.layer,
+        x: driftX,
+        y: driftY,
         scale: spread,
-        rotate: sway,
+        rotate: place.rot,
         translateZ: zPx,
       }}
     >
-      <motion.img
+      {/* Plain img — motion on wrapper avoids broken loads from animating src/size */}
+      <img
         src={place.src}
         alt=""
         className="pressed-flower"
-        draggable={false}
+        width={place.naturalW}
+        height={place.naturalH}
+        loading="eager"
         decoding="async"
-        animate={{ y: [0, -place.float, 0] }}
-        transition={{
-          duration: 5.2 + place.delay * 0.6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: place.delay,
-        }}
+        draggable={false}
       />
     </motion.div>
   );
@@ -87,11 +81,13 @@ export function PressedFlowerField({
   progress,
   container,
   className = "",
+  preload,
 }: {
   flowers: FlowerPlace[];
   progress?: MotionValue<number>;
   container?: RefObject<HTMLElement | null>;
   className?: string;
+  preload?: boolean;
 }) {
   const fallback = useMotionValue(0);
   const prog = progress ?? fallback;
@@ -99,10 +95,18 @@ export function PressedFlowerField({
   const { scrollYProgress } = useScroll({ container });
   const smoothScroll = useSpring(scrollYProgress, { stiffness: 70, damping: 24, mass: 0.4 });
 
+  useEffect(() => {
+    if (!preload) return;
+    flowers.forEach((f) => {
+      const img = new Image();
+      img.src = f.src;
+    });
+  }, [flowers, preload]);
+
   return (
     <div className={`pressed-flower-layer ${className}`.trim()} aria-hidden="true">
       {flowers.map((f, i) => (
-        <FlowerSprite key={`${f.id}-${i}`} place={f} progress={prog} scrollY={smoothScroll} />
+        <FlowerSprite key={`${f.slotId}-${i}`} place={f} progress={prog} scrollY={smoothScroll} />
       ))}
     </div>
   );

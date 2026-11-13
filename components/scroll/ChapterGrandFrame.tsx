@@ -81,7 +81,7 @@ export function ChapterGrandFrame({
           }}
         />
       ))}
-      {children}
+      <div className="chapter__inner">{children}</div>
     </motion.div>
   );
 }
