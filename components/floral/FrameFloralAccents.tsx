@@ -1,6 +1,8 @@
 "use client";
 
 import { PRESSED_FLOWER_IDS } from "@/lib/pressedFlowers";
+import { T } from "@/lib/motionSpeed";
+import { motion, useTime, useTransform } from "framer-motion";
 import { useMemo } from "react";
 
 type Accent = {
@@ -12,6 +14,7 @@ type Accent = {
   width: string;
   rot: number;
   opacity: number;
+  phase: number;
 };
 
 function pickAccents(seed: string): Accent[] {
@@ -27,6 +30,7 @@ function pickAccents(seed: string): Accent[] {
       width: "min(28vw, 5.5rem)",
       rot: -14,
       opacity: 0.22,
+      phase: 0,
     },
     {
       src: `/images/flowers/${pick(1)}.png`,
@@ -35,6 +39,7 @@ function pickAccents(seed: string): Accent[] {
       width: "min(26vw, 5rem)",
       rot: 16,
       opacity: 0.2,
+      phase: 1.2,
     },
     {
       src: `/images/flowers/${pick(2)}.png`,
@@ -43,6 +48,7 @@ function pickAccents(seed: string): Accent[] {
       width: "min(24vw, 4.5rem)",
       rot: 8,
       opacity: 0.18,
+      phase: 0.6,
     },
     {
       src: `/images/flowers/${pick(3)}.png`,
@@ -51,8 +57,39 @@ function pickAccents(seed: string): Accent[] {
       width: "min(30vw, 5.75rem)",
       rot: -10,
       opacity: 0.19,
+      phase: 2,
     },
   ];
+}
+
+function AccentImg({ accent }: { accent: Accent }) {
+  const time = useTime();
+  const x = useTransform(time, (t) => Math.sin((t + accent.phase * 1000) / T(3800)) * 8);
+  const y = useTransform(time, (t) => Math.cos((t + accent.phase * 1000) / T(4200)) * 7);
+
+  return (
+    <motion.img
+      src={accent.src}
+      alt=""
+      className="frame-florals__img"
+      width={160}
+      height={160}
+      loading="lazy"
+      decoding="async"
+      draggable={false}
+      style={{
+        top: accent.top,
+        bottom: accent.bottom,
+        left: accent.left,
+        right: accent.right,
+        width: accent.width,
+        opacity: accent.opacity,
+        rotate: accent.rot,
+        x,
+        y,
+      }}
+    />
+  );
 }
 
 export function FrameFloralAccents({ seed }: { seed: string }) {
@@ -61,26 +98,7 @@ export function FrameFloralAccents({ seed }: { seed: string }) {
   return (
     <div className="frame-florals" aria-hidden="true">
       {accents.map((a, i) => (
-        <img
-          key={`${seed}-${i}`}
-          src={a.src}
-          alt=""
-          className="frame-florals__img"
-          width={160}
-          height={160}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-          style={{
-            top: a.top,
-            bottom: a.bottom,
-            left: a.left,
-            right: a.right,
-            width: a.width,
-            opacity: a.opacity,
-            transform: `rotate(${a.rot}deg)`,
-          }}
-        />
+        <AccentImg key={`${seed}-${i}`} accent={a} />
       ))}
     </div>
   );

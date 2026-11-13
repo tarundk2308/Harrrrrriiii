@@ -11,6 +11,8 @@
   --sans: "Nunito", system-ui, sans-serif;
   --tamil: "Noto Serif Tamil", "Tamil MN", serif;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  /* Match lib/motionSpeed.ts MOTION_TIME */
+  --motion-time: 0.58;
 }
 
 *,
@@ -77,6 +79,7 @@ body {
   overflow: hidden;
   pointer-events: auto;
   will-change: transform;
+  backface-visibility: hidden;
   background: linear-gradient(165deg, var(--cream) 0%, var(--blush) 55%, var(--lilac) 100%);
 }
 
@@ -126,6 +129,251 @@ body {
   background: linear-gradient(165deg, var(--cream) 0%, var(--blush) 55%, var(--lilac) 100%);
 }
 
+.backdrop-ornaments {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.backdrop-ornaments--gate {
+  z-index: 0;
+}
+
+.backdrop-ornaments--main {
+  position: fixed;
+  z-index: 0;
+}
+
+.backdrop-ornaments__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  mix-blend-mode: multiply;
+}
+
+.backdrop-ornaments__dots {
+  position: absolute;
+  inset: -4%;
+  opacity: 0.22;
+  background-image: radial-gradient(circle, rgba(18, 18, 18, 0.14) 0.6px, transparent 0.7px);
+  background-size: 14px 14px;
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__dots {
+  opacity: 0.16;
+}
+
+.backdrop-ornaments__mesh {
+  position: absolute;
+  inset: 0;
+}
+
+.backdrop-ornaments__orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(36px);
+  pointer-events: none;
+}
+
+.backdrop-ornaments__orb--1 {
+  width: min(48vw, 12rem);
+  height: min(48vw, 12rem);
+  top: 6%;
+  left: 14%;
+  background: radial-gradient(circle, rgba(248, 214, 228, 0.55) 0%, transparent 70%);
+}
+
+.backdrop-ornaments__orb--2 {
+  width: min(42vw, 11rem);
+  height: min(42vw, 11rem);
+  right: 10%;
+  top: 20%;
+  background: radial-gradient(circle, rgba(214, 232, 218, 0.5) 0%, transparent 72%);
+}
+
+.backdrop-ornaments__orb--3 {
+  width: min(38vw, 10rem);
+  height: min(38vw, 10rem);
+  left: 8%;
+  bottom: 18%;
+  background: radial-gradient(circle, rgba(236, 208, 224, 0.48) 0%, transparent 70%);
+}
+
+.backdrop-ornaments__orb--4 {
+  width: min(36vw, 9rem);
+  height: min(36vw, 9rem);
+  right: 16%;
+  bottom: 10%;
+  background: radial-gradient(circle, rgba(248, 228, 210, 0.42) 0%, transparent 68%);
+}
+
+.backdrop-ornaments__orb--5 {
+  width: min(52vw, 13rem);
+  height: min(52vw, 13rem);
+  left: 38%;
+  top: 42%;
+  opacity: 0.65;
+  background: radial-gradient(circle, rgba(232, 218, 238, 0.38) 0%, transparent 74%);
+}
+
+.backdrop-ornaments__veil {
+  position: absolute;
+  width: min(70vw, 18rem);
+  height: min(52vw, 14rem);
+  border-radius: 50%;
+  filter: blur(28px);
+  opacity: 0.55;
+}
+
+.backdrop-ornaments__veil--tl {
+  top: -8%;
+  left: -16%;
+  background: radial-gradient(ellipse, rgba(240, 196, 216, 0.4) 0%, transparent 72%);
+}
+
+.backdrop-ornaments__veil--tr {
+  top: 4%;
+  right: -18%;
+  background: radial-gradient(ellipse, rgba(210, 228, 218, 0.38) 0%, transparent 70%);
+}
+
+.backdrop-ornaments__veil--bl {
+  bottom: 6%;
+  left: -12%;
+  background: radial-gradient(ellipse, rgba(232, 212, 228, 0.36) 0%, transparent 72%);
+}
+
+.backdrop-ornaments__veil--br {
+  bottom: -6%;
+  right: -14%;
+  background: radial-gradient(ellipse, rgba(247, 226, 206, 0.34) 0%, transparent 70%);
+}
+
+.backdrop-ornaments__frame {
+  position: absolute;
+  width: 5.5rem;
+  height: 5.5rem;
+  color: rgba(180, 148, 108, 0.55);
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__frame {
+  opacity: 0.72;
+}
+
+.backdrop-ornaments__frame--tl {
+  top: 10%;
+  left: 0.25rem;
+}
+
+.backdrop-ornaments__frame--br {
+  bottom: 12%;
+  right: 0.25rem;
+}
+
+.backdrop-ornaments__rule {
+  position: absolute;
+  left: 50%;
+  height: 1px;
+  transform: translateX(-50%);
+  background: linear-gradient(90deg, transparent, rgba(18, 18, 18, 0.08), transparent);
+}
+
+.backdrop-ornaments__rule--top {
+  top: 14%;
+  width: min(68vw, 16rem);
+}
+
+.backdrop-ornaments__rule--mid {
+  top: 48%;
+  width: min(82vw, 20rem);
+  opacity: 0.7;
+}
+
+.backdrop-ornaments__rule--bottom {
+  bottom: 16%;
+  width: min(72vw, 17rem);
+}
+
+.backdrop-ornaments__spark-field {
+  position: absolute;
+  inset: 0;
+}
+
+.backdrop-ornaments__pin {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: rgba(180, 148, 108, 0.55);
+  opacity: 0.65;
+}
+
+.backdrop-ornaments--main .backdrop-ornaments__pin {
+  opacity: 0.45;
+}
+
+.backdrop-ornaments-anim {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.backdrop-ornaments-anim__band {
+  position: absolute;
+  left: 50%;
+  top: 36%;
+  width: min(96vw, 24rem);
+  height: 1px;
+  translate: -50% 0;
+  background: linear-gradient(90deg, transparent, rgba(180, 148, 108, 0.35), transparent);
+  opacity: 0.75;
+}
+
+.backdrop-ornaments-anim__arc {
+  position: absolute;
+  width: 2.75rem;
+  height: auto;
+  color: rgba(180, 148, 108, 0.42);
+  opacity: 0.85;
+}
+
+.backdrop-ornaments-anim__arc--left {
+  left: 0;
+  top: 8%;
+}
+
+.backdrop-ornaments-anim__arc--right {
+  right: 0;
+  top: 10%;
+}
+
+.backdrop-ornaments-anim__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(42px);
+  opacity: 0.6;
+}
+
+.backdrop-ornaments-anim__glow--a {
+  width: min(44vw, 11rem);
+  height: min(44vw, 11rem);
+  top: 24%;
+  left: 6%;
+  background: radial-gradient(circle, rgba(248, 218, 232, 0.45) 0%, transparent 72%);
+}
+
+.backdrop-ornaments-anim__glow--b {
+  width: min(40vw, 10rem);
+  height: min(40vw, 10rem);
+  right: 4%;
+  bottom: 28%;
+  background: radial-gradient(circle, rgba(206, 228, 214, 0.42) 0%, transparent 70%);
+}
+
 .gate-static-florals {
   position: absolute;
   inset: 0;
@@ -133,12 +381,91 @@ body {
   pointer-events: none;
 }
 
-.gate-static-florals__img {
+.gate-static-florals__wrap {
   position: absolute;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.gate-static-florals__img {
+  display: block;
+  width: 100%;
   height: auto;
   filter: drop-shadow(0 8px 18px rgba(18, 18, 18, 0.06));
   user-select: none;
-  transform-origin: center center;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__orb {
+  animation: gate-orb-drift calc(8.5s * var(--motion-time)) ease-in-out infinite;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__orb--2 {
+  animation-duration: calc(7.2s * var(--motion-time));
+  animation-delay: 0.4s;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__orb--3 {
+  animation-duration: calc(9s * var(--motion-time));
+  animation-delay: 0.65s;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__orb--4 {
+  animation-duration: calc(7.8s * var(--motion-time));
+  animation-delay: 0.25s;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__orb--5 {
+  animation-duration: calc(10s * var(--motion-time));
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__veil {
+  animation: gate-veil-drift calc(11s * var(--motion-time)) ease-in-out infinite;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__veil--tr {
+  animation-duration: calc(9.5s * var(--motion-time));
+  animation-delay: 0.5s;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__pin {
+  animation: gate-pin-twinkle calc(4.5s * var(--motion-time)) ease-in-out infinite;
+}
+
+.backdrop-ornaments--gate .backdrop-ornaments__pin:nth-child(2n) {
+  animation-duration: calc(3.8s * var(--motion-time));
+  animation-delay: 0.3s;
+}
+
+@keyframes gate-orb-drift {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(14px, -12px);
+  }
+}
+
+@keyframes gate-veil-drift {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(10px, 8px) scale(1.03);
+  }
+}
+
+@keyframes gate-pin-twinkle {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.35);
+  }
 }
 
 .gate-scene__bloom {
@@ -199,15 +526,15 @@ body {
   height: auto;
   filter: drop-shadow(0 10px 22px rgba(18, 18, 18, 0.08));
   user-select: none;
-  animation: pressed-flower-float 6.5s ease-in-out infinite;
+  animation: pressed-flower-float calc(6.5s * var(--motion-time)) ease-in-out infinite;
 }
 
 .pressed-flower-wrap:nth-child(3n) .pressed-flower {
-  animation-duration: 5.2s;
+  animation-duration: calc(5.2s * var(--motion-time));
 }
 
 .pressed-flower-wrap:nth-child(3n + 1) .pressed-flower {
-  animation-duration: 7.2s;
+  animation-duration: calc(7.2s * var(--motion-time));
   animation-delay: 0.4s;
 }
 
@@ -696,6 +1023,59 @@ body {
   will-change: transform;
 }
 
+.main-floral__float {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(44px);
+  pointer-events: none;
+  opacity: 0.75;
+}
+
+.main-floral__float--a {
+  width: min(58vw, 15rem);
+  height: min(58vw, 15rem);
+  top: 16%;
+  left: 8%;
+  background: radial-gradient(circle, rgba(248, 218, 230, 0.5) 0%, transparent 72%);
+}
+
+.main-floral__float--b {
+  width: min(52vw, 13rem);
+  height: min(52vw, 13rem);
+  right: 6%;
+  bottom: 20%;
+  background: radial-gradient(circle, rgba(210, 232, 218, 0.45) 0%, transparent 70%);
+}
+
+.main-floral__float--c {
+  width: min(38vw, 9.5rem);
+  height: min(38vw, 9.5rem);
+  left: 44%;
+  top: 8%;
+  background: radial-gradient(circle, rgba(236, 210, 228, 0.4) 0%, transparent 70%);
+}
+
+.main-floral__float--d {
+  width: min(36vw, 9rem);
+  height: min(36vw, 9rem);
+  left: 12%;
+  bottom: 32%;
+  background: radial-gradient(circle, rgba(248, 228, 206, 0.38) 0%, transparent 68%);
+}
+
+.pressed-flower--ambient {
+  animation: pressed-flower-float calc(8s * var(--motion-time)) ease-in-out infinite;
+}
+
+.pressed-flower-layer--main .pressed-flower-wrap:nth-child(3n) .pressed-flower--ambient {
+  animation-duration: calc(6.5s * var(--motion-time));
+}
+
+.pressed-flower-layer--main .pressed-flower-wrap:nth-child(3n + 1) .pressed-flower--ambient {
+  animation-duration: calc(9s * var(--motion-time));
+  animation-delay: 0.35s;
+}
+
 .main-floral__blob--a {
   width: min(72vw, 18rem);
   height: min(72vw, 18rem);
@@ -718,6 +1098,21 @@ body {
   left: 22%;
   bottom: 6%;
   background: radial-gradient(circle, rgba(232, 212, 228, 0.48) 0%, transparent 72%);
+}
+
+.main-floral__blob--d {
+  width: min(56vw, 14rem);
+  height: min(56vw, 14rem);
+  top: 14%;
+  right: -6%;
+  background: radial-gradient(circle, rgba(244, 208, 222, 0.5) 0%, transparent 70%);
+}
+
+.main-floral__blob--e {
+  width: min(50vw, 12.5rem);
+  height: min(50vw, 12.5rem);
+  left: -4%;
+  background: radial-gradient(circle, rgba(200, 224, 208, 0.46) 0%, transparent 72%);
 }
 
 .falling-flowers {
@@ -888,6 +1283,33 @@ body {
   border-radius: 50%;
   background: radial-gradient(ellipse at center, rgba(247, 230, 218, 0.65) 0%, transparent 70%);
   pointer-events: none;
+}
+
+.scroll-motion__halo--soft {
+  top: auto;
+  bottom: 26%;
+  width: min(94vw, 24rem);
+  height: min(56vw, 14rem);
+  background: radial-gradient(ellipse at center, rgba(232, 212, 228, 0.5) 0%, transparent 72%);
+}
+
+.scroll-motion__corner {
+  position: absolute;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 1px solid rgba(18, 18, 18, 0.06);
+  border-radius: 50%;
+  opacity: 0.72;
+}
+
+.scroll-motion__corner--tl {
+  top: 14%;
+  left: 1rem;
+}
+
+.scroll-motion__corner--br {
+  bottom: 18%;
+  right: 1rem;
 }
 
 .scroll-motion__arch {
@@ -1117,22 +1539,6 @@ body {
   height: auto;
   filter: drop-shadow(0 4px 10px rgba(18, 18, 18, 0.04));
   user-select: none;
-  animation: frame-floral-drift 9s ease-in-out infinite;
-}
-
-.frame-florals__img:nth-child(2n) {
-  animation-duration: 11s;
-  animation-delay: 0.6s;
-}
-
-@keyframes frame-floral-drift {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -5px;
-  }
 }
 
 .chapter__frame--blush {

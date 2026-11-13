@@ -1,5 +1,7 @@
 "use client";
 
+import { AnimatedBackdropOrnaments } from "@/components/ambient/AnimatedBackdropOrnaments";
+import { BackdropOrnaments } from "@/components/ambient/BackdropOrnaments";
 import { PressedFlowerField } from "@/components/floral/PressedFlowerField";
 import { MainFloralBackdrop } from "@/components/scroll/MainFloralBackdrop";
 import { MAIN_FLOWERS } from "@/lib/pressedFlowers";
@@ -17,9 +19,11 @@ export function EngagementScroll() {
       className="scroll-root scroll-root--plain"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ duration: 0.45 }}
+      transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
     >
       <MainFloralBackdrop container={scrollRef} />
+      <BackdropOrnaments variant="main" />
+      <AnimatedBackdropOrnaments container={scrollRef} />
       <PressedFlowerField
         flowers={MAIN_FLOWERS}
         container={scrollRef}

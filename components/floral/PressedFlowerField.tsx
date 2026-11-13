@@ -1,6 +1,7 @@
 "use client";
 
 import type { FlowerPlace } from "@/lib/pressedFlowers";
+import { T } from "@/lib/motionSpeed";
 import {
   motion,
   useMotionValue,
@@ -37,25 +38,34 @@ function FlowerSprite({
 }) {
   const time = useTime();
 
-  const spread = useTransform(progress, (p) => 1 + zoomPhase(p) * (0.22 + place.depth * 0.4));
-  const driftX = useTransform([progress, time], ([p, t]) => {
+  const spread = useTransform([progress, time], ([p, t]) => {
+    const zoom = 1 + zoomPhase(p as number) * (0.22 + place.depth * 0.4);
+    const breathe = ambient ? 1 + Math.sin((t as number) / T(4500) + place.delay) * 0.04 : 1;
+    return zoom * breathe;
+  });
+
+  const driftX = useTransform([progress, scrollY, time], ([p, s, t]) => {
     const z = zoomPhase(p as number);
     const scrollDrift = ((place.x - 48) * z * 2.4) / 1;
-    const wave = ambient ? Math.sin((t as number) / 4200 + place.delay * 2) * (6 + place.depth * 4) : 0;
-    return scrollDrift + wave;
+    const parallax = ambient ? ((s as number) - 0.5) * (18 + place.depth * 24) : 0;
+    const wave = ambient ? Math.sin((t as number) / T(3600) + place.delay * 2) * (12 + place.depth * 6) : 0;
+    return scrollDrift + parallax + wave;
   });
+
   const driftY = useTransform([progress, scrollY, time], ([p, s, t]) => {
     const z = zoomPhase(p as number);
     const dy = ((place.y - 48) * z * 2.0) / 1;
-    const parallax = ((s as number) * (12 + place.depth * 28)) / 1;
-    const wave = ambient ? Math.cos((t as number) / 5000 + place.delay) * (5 + place.depth * 5) : 0;
+    const parallax = ((s as number) * (22 + place.depth * 38)) / 1;
+    const wave = ambient ? Math.cos((t as number) / T(4200) + place.delay) * (10 + place.depth * 7) : 0;
     return dy - parallax + wave;
   });
+
   const sway = useTransform([scrollY, time], ([s, t]) => {
-    const scrollSway = (s as number) * place.float * 0.35;
-    const idle = ambient ? Math.sin((t as number) / 3800 + place.delay) * 2.5 : 0;
+    const scrollSway = (s as number) * place.float * 0.5;
+    const idle = ambient ? Math.sin((t as number) / T(3200) + place.delay) * 4 : 0;
     return place.rot + scrollSway + idle;
   });
+
   const zPx = useTransform(progress, (p) => zoomPhase(p) * (40 + place.depth * 220));
 
   return (
@@ -77,7 +87,7 @@ function FlowerSprite({
       <img
         src={place.src}
         alt=""
-        className="pressed-flower"
+        className={ambient ? "pressed-flower pressed-flower--ambient" : "pressed-flower"}
         width={place.naturalW}
         height={place.naturalH}
         loading="eager"
@@ -107,7 +117,7 @@ export function PressedFlowerField({
   const prog = progress ?? fallback;
 
   const { scrollYProgress } = useScroll({ container });
-  const smoothScroll = useSpring(scrollYProgress, { stiffness: 70, damping: 24, mass: 0.4 });
+  const smoothScroll = useSpring(scrollYProgress, { stiffness: 64, damping: 22, mass: 0.38 });
 
   useEffect(() => {
     if (!preload) return;

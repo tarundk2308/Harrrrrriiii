@@ -4,8 +4,20 @@ import { GateScene } from "@/components/gate/GateScene";
 import { motion, useReducedMotion } from "framer-motion";
 import { useCallback, useState } from "react";
 
-const SPLIT_S = 0.92;
-const SPLIT_EASE = [0.45, 0, 0.18, 1] as const;
+const SPLIT_DURATION = 1.15;
+const SPLIT_EASE = [0.32, 0.72, 0, 1] as const;
+
+const panelTransition = (reduce: boolean) => ({
+  x: {
+    duration: reduce ? 0.01 : SPLIT_DURATION,
+    ease: SPLIT_EASE,
+  },
+  opacity: {
+    duration: reduce ? 0.01 : 0.55,
+    delay: reduce ? 0 : 0.42,
+    ease: [0.33, 1, 0.68, 1] as const,
+  },
+});
 
 export function LotusGate({
   onPreload,
@@ -32,7 +44,7 @@ export function LotusGate({
   const finish = useCallback(() => {
     if (!opening || done) return;
     setDone(true);
-    window.setTimeout(() => onExit(), 40);
+    window.setTimeout(() => onExit(), 80);
   }, [done, onExit, opening]);
 
   if (done) return null;
@@ -42,8 +54,8 @@ export function LotusGate({
       <motion.div
         className="lotus-gate__panel lotus-gate__panel--left"
         initial={false}
-        animate={{ x: opening ? "-100%" : "0%" }}
-        transition={{ duration: reduce ? 0.01 : SPLIT_S, ease: SPLIT_EASE }}
+        animate={{ x: opening ? "-100%" : "0%", opacity: opening ? 0 : 1 }}
+        transition={panelTransition(!!reduce)}
         onAnimationComplete={() => {
           if (opening) finish();
         }}
@@ -56,15 +68,21 @@ export function LotusGate({
       <motion.div
         className="lotus-gate__panel lotus-gate__panel--right"
         initial={false}
-        animate={{ x: opening ? "100%" : "0%" }}
-        transition={{ duration: reduce ? 0.01 : SPLIT_S, ease: SPLIT_EASE }}
+        animate={{ x: opening ? "100%" : "0%", opacity: opening ? 0 : 1 }}
+        transition={panelTransition(!!reduce)}
       >
         <div className="lotus-gate__panel-view lotus-gate__panel-view--right">
           <GateScene onOpen={open} disabled={opening} />
         </div>
       </motion.div>
 
-      <span className="lotus-gate__seam" aria-hidden="true" />
+      <motion.span
+        className="lotus-gate__seam"
+        aria-hidden="true"
+        initial={false}
+        animate={{ opacity: opening ? 0 : 1, scaleY: opening ? 0.6 : 1 }}
+        transition={{ duration: reduce ? 0.01 : 0.5, ease: "easeOut" }}
+      />
     </div>
   );
 }

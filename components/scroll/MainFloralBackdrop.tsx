@@ -1,46 +1,74 @@
 "use client";
 
+import { T } from "@/lib/motionSpeed";
 import { motion, useScroll, useSpring, useTime, useTransform } from "framer-motion";
 import type { RefObject } from "react";
 
 export function MainFloralBackdrop({ container }: { container: RefObject<HTMLElement | null> }) {
   const { scrollYProgress } = useScroll({ container });
-  const smooth = useSpring(scrollYProgress, { stiffness: 65, damping: 22, mass: 0.38 });
+  const smooth = useSpring(scrollYProgress, { stiffness: 58, damping: 20, mass: 0.42 });
   const time = useTime();
 
-  const driftX = useTransform(time, (t) => Math.sin(t / 4500) * 14);
-  const driftY = useTransform(time, (t) => Math.cos(t / 5200) * 12);
+  const driftX = useTransform(time, (t) => Math.sin(t / T(3800)) * 28);
+  const driftY = useTransform(time, (t) => Math.cos(t / T(4200)) * 24);
 
-  const washScale = useTransform(smooth, [0, 0.42, 1], [1, 1.14, 0.98]);
+  const washScale = useTransform([smooth, time], ([s, t]) => {
+    const breathe = 1 + Math.sin((t as number) / T(5500)) * 0.045;
+    const scroll = 1 + (s as number) * 0.12;
+    return breathe * scroll;
+  });
   const washRotate = useTransform(
     [smooth, time],
-    ([s, t]) => (s as number) * 9 + Math.sin((t as number) / 6000) * 3,
+    ([s, t]) => (s as number) * 11 + Math.sin((t as number) / T(5200)) * 6,
   );
 
   const blobAy = useTransform([smooth, time], ([s, t]) => {
-    const scroll = (s as number) * 16;
-    const wave = Math.sin((t as number) / 4000) * 10;
+    const scroll = (s as number) * 22;
+    const wave = Math.sin((t as number) / T(3200)) * 18;
     return `${scroll + wave}%`;
   });
   const blobAx = useTransform([smooth, time], ([s, t]) => {
-    return `${(s as number) * 14 + Math.cos((t as number) / 4800) * 8}%`;
+    return `${(s as number) * 18 + Math.cos((t as number) / T(3600)) * 14}%`;
   });
-  const blobARotate = useTransform([smooth, time], ([s, t]) => (s as number) * 24 + Math.sin((t as number) / 7000) * 6);
+  const blobARotate = useTransform([smooth, time], ([s, t]) => (s as number) * 28 + Math.sin((t as number) / T(6000)) * 10);
 
   const blobBy = useTransform([smooth, time], ([s, t]) => {
-    const base = 8 - (s as number) * 14;
-    return `${base + Math.sin((t as number) / 5200) * 9}%`;
+    const base = 8 - (s as number) * 18;
+    return `${base + Math.sin((t as number) / T(4100)) * 16}%`;
   });
   const blobBx = useTransform([smooth, time], ([s, t]) => {
-    return `${-(s as number) * 16 + Math.cos((t as number) / 4400) * 7}%`;
+    return `${-(s as number) * 20 + Math.cos((t as number) / T(3900)) * 12}%`;
   });
-  const blobBRotate = useTransform([smooth, time], ([s, t]) => -(s as number) * 18 + Math.cos((t as number) / 6500) * 5);
+  const blobBRotate = useTransform([smooth, time], ([s, t]) => -(s as number) * 22 + Math.cos((t as number) / T(5800)) * 8);
 
   const blobCy = useTransform([smooth, time], ([s, t]) => {
-    return `${-6 + (s as number) * 22 + Math.sin((t as number) / 5800) * 8}%`;
+    return `${-6 + (s as number) * 26 + Math.sin((t as number) / T(4500)) * 14}%`;
   });
   const blobCx = useTransform([smooth, time], ([s, t]) => {
-    return `${(s as number) * 8 - Math.sin((t as number) / 5000) * 6}%`;
+    return `${(s as number) * 11 - Math.sin((t as number) / T(4700)) * 11}%`;
+  });
+
+  const floatAx = useTransform(time, (t) => Math.sin(t / T(3000)) * 36);
+  const floatAy = useTransform(time, (t) => Math.cos(t / T(3400)) * 28);
+  const floatBx = useTransform(time, (t) => Math.cos(t / T(3600)) * -32);
+  const floatBy = useTransform(time, (t) => Math.sin(t / T(3100)) * 30);
+  const floatCx = useTransform(time, (t) => Math.sin(t / T(4100)) * 24);
+  const floatCy = useTransform(time, (t) => Math.cos(t / T(3800)) * 20);
+  const floatDx = useTransform(time, (t) => Math.cos(t / T(3300)) * -28);
+  const floatDy = useTransform(time, (t) => Math.sin(t / T(4600)) * 22);
+
+  const blobDy = useTransform([smooth, time], ([s, t]) => {
+    return `${14 - (s as number) * 12 + Math.sin((t as number) / T(5000)) * 12}%`;
+  });
+  const blobDx = useTransform([smooth, time], ([s, t]) => {
+    return `${78 + (s as number) * 8 + Math.cos((t as number) / T(4400)) * 10}%`;
+  });
+  const blobERotate = useTransform([smooth, time], ([s, t]) => (s as number) * -18 + Math.cos((t as number) / T(6400)) * 9);
+  const blobEy = useTransform([smooth, time], ([s, t]) => {
+    return `${62 + (s as number) * 16 + Math.sin((t as number) / T(4300)) * 14}%`;
+  });
+  const blobEx = useTransform([smooth, time], ([s, t]) => {
+    return `${-8 - (s as number) * 6 + Math.cos((t as number) / T(4900)) * 12}%`;
   });
 
   return (
@@ -49,6 +77,10 @@ export function MainFloralBackdrop({ container }: { container: RefObject<HTMLEle
         className="main-floral__wash"
         style={{ scale: washScale, rotate: washRotate, x: driftX, y: driftY }}
       />
+      <motion.div className="main-floral__float main-floral__float--a" style={{ x: floatAx, y: floatAy }} />
+      <motion.div className="main-floral__float main-floral__float--b" style={{ x: floatBx, y: floatBy }} />
+      <motion.div className="main-floral__float main-floral__float--c" style={{ x: floatCx, y: floatCy }} />
+      <motion.div className="main-floral__float main-floral__float--d" style={{ x: floatDx, y: floatDy }} />
       <motion.div
         className="main-floral__blob main-floral__blob--a"
         style={{ y: blobAy, x: blobAx, rotate: blobARotate }}
@@ -61,6 +93,11 @@ export function MainFloralBackdrop({ container }: { container: RefObject<HTMLEle
         className="main-floral__blob main-floral__blob--c"
         style={{ y: blobCy, x: blobCx, scale: washScale }}
       />
+      <motion.div
+        className="main-floral__blob main-floral__blob--d"
+        style={{ y: blobDy, x: blobDx, rotate: blobERotate }}
+      />
+      <motion.div className="main-floral__blob main-floral__blob--e" style={{ y: blobEy, x: blobEx, rotate: blobERotate }} />
     </div>
   );
 }

@@ -1,7 +1,10 @@
 "use client";
 
+import { BackdropOrnaments } from "@/components/ambient/BackdropOrnaments";
 import { GateStaticFlorals } from "@/components/gate/GateStaticFlorals";
 import { invite } from "@/lib/invite";
+import { T } from "@/lib/motionSpeed";
+import { motion, useTime, useTransform } from "framer-motion";
 
 const LOTUS_SRC = "/images/lotus-reference.png";
 
@@ -12,21 +15,42 @@ export function GateScene({
   onOpen: () => void;
   disabled?: boolean;
 }) {
+  const time = useTime();
+  const lotusY = useTransform(time, (t) => Math.sin(t / T(5000)) * 10);
+  const lotusScale = useTransform(time, (t) => 1 + Math.sin(t / T(5600)) * 0.018);
+  const cardY = useTransform(time, (t) => Math.cos(t / T(4800)) * 5);
+  const ctaGlow = useTransform(time, (t) => 0.92 + Math.sin(t / T(2200)) * 0.08);
+
   return (
     <div className="gate-scene">
       <div className="gate-scene__bg" aria-hidden="true" />
+      <BackdropOrnaments variant="gate" />
       <GateStaticFlorals />
       <div className="gate-scene__bloom">
-        <img src={LOTUS_SRC} alt="" className="gate-scene__lotus" width={800} height={800} decoding="async" />
+        <motion.img
+          src={LOTUS_SRC}
+          alt=""
+          className="gate-scene__lotus"
+          width={800}
+          height={800}
+          decoding="async"
+          style={{ y: lotusY, scale: lotusScale }}
+        />
       </div>
       <div className="gate-scene__ui">
-        <div className="lotus-gate__card">
+        <motion.div className="lotus-gate__card" style={{ y: cardY }}>
           <p className="lotus-gate__monogram">{invite.monogram}</p>
           <p className="lotus-gate__sub">{invite.eventTitle}</p>
-          <button type="button" className="lotus-gate__cta" onClick={onOpen} disabled={disabled}>
+          <motion.button
+            type="button"
+            className="lotus-gate__cta"
+            onClick={onOpen}
+            disabled={disabled}
+            style={{ scale: disabled ? 1 : ctaGlow }}
+          >
             {invite.gateCta}
-          </button>
-        </div>
+          </motion.button>
+        </motion.div>
       </div>
       {!disabled ? (
         <button type="button" className="lotus-gate__hit" aria-label={invite.gateCta} onClick={onOpen} />
