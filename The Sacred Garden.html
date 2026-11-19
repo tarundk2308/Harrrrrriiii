@@ -2157,6 +2157,10 @@
                 pointer-events: none;
             }
             /* Watercolor splash behind each event card — spans art + info */
+            @keyframes wcPulse {
+                0%, 100% { opacity: var(--wc-op-hi); }
+                50%       { opacity: var(--wc-op-lo); }
+            }
             .ss-ev-wc-bg {
                 position: absolute;
                 top: 50%;
@@ -2166,22 +2170,27 @@
                 transform: translateY(-50%);
                 object-fit: contain;
                 z-index: 0;
-                opacity: 0.22;
                 pointer-events: none;
                 filter: blur(3px) saturate(1.3);
                 mix-blend-mode: multiply;
                 border-radius: 50%;
+                --wc-op-hi: 0.18;
+                --wc-op-lo: 0.09;
+                opacity: var(--wc-op-hi);
+                animation: wcPulse 5s ease-in-out infinite;
             }
-            /* Blue watercolor for church — transparent PNG, no multiply needed */
+            /* Blue watercolor for church */
             .ss-ev-card--flip .ss-ev-wc-bg {
                 mix-blend-mode: normal;
-                opacity: 0.30;
+                --wc-op-hi: 0.24;
+                --wc-op-lo: 0.12;
                 filter: blur(2px) saturate(1.1);
             }
-            /* Yellow watercolor for muhurtham — transparent PNG */
+            /* Yellow watercolor for muhurtham */
             .ss-ev-card:first-of-type .ss-ev-wc-bg {
                 mix-blend-mode: normal;
-                opacity: 0.28;
+                --wc-op-hi: 0.22;
+                --wc-op-lo: 0.10;
                 filter: blur(2px) saturate(1.2);
             }
 
