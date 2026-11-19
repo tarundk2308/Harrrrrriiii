@@ -22,6 +22,12 @@
                 margin: 0;
                 padding: 0;
                 background: #f9f0e0;
+                font-size: 16px;
+            }
+
+            /* Mobile: boost all clamp-based sizes by using a larger base vw */
+            @media screen and (max-width: 480px) {
+                html { font-size: 17px; }
             }
 
             body {
@@ -136,10 +142,10 @@
 
             #weiTapLabel {
                 font-family: 'Cinzel', Georgia, serif;
-                font-size: 11px;
+                font-size: 16px;
                 letter-spacing: 0.26em;
                 text-transform: uppercase;
-                color: rgba(140, 100, 60, 0.75);
+                color: rgba(140, 100, 60, 0.95);
                 animation: weiPulse 2.4s 1.6s ease-in-out infinite;
                 white-space: nowrap;
             }
@@ -273,7 +279,7 @@
 
             #ssHero .ss-hero-frame {
                 position: relative;
-                width: min(390px, 90vw);
+                width: min(480px, 96vw);
                 margin: 0 auto;
                 aspect-ratio: 504 / 819;   /* matches the new frame artwork */
                 opacity: 0;
@@ -395,9 +401,9 @@
             #ssHero .ss-hero-names .ss-atom,
             #ssHero .ss-hero-names-b .ss-atom {
                 color: #5a3822;
-                font-size: clamp(22px, 5.8vw, 36px);
+                font-size: clamp(16px, 4.2vw, 26px);
                 font-family: 'Cormorant Garamond', Georgia, serif;
-                line-height: 1.1;
+                line-height: 1.2;
                 font-weight: 400;
                 margin: 0;
             }
@@ -535,7 +541,7 @@
             }
 
             @media screen and (max-width: 479px) {
-                #ssHero .ss-hero-frame { width: min(340px, 94vw); }
+                #ssHero .ss-hero-frame { width: min(420px, 96vw); }
             }
 
             @media (prefers-reduced-motion: reduce) {
@@ -732,7 +738,6 @@
                 }
 
                 function endSequence() {
-                    sunRayReveal();
                     document.body.classList.add('wei-revealed');
                     /* if we got here via a video error the overlay may still be
                        up — clear it, or it would strand the guest on a dead frame */
@@ -790,9 +795,9 @@
                 <canvas id="ssPetalCanvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;"></canvas>
                 <div class="ss-hero-copy">
                     <div class="ss-hero-kicker"><div class="ss-atom">The wedding of</div></div>
-                    <div class="ss-hero-names"><div class="ss-atom">Hariharan</div></div>
+                    <div class="ss-hero-names"><div class="ss-atom">Hariharan Agilan</div></div>
                     <div class="ss-hero-weds"><div class="ss-atom">weds</div></div>
-                    <div class="ss-hero-names-b"><div class="ss-atom">Sharon</div></div>
+                    <div class="ss-hero-names-b"><div class="ss-atom">Sharon Belinda Benedict</div></div>
                 </div>
             </div>
             <div class="ss-hero-scroll">
@@ -1103,21 +1108,23 @@
                 text-shadow: none;
             }
 
-            #ssRevealWrap .ss-sd-full {
+            .ss-sd-day-label {
                 font-family: 'Marcellus', Georgia, serif;
-                font-weight: 400;
-                font-size: clamp(28px, 7vw, 42px);
-                line-height: 1.1;
-                letter-spacing: 0.14em;
-                text-indent: 0.14em;
-                white-space: nowrap;
+                font-size: clamp(13px, 3vw, 17px);
+                letter-spacing: 0.28em;
+                text-transform: uppercase;
+                color: #9b6e2a;
+                margin-bottom: 6px;
             }
 
-            #ssRevealWrap .ss-sd-time {
+            #ssRevealWrap .ss-sd-full {
                 font-family: 'Cormorant Garamond', Georgia, serif;
+                font-weight: 400;
                 font-style: italic;
-                font-size: 21px;
-                line-height: 1.2;
+                font-size: clamp(32px, 9vw, 52px);
+                line-height: 1.1;
+                letter-spacing: 0.04em;
+                color: #5a3822;
             }
 
             /* Scratch card canvas sits on top */
@@ -1376,9 +1383,8 @@
             <div id="ssRevealWrap">
                 <!-- Date content shown beneath the scratch surface -->
                 <div class="ss-sd-under ss-sd-revealed-content">
-                    <div class="ss-sd-full">THURSDAY</div>
-                    <div class="ss-sd-time">28th January 2027</div>
-                    <div class="ss-sd-subtime">9:00 AM · 3:30 PM · 7:00 PM</div>
+                    <div class="ss-sd-day-label">Thursday</div>
+                    <div class="ss-sd-full">28th January 2027</div>
                 </div>
                 <!-- Red scratch surface canvas -->
                 <canvas id="ssScratchCanvas" aria-label="Scratch to reveal the date"></canvas>
@@ -1396,7 +1402,7 @@
                     <span class="ss-hint-label">Scratch to reveal</span>
                 </div>
             </div>
-            <button type="button" id="ssRevealBtn">Reveal the date</button>
+            <!-- Reveal button removed -->
         </div>
         <script>
         (function(){
@@ -1426,44 +1432,33 @@
             }
 
             function drawSurface(){
-                // Red scratch card surface
+                // Rich dark red surface
                 var grad = ctx.createLinearGradient(0,0,W,H);
-                grad.addColorStop(0,   '#8b1a1a');
-                grad.addColorStop(0.4, '#c0392b');
-                grad.addColorStop(0.65,'#e74c3c');
-                grad.addColorStop(1,   '#922b21');
+                grad.addColorStop(0,   '#5c0a0a');
+                grad.addColorStop(0.35,'#8b1a1a');
+                grad.addColorStop(0.65,'#a52020');
+                grad.addColorStop(1,   '#6b0d0d');
                 ctx.fillStyle = grad;
                 ctx.fillRect(0,0,W,H);
 
-                // Subtle texture lines
+                // Subtle sheen
                 ctx.save();
-                ctx.globalAlpha = 0.07;
-                ctx.strokeStyle = '#fff';
+                ctx.globalAlpha = 0.06;
+                ctx.strokeStyle = '#ffcccc';
                 ctx.lineWidth = 0.8;
-                for(var i=0;i<W;i+=8){
+                for(var i=0;i<W;i+=10){
                     ctx.beginPath();
                     ctx.moveTo(i,0); ctx.lineTo(i,H);
                     ctx.stroke();
                 }
                 ctx.restore();
 
-                // "Scratch here" text
+                // Decorative gold border
                 ctx.save();
-                ctx.globalAlpha = 0.55;
-                ctx.fillStyle = '#fff';
-                ctx.font = 'bold ' + Math.round(H*0.09) + 'px Marcellus, Georgia, serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.letterSpacing = '0.12em';
-                ctx.fillText('✦  Scratch to Reveal  ✦', W/2, H/2);
-                ctx.restore();
-
-                // Decorative border
-                ctx.save();
-                ctx.globalAlpha = 0.3;
-                ctx.strokeStyle = '#ffe082';
+                ctx.globalAlpha = 0.4;
+                ctx.strokeStyle = '#c9a84c';
                 ctx.lineWidth = 2;
-                ctx.strokeRect(8, 8, W-16, H-16);
+                ctx.strokeRect(10, 10, W-20, H-20);
                 ctx.restore();
             }
 
@@ -1883,11 +1878,12 @@
                             }
 
                             if (!saveDate) {
-                                goLive();
+                                // always wait for scratch reveal
+                                document.addEventListener('ss:date-revealed', goLive, { once: true });
                             } else if (dateIsOut()) {
                                 goLive();
                             } else {
-                                document.addEventListener('ss:date-revealed', goLive);
+                                document.addEventListener('ss:date-revealed', goLive, { once: true });
                                 var poll = setInterval(function() {
                                     if (dateIsOut()) { clearInterval(poll); goLive(); }
                                 }, 400);
@@ -1994,14 +1990,16 @@
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
-                align-items: center;
-                justify-content: space-between;
-                gap: clamp(12px, 3.4vw, 40px);
-                max-width: 980px;
+                align-items: flex-start;
+                justify-content: flex-start;
+                gap: clamp(16px, 4vw, 36px);
+                max-width: 600px;
+                width: 100%;
                 margin: 0 auto;
-                padding: 0 clamp(4px, 2vw, 24px);
+                padding: 0 clamp(16px, 4vw, 32px);
                 opacity: 0;
                 transform: translateY(22px);
+                box-sizing: border-box;
             }
 
             #ssEvents .ss-ev-card.ss-in-view {
@@ -2009,7 +2007,9 @@
             }
 
             #ssEvents .ss-ev-info {
-                max-width: 46%;
+                flex: 1 1 0;
+                min-width: 0;
+                padding-top: 2px;
             }
 
             @keyframes ssEvIn {
@@ -2017,8 +2017,8 @@
             }
 
             #ssEvents .ss-ev-art {
-                flex: 0 0 min(220px, 48%);
-                width: min(220px, 48%);
+                flex: 0 0 min(170px, 46vw);
+                width: min(170px, 46vw);
                 min-width: 0;
             }
 
@@ -2039,9 +2039,9 @@
 
             #ssEvents .ss-ev-name {
                 font-family: 'Marcellus', Georgia, serif;
-                font-size: clamp(17px, 4.4vw, 33px);
-                letter-spacing: 0.13em;
-                text-indent: 0.13em;
+                font-size: clamp(18px, 5vw, 28px);
+                letter-spacing: 0.1em;
+                text-indent: 0.1em;
                 text-transform: uppercase;
                 color: #a67d2b;
                 line-height: 1.25;
@@ -2059,7 +2059,7 @@
             #ssEvents .ss-ev-date {
                 font-family: 'Cormorant Garamond', Georgia, serif;
                 font-weight: 400;
-                font-size: clamp(13px, 3.4vw, 23px);
+                font-size: clamp(15px, 4vw, 20px);
                 letter-spacing: 0.03em;
                 color: #6c513f;
                 line-height: 1.35;
@@ -2070,7 +2070,7 @@
                 font-family: 'Cormorant Garamond', Georgia, serif;
                 font-style: italic;
                 font-weight: 300;
-                font-size: clamp(12px, 3.1vw, 21px);
+                font-size: clamp(14px, 3.8vw, 20px);
                 color: #8a6b4f;
                 line-height: 1.35;
                 margin: 5px 0 0;
@@ -2090,7 +2090,7 @@
             #ssEvents .ss-ev-venue {
                 font-family: 'Cormorant Garamond', Georgia, serif;
                 font-weight: 400;
-                font-size: clamp(12px, 3.2vw, 21px);
+                font-size: clamp(13px, 3.5vw, 18px);
                 color: #6c513f;
                 line-height: 1.4;
                 margin: 0;
@@ -2142,8 +2142,8 @@
             }
 
             #ssEvents .ss-ev-card--flip .ss-ev-info {
-                margin-left: clamp(6px, 3.5vw, 56px);
-                margin-right: auto;
+                margin-left: 0;
+                margin-right: 0;
             }
 
             @media screen and (max-width: 639px) {
@@ -2666,13 +2666,7 @@
                 t++;
                 ctx.clearRect(0,0,W,H);
                 // ---- scene ----
-                drawMandap();
-                drawTopBeam();
-                drawBananaLeaves();
-                drawBrassLamp(W*0.22, H*0.78, 0.9, t*0.12);
-                drawBrassLamp(W*0.78, H*0.78, 0.9, t*0.12+1.5);
-                // drawHomaKund(); // removed per user request
-                drawKolam();
+                drawTopBeam(); // marigold garland swags only
                 // ---- particles ----
                 particles.forEach(function(p){
                     if(p.type==='jasmine')     drawJasmine(p.x,p.y,p.r,p.alpha,p.angle);
@@ -4082,7 +4076,7 @@
                         <img src="/image/gallery-1.jpg" alt="Hariharan and Sharon" draggable="false"/>
                     </figure>
                 </div>
-                <img class="ss-ga-seal" src="/image/wax-seal-flower.png" alt="" aria-hidden="true"/>
+                <img class="ss-ga-seal" src="/image/wax-seal-hs.jpg" alt="" aria-hidden="true"/>
             </div>
         </section>
 
