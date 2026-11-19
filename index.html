@@ -1430,7 +1430,7 @@
                 </div>
             </div>
 
-            <div id="ssCountdown" aria-hidden="true" style="margin-top:40px; display:none;">
+            <div id="ssCountdown" aria-hidden="false" style="margin-top:40px; display:block;">
                         <div id="countdownContainer">
                             <div class="time-block" id="tb-days">
                                 <div class="number-wrap">
@@ -1634,23 +1634,11 @@
                             tick();
                             setInterval(tick, 1000);
 
-                            /* Show countdown after scratch reveal */
-                            function showCD() {
-                                root.setAttribute('style', 'margin-top:40px; display:block;');
-                                root.setAttribute('aria-hidden', 'false');
-                                root.classList.add('ss-cd-live'); /* makes .time-block children fade in */
-                                /* also mark numbers + labels as revealed so their opacity animates in */
-                                root.querySelectorAll('.number, .label').forEach(function(el) {
-                                    el.classList.add('revealed');
-                                });
-                            }
-
-                            document.addEventListener('ss:date-revealed', showCD, { once: true });
-                            /* fallback: if page already in revealed state */
-                            (function checkAlready(){
-                                var sd = document.getElementById('ssSaveDate');
-                                if (sd && sd.classList.contains('ss-revealed')) showCD();
-                            })();
+                            /* Countdown is always visible — activate immediately */
+                            root.classList.add('ss-cd-live');
+                            root.querySelectorAll('.number, .label').forEach(function(el) {
+                                el.classList.add('revealed');
+                            });
                         })();
                     </script>
         <!-- ==================== COUNTDOWN (FINAL SECTION) ==================== -->
@@ -2187,6 +2175,12 @@
                 opacity: 0.30;
                 filter: blur(2px) saturate(1.1);
             }
+            /* Yellow watercolor for muhurtham — transparent PNG */
+            .ss-ev-card:first-of-type .ss-ev-wc-bg {
+                mix-blend-mode: normal;
+                opacity: 0.28;
+                filter: blur(2px) saturate(1.2);
+            }
 
             /* Church arch background */
             .ss-church-arch {
@@ -2214,7 +2208,7 @@
             </div>
 
             <div class="ss-ev-card">
-                <img class="ss-ev-wc-bg" src="/image/watercolor-bg.jpg" aria-hidden="true" alt=""/>
+                <img class="ss-ev-wc-bg" src="/image/watercolor-yellow.png" aria-hidden="true" alt=""/>
                 <div class="ss-ev-art">
                     <div class="ss-muh-wrap">
                         <canvas class="ss-muh-canvas" id="ssMuhCanvas" aria-hidden="true"></canvas>
