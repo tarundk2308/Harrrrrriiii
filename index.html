@@ -311,8 +311,8 @@
                the arch (roughly 20–68% from top) using flex. */
             #ssHero .ss-hero-copy {
                 position: absolute;
-                top: 30%;
-                bottom: 22%;   /* keeps copy clear of the elephants / water */
+                top: 24%;
+                bottom: 24%;   /* keeps copy clear of the elephants / water */
                 left: 18%;
                 right: 18%;
                 display: flex;
@@ -358,10 +358,22 @@
                 text-align: center;
             }
 
-            #ssHero .ss-hero-tail-paper {
-                display: block;
-                width: 100%;
+            #ssHero .ss-hero-tail-paper { display: none; }
+
+            .ss-quote-brush {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -48%);
+                width: 130%;
                 height: auto;
+                z-index: 0;
+                pointer-events: none;
+                opacity: 0.18;
+            }
+            #ssHero .ss-hero-quote .ss-atom {
+                position: relative;
+                z-index: 1;
             }
 
             #ssHero .ss-hero-tail .ss-hero-quote,
@@ -825,8 +837,8 @@
                     </div>
                 </div>
             <div class="ss-hero-tail">
-                <img class="ss-hero-tail-paper" src="/image/paper.webp" alt="" aria-hidden="true">
-                <div class="ss-hero-quote ss-fadein">
+                <div class="ss-hero-quote ss-fadein" style="position:relative;">
+                    <img class="ss-quote-brush" src="/image/red-brush.png" aria-hidden="true" alt=""/>
                     <div class="ss-atom">
                         Two Souls <br/>One Destiny
                         <span class="ss-quote-sub">A bond blessed for seven lifetimes</span>
