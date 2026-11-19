@@ -1417,6 +1417,39 @@
                     <span class="ss-hint-label">Scratch to reveal the date</span>
                 </div>
             </div>
+
+            <div id="ssCountdown" aria-hidden="true" style="margin-top:40px;">
+                        <div id="countdownContainer">
+                            <div class="time-block" id="tb-days">
+                                <div class="number-wrap">
+                                    <div class="number" id="days">168</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Days</div>
+                            </div>
+                            <div class="time-block" id="tb-hours">
+                                <div class="number-wrap">
+                                    <div class="number" id="hours">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Hours</div>
+                            </div>
+                            <div class="time-block" id="tb-mins">
+                                <div class="number-wrap">
+                                    <div class="number" id="minutes">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Minutes</div>
+                            </div>
+                            <div class="time-block" id="tb-secs">
+                                <div class="number-wrap">
+                                    <div class="number" id="seconds">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Seconds</div>
+                            </div>
+                        </div>
+            </div>
             <!-- Reveal button removed -->
         </div>
         <script>
@@ -1566,38 +1599,7 @@
             resize();
         })();
         </script>
-            <div id="ssCountdown" aria-hidden="true" style="margin-top:40px;">
-                        <div id="countdownContainer">
-                            <div class="time-block" id="tb-days">
-                                <div class="number-wrap">
-                                    <div class="number" id="days">168</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Days</div>
-                            </div>
-                            <div class="time-block" id="tb-hours">
-                                <div class="number-wrap">
-                                    <div class="number" id="hours">00</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Hours</div>
-                            </div>
-                            <div class="time-block" id="tb-mins">
-                                <div class="number-wrap">
-                                    <div class="number" id="minutes">00</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Minutes</div>
-                            </div>
-                            <div class="time-block" id="tb-secs">
-                                <div class="number-wrap">
-                                    <div class="number" id="seconds">00</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Seconds</div>
-                            </div>
-                        </div>
-            </div>
+
                     <script>
                         (function() {
                             var eventDate = new Date(2027, 0, 28, 9, 0, 0);
@@ -2154,9 +2156,9 @@
             }
 
             #ssEvents .ss-ev-card--flip .ss-ev-info {
-                margin-left: 28px;
+                margin-left: 0;
                 margin-right: 0;
-                padding-left: 0;
+                padding-left: clamp(14px, 4vw, 32px);
             }
 
             @media screen and (max-width: 639px) {
@@ -2173,6 +2175,7 @@
                 #ssEvents .ss-ev-card { gap: 10px; padding: 0; }
                 #ssEvents .ss-ev-art { flex-basis: 48%; }
                 #ssEvents .ss-ev-info { max-width: 52%; }
+                #ssEvents .ss-ev-card--flip .ss-ev-info { padding-left: 14px; }
                 #ssEvents .ss-ev-name { letter-spacing: 0.06em; text-indent: 0.06em; }
                 #ssEvents .ss-ev-dir { letter-spacing: 0.12em; text-indent: 0.12em; }
             }
