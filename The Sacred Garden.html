@@ -1418,7 +1418,7 @@
                 </div>
             </div>
 
-            <div id="ssCountdown" aria-hidden="true" style="margin-top:40px;">
+            <div id="ssCountdown" aria-hidden="true" style="margin-top:40px; display:none;">
                         <div id="countdownContainer">
                             <div class="time-block" id="tb-days">
                                 <div class="number-wrap">
@@ -1624,7 +1624,7 @@
 
                             /* Show countdown after scratch reveal */
                             function showCD() {
-                                root.style.display = 'block';
+                                root.style.removeProperty('display'); /* remove inline display:none */
                                 root.style.opacity = '0';
                                 root.style.transform = 'translateY(16px)';
                                 root.style.transition = 'opacity 1s ease, transform 1s ease';
@@ -1638,14 +1638,19 @@
                                 }, 50);
                             }
 
-                            document.addEventListener('ss:date-revealed', showCD, { once: true });
+                            /* also trigger if already scratched (page revisit) */
+                            if (document.getElementById('ssSaveDate') &&
+                                document.getElementById('ssSaveDate').classList.contains('ss-revealed')) {
+                                showCD();
+                            } else {
+                                document.addEventListener('ss:date-revealed', showCD, { once: true });
+                            }
                         })();
                     </script>
         <!-- ==================== COUNTDOWN (FINAL SECTION) ==================== -->
         <style>
-            /* ---- countdown: shown after scratch reveal ---- */
+            /* ---- countdown: shown after scratch reveal (hidden via inline style on element) ---- */
                             #ssCountdown {
-                                display: none;
                                 background: transparent;
                                 padding: 32px 16px 24px;
                                 text-align: center;
