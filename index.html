@@ -1626,7 +1626,11 @@
                             function showCD() {
                                 root.setAttribute('style', 'margin-top:40px; display:block;');
                                 root.setAttribute('aria-hidden', 'false');
-                                root.classList.add('ss-cd-live'); /* makes .time-block children visible */
+                                root.classList.add('ss-cd-live'); /* makes .time-block children fade in */
+                                /* also mark numbers + labels as revealed so their opacity animates in */
+                                root.querySelectorAll('.number, .label').forEach(function(el) {
+                                    el.classList.add('revealed');
+                                });
                             }
 
                             document.addEventListener('ss:date-revealed', showCD, { once: true });
