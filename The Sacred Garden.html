@@ -1001,10 +1001,11 @@
         <style>
             #ssSaveDate {
                 background: #f9f0e0;
-                padding: 56px 20px 68px;
+                padding: 56px 20px 48px;
                 text-align: center;
-                overflow: hidden;
+                overflow: visible;
                 position: relative;
+                min-height: 100svh;
             }
 
             #ssSaveDate .ss-sd-eyebrow {
@@ -1183,28 +1184,40 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 12px;
+                gap: 10px;
                 pointer-events: none;
-                z-index: 3;
+                z-index: 5;
                 transition: opacity 0.5s ease;
+            }
+
+            .ss-hint-finger {
+                font-size: 32px;
+                animation: ssHintBounce 1.6s ease-in-out infinite;
+                color: rgba(255,220,180,0.9);
+                text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            }
+
+            @keyframes ssHintBounce {
+                0%, 100% { transform: translateY(0) scale(1); opacity: 0.7; }
+                50%      { transform: translateY(-6px) scale(1.15); opacity: 1; }
             }
 
             #ssRevealHint .ss-hint-label {
                 font-family: 'Marcellus', Georgia, serif;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: 0.26em;
-                text-indent: 0.26em;
+                font-size: 15px;
+                font-weight: 400;
+                letter-spacing: 0.18em;
+                text-indent: 0.18em;
                 text-transform: uppercase;
-                color: rgba(104, 74, 38, 0.95);
+                color: rgba(255, 230, 190, 0.95);
                 white-space: nowrap;
-                text-shadow: 0 1px 0 rgba(255, 252, 244, 0.55);
-                animation: ssHintPulse 2.6s ease-in-out infinite;
+                text-shadow: 0 1px 4px rgba(0,0,0,0.4);
+                animation: ssHintPulse 2.4s ease-in-out infinite;
             }
 
             @keyframes ssHintPulse {
-                0%, 100% { opacity: 0.62; letter-spacing: 0.26em; }
-                50%      { opacity: 1;    letter-spacing: 0.30em; }
+                0%, 100% { opacity: 0.7; }
+                50%      { opacity: 1; }
             }
 
             /* ---- the swipe gesture ---- */
@@ -1400,17 +1413,8 @@
                 <!-- Red scratch surface canvas -->
                 <canvas id="ssScratchCanvas" aria-label="Scratch to reveal the date"></canvas>
                 <div id="ssRevealHint">
-                    <svg class="ss-hint-gesture" viewBox="0 0 72 24" aria-hidden="true">
-                        <g class="ss-hint-chevrons">
-                            <path d="M50 7.5 L55.5 12 L50 16.5"/>
-                            <path d="M59 7.5 L64.5 12 L59 16.5"/>
-                        </g>
-                        <g class="ss-hint-touch">
-                            <circle class="ss-hint-ring" cx="13" cy="12" r="8.5"/>
-                            <circle class="ss-hint-dot" cx="13" cy="12" r="3.4"/>
-                        </g>
-                    </svg>
-                    <span class="ss-hint-label">Scratch to reveal</span>
+                    <div class="ss-hint-finger" aria-hidden="true">✦</div>
+                    <span class="ss-hint-label">Scratch to reveal the date</span>
                 </div>
             </div>
             <!-- Reveal button removed -->
@@ -1683,20 +1687,21 @@
                     </script>
         <!-- ==================== COUNTDOWN (FINAL SECTION) ==================== -->
         <style>
-            /* ---- countdown: hidden entirely until the date is revealed ---- */
+            /* ---- countdown: inline below scratch card ---- */
                             #ssCountdown {
                                 display: none;
-                                background: #f9f0e0;
-                                padding: 62px 20px 70px;
+                                background: transparent;
+                                padding: 32px 16px 20px;
                                 text-align: center;
                                 position: relative;
                                 overflow: hidden;
+                                width: 100%;
                             }
 
                             #ssCountdown.ss-cd-mounted {
                                 display: block;
                                 opacity: 0;
-                                transform: translateY(26px);
+                                transform: translateY(16px);
                             }
 
                             #ssCountdown.ss-cd-live {
@@ -1876,7 +1881,7 @@
                             #ssCountdown.ss-cd-live .ss-cd-foot { opacity: 0.9; }
 
                             @media screen and (max-width: 639px) {
-                                #ssCountdown { padding: 50px 14px 56px; }
+                                #ssCountdown { padding: 24px 14px 20px; }
                                 #ssCountdown .ss-cd-l1 { font-size: 21px; margin-bottom: 6px; }
                                 #ssCountdown .ss-cd-l2 { font-size: 18px; letter-spacing: 0.16em; text-indent: 0.16em; }
                                 #countdownContainer { gap: 8px; }
@@ -2005,6 +2010,8 @@
                 opacity: 0;
                 transform: translateY(22px);
                 box-sizing: border-box;
+                position: relative;
+                overflow: visible;
             }
 
             #ssEvents .ss-ev-card.ss-in-view {
@@ -2147,8 +2154,9 @@
             }
 
             #ssEvents .ss-ev-card--flip .ss-ev-info {
-                margin-left: 14px;
+                margin-left: 28px;
                 margin-right: 0;
+                padding-left: 0;
             }
 
             @media screen and (max-width: 639px) {
@@ -2202,6 +2210,23 @@
                 z-index: 2;
                 pointer-events: none;
             }
+            /* Watercolor splash behind each event card — spans art + info */
+            .ss-ev-wc-bg {
+                position: absolute;
+                top: 50%;
+                left: 0;
+                width: 100%;
+                height: auto;
+                transform: translateY(-50%);
+                object-fit: contain;
+                z-index: 0;
+                opacity: 0.20;
+                pointer-events: none;
+                filter: blur(3px) saturate(1.3);
+                mix-blend-mode: multiply;
+                border-radius: 50%;
+            }
+
             /* Church arch background */
             .ss-church-arch {
                 position: absolute;
@@ -2228,6 +2253,7 @@
             </div>
 
             <div class="ss-ev-card">
+                <img class="ss-ev-wc-bg" src="/image/watercolor-bg.jpg" aria-hidden="true" alt=""/>
                 <div class="ss-ev-art">
                     <div class="ss-muh-wrap">
                         <canvas class="ss-muh-canvas" id="ssMuhCanvas" aria-hidden="true"></canvas>
@@ -2249,6 +2275,7 @@
             </div>
 
             <div class="ss-ev-card ss-ev-card--flip">
+                <img class="ss-ev-wc-bg" src="/image/watercolor-bg.jpg" aria-hidden="true" alt=""/>
                 <div class="ss-ev-art">
                     <div class="ss-muh-wrap ss-church-wrap">
                         <canvas class="ss-muh-canvas" id="ssChurchCanvas" aria-hidden="true"></canvas>
@@ -2270,6 +2297,7 @@
             </div>
 
             <div class="ss-ev-card">
+                <img class="ss-ev-wc-bg" src="/image/watercolor-bg.jpg" aria-hidden="true" alt=""/>
                 <div class="ss-ev-art">
                     <div class="ss-muh-wrap ss-reception-wrap">
                         <canvas class="ss-muh-canvas" id="ssRecCanvas" aria-hidden="true"></canvas>
