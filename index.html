@@ -33,8 +33,12 @@
             body {
                 overflow-x: hidden;
                 scroll-snap-type: y mandatory;
+                scroll-behavior: smooth;
                 -webkit-font-smoothing: antialiased;
                 -moz-osx-font-smoothing: grayscale;
+            }
+            * {
+                transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
             }
 
             * {
@@ -279,7 +283,7 @@
 
             #ssHero .ss-hero-frame {
                 position: relative;
-                width: min(480px, 96vw);
+                width: min(500px, 100vw);
                 margin: 0 auto;
                 aspect-ratio: 504 / 819;   /* matches the new frame artwork */
                 opacity: 0;
@@ -401,7 +405,8 @@
             #ssHero .ss-hero-names .ss-atom,
             #ssHero .ss-hero-names-b .ss-atom {
                 color: #5a3822;
-                font-size: clamp(16px, 4.2vw, 26px);
+                font-size: clamp(22px, 6vw, 36px);
+                line-height: 1.2;
                 font-family: 'Cormorant Garamond', Georgia, serif;
                 line-height: 1.2;
                 font-weight: 400;
@@ -795,9 +800,9 @@
                 <canvas id="ssPetalCanvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;"></canvas>
                 <div class="ss-hero-copy">
                     <div class="ss-hero-kicker"><div class="ss-atom">The wedding of</div></div>
-                    <div class="ss-hero-names"><div class="ss-atom">Hariharan Agilan</div></div>
+                    <div class="ss-hero-names"><div class="ss-atom">Hariharan<br>Agilan</div></div>
                     <div class="ss-hero-weds"><div class="ss-atom">weds</div></div>
-                    <div class="ss-hero-names-b"><div class="ss-atom">Sharon Belinda Benedict</div></div>
+                    <div class="ss-hero-names-b"><div class="ss-atom">Sharon Belinda<br>Benedict</div></div>
                 </div>
             </div>
             <div class="ss-hero-scroll">
@@ -1551,6 +1556,125 @@
             resize();
         })();
         </script>
+            <div id="ssCountdown" aria-hidden="true" style="margin-top:40px;">
+                        <div id="countdownContainer">
+                            <div class="time-block" id="tb-days">
+                                <div class="number-wrap">
+                                    <div class="number" id="days">168</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Days</div>
+                            </div>
+                            <div class="time-block" id="tb-hours">
+                                <div class="number-wrap">
+                                    <div class="number" id="hours">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Hours</div>
+                            </div>
+                            <div class="time-block" id="tb-mins">
+                                <div class="number-wrap">
+                                    <div class="number" id="minutes">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Minutes</div>
+                            </div>
+                            <div class="time-block" id="tb-secs">
+                                <div class="number-wrap">
+                                    <div class="number" id="seconds">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Seconds</div>
+                            </div>
+                        </div>
+            </div>
+                    <script>
+                        (function() {
+                            var eventDate = new Date(2027, 0, 28, 9, 0, 0);
+                            var root = document.getElementById('ssCountdown');
+                            var container = document.getElementById('countdownContainer');
+                            var elDays = document.getElementById('days');
+                            var elHours = document.getElementById('hours');
+                            var elMins = document.getElementById('minutes');
+                            var elSecs = document.getElementById('seconds');
+                            if (!root || !elDays) return;
+
+                            var prev = { days: null, hours: null, minutes: null, seconds: null };
+                            var revealed = false, live = false, timer = null;
+
+                            function flip(el, newVal) {
+                                if (el.textContent === newVal) return;
+                                if (!live) { el.textContent = newVal; return; }
+                                el.classList.add('flip-out');
+                                setTimeout(function() {
+                                    el.classList.remove('flip-out');
+                                    el.classList.add('flip-in');
+                                    el.textContent = newVal;
+                                    el.offsetHeight;
+                                    el.classList.remove('flip-in');
+                                }, 520);
+                            }
+
+                            function tick() {
+                                var dist = eventDate - new Date();
+                                if (dist < 0) {
+                                    container.innerHTML = '<p class="ss-cd-foot" style="opacity:0.9">See you there!</p>';
+                                    if (timer) clearInterval(timer);
+                                    return;
+                                }
+                                var d = String(Math.floor(dist / 86400000));
+                                var h = String(Math.floor((dist % 86400000) / 3600000)).padStart(2, '0');
+                                var m = String(Math.floor((dist % 3600000) / 60000)).padStart(2, '0');
+                                var s = String(Math.floor((dist % 60000) / 1000)).padStart(2, '0');
+                                if (d !== prev.days)    { flip(elDays, d);  prev.days = d; }
+                                if (h !== prev.hours)   { flip(elHours, h); prev.hours = h; }
+                                if (m !== prev.minutes) { flip(elMins, m);  prev.minutes = m; }
+                                if (s !== prev.seconds) { flip(elSecs, s);  prev.seconds = s; }
+                            }
+
+                            function doReveal() {
+                                if (revealed) return;
+                                revealed = true;
+                                root.querySelectorAll('.number, .label').forEach(function(el) {
+                                    el.classList.add('revealed');
+                                });
+                            }
+
+                            /* the section only exists on the page once the date has been scratched open */
+                            function goLive() {
+                                if (live) return;
+                                live = true;
+                                tick();
+                                root.setAttribute('aria-hidden', 'false');
+                                root.classList.add('ss-cd-mounted');
+                                root.offsetHeight; /* force layout so the fade-up plays */
+                                requestAnimationFrame(function() {
+                                    root.classList.add('ss-cd-live');
+                                    doReveal();
+                                });
+                                timer = setInterval(tick, 1000);
+                            }
+
+                            var saveDate = document.getElementById('ssSaveDate');
+
+                            function dateIsOut() {
+                                if (window.ssDateRevealed) return true;
+                                return !!(saveDate && saveDate.classList.contains('ss-revealed'));
+                            }
+
+                            if (!saveDate) {
+                                // always wait for scratch reveal
+                                document.addEventListener('ss:date-revealed', goLive, { once: true });
+                            } else if (dateIsOut()) {
+                                goLive();
+                            } else {
+                                document.addEventListener('ss:date-revealed', goLive, { once: true });
+                                var poll = setInterval(function() {
+                                    if (dateIsOut()) { clearInterval(poll); goLive(); }
+                                }, 400);
+                            }
+                        })();
+                    </script>
         <!-- ==================== COUNTDOWN (FINAL SECTION) ==================== -->
         <style>
             /* ---- countdown: hidden entirely until the date is revealed ---- */
@@ -1765,134 +1889,9 @@
                                 .number.revealed { animation: inkReveal 0.3s linear forwards; }
                             }
         </style>
-        <section id="ssCountdown" aria-hidden="true">
-                        <h2 class="ss-cd-title">
-                            <span class="ss-cd-l1">Counting down to</span>
-                            <span class="ss-cd-l2">Our Special Day</span>
-                        </h2>
-                        <div class="ss-cd-orn" aria-hidden="true"><i></i><span></span><i></i></div>
-                        <div id="countdownContainer">
-                            <div class="time-block" id="tb-days">
-                                <div class="number-wrap">
-                                    <div class="number" id="days">168</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Days</div>
-                            </div>
-                            <div class="time-block" id="tb-hours">
-                                <div class="number-wrap">
-                                    <div class="number" id="hours">00</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Hours</div>
-                            </div>
-                            <div class="time-block" id="tb-mins">
-                                <div class="number-wrap">
-                                    <div class="number" id="minutes">00</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Minutes</div>
-                            </div>
-                            <div class="time-block" id="tb-secs">
-                                <div class="number-wrap">
-                                    <div class="number" id="seconds">00</div>
-                                </div>
-                                <div class="ss-cd-hair" aria-hidden="true"></div>
-                                <div class="label">Seconds</div>
-                            </div>
-                        </div>
-                        <p class="ss-cd-foot">Until we say forever</p>
-                    </section>
-                    <script>
-                        (function() {
-                            var eventDate = new Date(2027, 0, 28, 9, 0, 0);
-                            var root = document.getElementById('ssCountdown');
-                            var container = document.getElementById('countdownContainer');
-                            var elDays = document.getElementById('days');
-                            var elHours = document.getElementById('hours');
-                            var elMins = document.getElementById('minutes');
-                            var elSecs = document.getElementById('seconds');
-                            if (!root || !elDays) return;
-
-                            var prev = { days: null, hours: null, minutes: null, seconds: null };
-                            var revealed = false, live = false, timer = null;
-
-                            function flip(el, newVal) {
-                                if (el.textContent === newVal) return;
-                                if (!live) { el.textContent = newVal; return; }
-                                el.classList.add('flip-out');
-                                setTimeout(function() {
-                                    el.classList.remove('flip-out');
-                                    el.classList.add('flip-in');
-                                    el.textContent = newVal;
-                                    el.offsetHeight;
-                                    el.classList.remove('flip-in');
-                                }, 520);
-                            }
-
-                            function tick() {
-                                var dist = eventDate - new Date();
-                                if (dist < 0) {
-                                    container.innerHTML = '<p class="ss-cd-foot" style="opacity:0.9">See you there!</p>';
-                                    if (timer) clearInterval(timer);
-                                    return;
-                                }
-                                var d = String(Math.floor(dist / 86400000));
-                                var h = String(Math.floor((dist % 86400000) / 3600000)).padStart(2, '0');
-                                var m = String(Math.floor((dist % 3600000) / 60000)).padStart(2, '0');
-                                var s = String(Math.floor((dist % 60000) / 1000)).padStart(2, '0');
-                                if (d !== prev.days)    { flip(elDays, d);  prev.days = d; }
-                                if (h !== prev.hours)   { flip(elHours, h); prev.hours = h; }
-                                if (m !== prev.minutes) { flip(elMins, m);  prev.minutes = m; }
-                                if (s !== prev.seconds) { flip(elSecs, s);  prev.seconds = s; }
-                            }
-
-                            function doReveal() {
-                                if (revealed) return;
-                                revealed = true;
-                                root.querySelectorAll('.number, .label').forEach(function(el) {
-                                    el.classList.add('revealed');
-                                });
-                            }
-
-                            /* the section only exists on the page once the date has been scratched open */
-                            function goLive() {
-                                if (live) return;
-                                live = true;
-                                tick();
-                                root.setAttribute('aria-hidden', 'false');
-                                root.classList.add('ss-cd-mounted');
-                                root.offsetHeight; /* force layout so the fade-up plays */
-                                requestAnimationFrame(function() {
-                                    root.classList.add('ss-cd-live');
-                                    doReveal();
-                                });
-                                timer = setInterval(tick, 1000);
-                            }
-
-                            var saveDate = document.getElementById('ssSaveDate');
-
-                            function dateIsOut() {
-                                if (window.ssDateRevealed) return true;
-                                return !!(saveDate && saveDate.classList.contains('ss-revealed'));
-                            }
-
-                            if (!saveDate) {
-                                // always wait for scratch reveal
-                                document.addEventListener('ss:date-revealed', goLive, { once: true });
-                            } else if (dateIsOut()) {
-                                goLive();
-                            } else {
-                                document.addEventListener('ss:date-revealed', goLive, { once: true });
-                                var poll = setInterval(function() {
-                                    if (dateIsOut()) { clearInterval(poll); goLive(); }
-                                }, 400);
-                            }
-                        })();
-                    </script>
         <!-- ==================== EVENTS ==================== -->
         <style>
-            #ssCountdown, #ssEvents, #ssDress, #ssGallery {
+            #ssEvents, #ssDress, #ssGallery {
                 scroll-snap-align: start;
                 scroll-snap-stop: always;
                 min-height: 100svh;
@@ -2142,7 +2141,7 @@
             }
 
             #ssEvents .ss-ev-card--flip .ss-ev-info {
-                margin-left: 0;
+                margin-left: 14px;
                 margin-right: 0;
             }
 
@@ -2666,7 +2665,7 @@
                 t++;
                 ctx.clearRect(0,0,W,H);
                 // ---- scene ----
-                drawTopBeam(); // marigold garland swags only
+                // no mandap/garland background — particles only
                 // ---- particles ----
                 particles.forEach(function(p){
                     if(p.type==='jasmine')     drawJasmine(p.x,p.y,p.r,p.alpha,p.angle);
@@ -4076,7 +4075,7 @@
                         <img src="/image/gallery-1.jpg" alt="Hariharan and Sharon" draggable="false"/>
                     </figure>
                 </div>
-                <img class="ss-ga-seal" src="/image/wax-seal-hs.jpg" alt="" aria-hidden="true"/>
+                <img class="ss-ga-seal" src="/image/wax-seal-hs.png" alt="" aria-hidden="true"/>
             </div>
         </section>
 
