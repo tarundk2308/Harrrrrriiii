@@ -1,0 +1,4331 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="format-detection" content="telephone=no"/>
+        <title>The Sacred Garden</title>
+        <meta property="og:title" content="The Sacred Garden"/>
+        <meta property="og:description" content=""/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:image" content="/image/og-cover.png"/>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Marcellus&display=swap">
+        <style>
+            /* ================================================================
+               BASE — replaces tilda-grid-3.0 / t-body reset.
+               Only the parts the kept sections actually relied on.
+               ================================================================ */
+            html, body {
+                margin: 0;
+                padding: 0;
+                background: #f9f0e0;
+            }
+
+            body {
+                overflow-x: hidden;
+                scroll-snap-type: y mandatory;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            img, svg, video, canvas {
+                max-width: 100%;
+                border: 0;
+            }
+
+            h1, h2, h3, p, figure {
+                margin: 0;
+            }
+
+            /* ---- event dates stay veiled until the Save-the-Date is unrolled ---- */
+            .ss-date-gate {
+                display: inline;
+            }
+
+            /* before reveal: the real date is hidden, an elegant cue shown in its place */
+            .ss-date-gate .ss-date-real { display: none; }
+
+            .ss-date-gate .ss-date-veil {
+                display: inline;
+                font-style: italic;
+                letter-spacing: 0.06em;
+                color: #b0895a;
+                opacity: 0.9;
+            }
+
+            /* the quiet dash used on the time line */
+            .ss-date-gate .ss-date-veil:first-child { }
+
+            body.ss-dates-shown .ss-date-gate .ss-date-veil { display: none; }
+
+            body.ss-dates-shown .ss-date-gate .ss-date-real {
+                display: inline;
+                animation: ssGateReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+            }
+
+            @keyframes ssGateReveal {
+                from { opacity: 0; filter: blur(2px); transform: translateY(4px); }
+                to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                body.ss-dates-shown .ss-date-gate .ss-date-real { animation: none; }
+            }
+
+            /* ================================================================
+               WELCOME / ENVELOPE OVERLAY   (was rec2408720493, T123)
+               ================================================================ */
+            #weiOverlay {
+                position: fixed;
+                inset: 0;
+                overflow: hidden;
+                z-index: 99999;
+                background: #F9F0E0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+                user-select: none;
+                transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+
+            #weiImg {
+                /* fill the full (large) viewport height; width follows the
+                   9:16 artwork and any overflow is cropped evenly at the sides */
+                height: 100vh;
+                height: 100lvh;
+                width: auto;
+                max-width: none;
+                flex-shrink: 0;
+                display: block;
+                object-fit: cover;
+            }
+
+            #weiTapWrap {
+                position: absolute;
+                bottom: 24%;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 7px;
+                animation: weiTapIn 1.2s 0.8s both;
+            }
+
+            @keyframes weiTapIn {
+                from {
+                    opacity: 0;
+                    transform: translateX(-50%) translateY(6px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+            }
+
+            #weiTapLabel {
+                font-family: 'Cinzel', Georgia, serif;
+                font-size: 11px;
+                letter-spacing: 0.26em;
+                text-transform: uppercase;
+                color: rgba(140, 100, 60, 0.75);
+                animation: weiPulse 2.4s 1.6s ease-in-out infinite;
+                white-space: nowrap;
+            }
+
+            @keyframes weiPulse {
+                0%, 100% {
+                    opacity: 0.45;
+                    letter-spacing: 0.26em;
+                }
+
+                50% {
+                    opacity: 1;
+                    letter-spacing: 0.30em;
+                }
+            }
+
+            .wei-chevron {
+                width: 10px;
+                height: 10px;
+                border-right: 1.5px solid rgba(140, 100, 60, 0.6);
+                border-top: 1.5px solid rgba(140, 100, 60, 0.6);
+                transform: rotate(-45deg);
+                animation: weiChevron 2.4s 1.9s ease-in-out infinite;
+            }
+
+            @keyframes weiChevron {
+                0%, 100% {
+                    transform: rotate(-45deg) translate(0, 0);
+                    opacity: 0.6;
+                }
+
+                50% {
+                    transform: rotate(-45deg) translate(2px, -2px);
+                    opacity: 1;
+                }
+            }
+
+            /* Sits BEHIND the overlay, not above it. It is brought up at full
+               opacity while the overlay is still solid, then the overlay
+               dissolves over it — so at no instant are two semi-transparent
+               layers stacked, and the hero can never show through the seam.
+               (The old version cross-faded 0.8s in against 1.4s out, which left
+               a window where their combined coverage dipped below 100%.) */
+            #weiVideoWrap {
+                position: fixed;
+                inset: 0;
+                overflow: hidden;
+                z-index: 99998;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: #F9F0E0;
+                opacity: 0;
+                pointer-events: none;
+            }
+
+            /* no transition here on purpose — it appears instantly, unseen
+               beneath the still-opaque overlay */
+            #weiVideoWrap.wei-video-in {
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            /* the only fade this layer ever performs: the hand-off to the hero
+               once the envelope film has played out */
+            #weiVideoWrap.wei-video-out {
+                opacity: 0;
+                transition: opacity 1.85s cubic-bezier(0.22, 0.61, 0.36, 1);
+            }
+
+            #weiVideo {
+                /* fill the full (large) viewport height; width follows the
+                   9:16 artwork and any overflow is cropped evenly at the sides */
+                height: 100vh;
+                height: 100lvh;
+                width: auto;
+                max-width: none;
+                flex-shrink: 0;
+                display: block;
+                object-fit: cover;
+            }
+
+            /* ── Floating audio button — hidden until invitation revealed ── */
+            #weiAudioBtn {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                width: 60px;
+                height: 60px;
+                background: #5A0F1B;
+                border-radius: 50%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 2147483647;
+                cursor: pointer;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                visibility: hidden;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out;
+            }
+
+            #weiAudioBtn svg {
+                width: 30px;
+                height: 30px;
+                fill: white;
+            }
+
+            /* ================================================================
+               HERO — centred mandap artboard with names in the cream band
+               ================================================================ */
+            #ssHero {
+                position: relative;
+                background-color: #f9f0e0;
+                padding: 0 0 0;
+                overflow: hidden;
+                /* Snap: first stop — the arch frame fills the screen */
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                min-height: 100svh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            /* Second snap stop — the quote/parents tail section */
+            #ssHero .ss-hero-tail {
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+            }
+
+            #ssHero .ss-hero-frame {
+                position: relative;
+                width: min(390px, 90vw);
+                margin: 0 auto;
+                aspect-ratio: 504 / 819;   /* matches the new frame artwork */
+                opacity: 0;
+                transform: translateY(14px);
+                transition: opacity 1.35s cubic-bezier(0.22, 0.61, 0.36, 1) 0.12s,
+                            transform 1.35s cubic-bezier(0.22, 0.61, 0.36, 1) 0.12s;
+            }
+
+            .wei-revealed #ssHero .ss-hero-frame {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            #ssHero .ss-hero-art {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: fill;    /* fill so the full frame border shows */
+            }
+
+            /* ---- copy sits inside the arch opening ----
+               The arch inner area starts ~14% from top, is widest ~25–75% from
+               left and extends to ~72% from top. We centre vertically within
+               the arch (roughly 20–68% from top) using flex. */
+            #ssHero .ss-hero-copy {
+                position: absolute;
+                top: 14%;
+                bottom: 32%;   /* keeps copy clear of the elephants / water */
+                left: 20%;
+                right: 20%;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                text-align: center;
+                z-index: 3;
+                gap: 2px;
+            }
+
+            #ssHero .ss-hero-scroll {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                margin: 18px auto 0;
+                position: static;
+                left: auto;
+                z-index: 3;
+                gap: 4px;
+                opacity: 0;
+                transition: opacity 1s cubic-bezier(0.22, 0.61, 0.36, 1) 0.85s;
+            }
+
+            .wei-revealed #ssHero .ss-hero-scroll {
+                opacity: 1;
+            }
+
+            #ssHero .ss-hero-tail {
+                position: relative;
+                width: 100%;
+                max-width: 480px;
+                margin: 0 auto;
+                min-height: 100svh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 60px 20px;
+                box-sizing: border-box;
+                gap: 0;
+                text-align: center;
+            }
+
+            #ssHero .ss-hero-tail-paper {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+
+            #ssHero .ss-hero-tail .ss-hero-quote,
+            #ssHero .ss-hero-tail .ss-hero-invite {
+                position: relative;
+                width: 100%;
+                max-width: 400px;
+                margin: 0 auto;
+                padding: 0 24px;
+                text-align: center;
+            }
+
+            #ssHero .ss-hero-quote {
+                margin-top: 0;
+            }
+
+            #ssHero .ss-hero-invite {
+                margin-top: 32px;
+            }
+
+            #ssHero .ss-el {
+                position: static;
+            }
+
+            #ssHero .ss-hero-kicker .ss-atom {
+                color: #9b6e2a;
+                font-size: clamp(9px, 2.2vw, 12px);
+                font-family: 'Marcellus', Georgia, serif;
+                letter-spacing: 0.24em;
+                text-indent: 0.24em;
+                text-transform: uppercase;
+                line-height: 1.4;
+                margin: 0 0 8px;
+            }
+
+            #ssHero .ss-hero-names,
+            #ssHero .ss-hero-weds,
+            #ssHero .ss-hero-names-b {
+                width: 100%;
+            }
+
+            #ssHero .ss-hero-names .ss-atom,
+            #ssHero .ss-hero-names-b .ss-atom {
+                color: #5a3822;
+                font-size: clamp(22px, 5.8vw, 36px);
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                line-height: 1.1;
+                font-weight: 400;
+                margin: 0;
+            }
+
+            #ssHero .ss-hero-weds {
+                margin: 4px 0;
+            }
+
+            #ssHero .ss-hero-weds .ss-atom {
+                color: #9b6e2a;
+                font-size: clamp(14px, 3.2vw, 20px);
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-style: italic;
+                letter-spacing: 0.08em;
+                line-height: 1;
+                font-weight: 300;
+            }
+
+            #ssHero .ss-hero-copy .ss-atom {
+                opacity: 0;
+                will-change: transform, opacity;
+            }
+
+            .wei-revealed #ssHero .ss-hero-kicker .ss-atom {
+                animation: ssLanternRise 2.8s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+            }
+
+            .wei-revealed #ssHero .ss-hero-names .ss-atom {
+                animation: ssLanternRise 3s cubic-bezier(0.16, 1, 0.3, 1) 0.22s forwards;
+            }
+
+            .wei-revealed #ssHero .ss-hero-weds .ss-atom {
+                animation: ssLanternRise 3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+            }
+
+            .wei-revealed #ssHero .ss-hero-names-b .ss-atom {
+                animation: ssLanternRise 3s cubic-bezier(0.16, 1, 0.3, 1) 0.78s forwards;
+            }
+
+            @keyframes ssLanternRise {
+                0%   { opacity: 0; transform: translateY(20px); filter: blur(2px); }
+                70%  { opacity: 1; filter: blur(0); }
+                100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+            }
+
+            #ssHero .ss-scroll-label .ss-atom {
+                color: #a67d2b;
+                font-size: 12px;
+                font-family: 'Marcellus', Georgia, serif;
+                letter-spacing: 0.24em;
+                text-indent: 0.24em;
+                text-transform: uppercase;
+                line-height: 1.1;
+            }
+
+            #ssHero .ss-scroll-vector svg {
+                display: block;
+                width: 40px;
+                height: 56px;
+            }
+
+            #ssHero .ss-scroll-vector {
+                animation: ssCueBob 2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+            }
+
+            @keyframes ssCueBob {
+                0%, 100% { transform: translateY(0); }
+                50%      { transform: translateY(5px); }
+            }
+
+            #ssHero .ss-scroll-dot {
+                animation: ssScrollDot 2.8s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+            }
+
+            @keyframes ssScrollDot {
+                0%, 10%   { transform: translateY(0);    opacity: 0; }
+                25%       { transform: translateY(2px);  opacity: 1; }
+                65%       { transform: translateY(11px); opacity: 1; }
+                80%, 100% { transform: translateY(13px); opacity: 0; }
+            }
+
+            #ssHero .ss-scroll-arrow {
+                opacity: 0;
+                animation: ssScrollArrow 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+            }
+
+            #ssHero .ss-arrow-1 { animation-delay: 0.25s; }
+            #ssHero .ss-arrow-2 { animation-delay: 0.45s; }
+
+            @keyframes ssScrollArrow {
+                0%, 100% { opacity: 0;   transform: translateY(-2px); }
+                45%      { opacity: 0.9; transform: translateY(0); }
+                75%      { opacity: 0;   transform: translateY(2px); }
+            }
+
+            #ssHero .ss-hero-quote .ss-atom {
+                color: #a67d2b;
+                font-size: clamp(28px, 7vw, 38px);
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-style: italic;
+                font-weight: 300;
+                letter-spacing: 0.04em;
+                line-height: 1.4;
+                text-align: center;
+            }
+
+            #ssHero .ss-quote-sub {
+                display: block;
+                margin-top: 14px;
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: clamp(11px, 2.8vw, 14px);
+                line-height: 1.6;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                color: #b09263;
+            }
+
+            #ssHero .ss-hero-invite .ss-atom {
+                color: #6a5140;
+                font-size: clamp(16px, 4vw, 20px);
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                line-height: 1.7;
+                font-weight: 400;
+                text-align: center;
+            }
+
+            #ssHero .ss-fadein { opacity: 0; }
+
+            #ssHero .ss-hero-quote.ss-in-view  { animation: ssFadeIn 1.35s cubic-bezier(0.22, 0.61, 0.36, 1) forwards; }
+            #ssHero .ss-hero-invite.ss-in-view { animation: ssFadeIn 1.6s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s forwards; }
+
+            @keyframes ssFadeIn {
+                from { opacity: 0; transform: translateY(12px); }
+                to   { opacity: 1; transform: translateY(0); }
+            }
+
+            @media screen and (max-width: 479px) {
+                #ssHero .ss-hero-frame { width: min(340px, 94vw); }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                #ssHero .ss-hero-frame,
+                #ssHero .ss-hero-scroll { opacity: 1; transform: none; transition: none; }
+                #ssHero .ss-hero-copy .ss-atom { opacity: 1; animation: none; }
+                #ssHero .ss-scroll-vector,
+                #ssHero .ss-scroll-dot,
+                #ssHero .ss-scroll-arrow { animation: none; opacity: 1; }
+            }
+        </style>
+    </head>
+    <body>
+
+        <script>
+            /* one switch for every hidden event date on the page — flips the moment
+               the Save-the-Date is scratched (or its reveal button is pressed) */
+            (function() {
+                function showDates() {
+                    document.body.classList.add('ss-dates-shown');
+                }
+                if (window.ssDateRevealed) {
+                    showDates();
+                } else {
+                    document.addEventListener('ss:date-revealed', showDates, { once: true });
+                    /* safety net in case the event fired before this listener bound */
+                    var poll = setInterval(function() {
+                        if (window.ssDateRevealed) { clearInterval(poll); showDates(); }
+                    }, 400);
+                }
+            })();
+        </script>
+
+        <!-- ==================== WELCOME / ENVELOPE OVERLAY ==================== -->
+        <audio id="weiAudio" loop>
+            <source src="https://pub-4dc8201144ca418fb604349c73e8c724.r2.dev/Einaudi_%20Divenire%20(1)%20(1).mp3" type="audio/mp3">
+        </audio>
+
+        <div id="weiOverlay">
+            <img id="weiImg" src="/image/welcome-bg.webp" alt="Open your invitation" draggable="false">
+            <div id="weiTapWrap">
+                <div class="wei-chevron"></div>
+                <div id="weiTapLabel">Tap to open</div>
+            </div>
+        </div>
+
+        <div id="weiVideoWrap">
+            <video id="weiVideo" src="/video/welcome-bg.mp4" muted playsinline preload="auto"></video>
+        </div>
+
+        <div id="weiAudioBtn">
+            <svg id="weiIconPause" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:block">
+                <rect x="6" y="5" width="4" height="14" rx="1"/>
+                <rect x="14" y="5" width="4" height="14" rx="1"/>
+            </svg>
+            <svg id="weiIconPlay" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="display:none">
+                <polygon points="5,3 19,12 5,21"/>
+            </svg>
+        </div>
+
+        <script>
+            (function() {
+                var overlay = document.getElementById('weiOverlay');
+                var videoWrap = document.getElementById('weiVideoWrap');
+                var video = document.getElementById('weiVideo');
+                var audio = document.getElementById('weiAudio');
+                var audioBtn = document.getElementById('weiAudioBtn');
+                var iconPause = document.getElementById('weiIconPause');
+                var iconPlay = document.getElementById('weiIconPlay');
+                var done = false;
+                var OVERLAY_FADE_MS = 520;
+                var PROMPT_FADE_MS = 380;
+                var tapWrap = document.getElementById('weiTapWrap');
+
+                function startVideo() {
+                    if (done)
+                        return;
+                    done = true;
+
+                    /* 1. Raise the video layer to full opacity FIRST. It sits
+                          behind the overlay, so nothing visibly changes yet —
+                          but the screen is now covered by an opaque layer that
+                          will still be there after the overlay goes. */
+                    videoWrap.classList.add('wei-video-in');
+
+                    /* 2. Let the "Tap to open" prompt leave on its own. The
+                          picture behind it is identical in both layers, so the
+                          prompt is the ONLY thing that visibly changes at the
+                          swap — it has to fade, or it would blink out. */
+                    fadePrompt();
+
+                    /* 3. Start the film and the music together. */
+                    var vp = video.play();
+                    if (vp && vp.catch)
+                        vp.catch(function() {});
+
+                    audio.volume = 1;
+                    var ap = audio.play();
+                    if (ap && ap.catch)
+                        ap.catch(function() {});
+
+                    /* 4. Cut to the film only once BOTH are true: a real frame
+                          has painted, and the prompt has finished fading. */
+                    var painted = false, promptGone = false;
+                    function cutWhenReady() {
+                        if (painted && promptGone) dissolveOverlay();
+                    }
+                    whenVideoPainted(function() { painted = true; cutWhenReady(); });
+                    setTimeout(function() { promptGone = true; cutWhenReady(); },
+                               PROMPT_FADE_MS + 20);
+                }
+
+                function fadePrompt() {
+                    if (!tapWrap) return;
+                    /* the entrance keyframes hold opacity at 1 via fill-mode and
+                       would out-rank an inline style, so clear them first */
+                    tapWrap.style.animation = 'none';
+                    tapWrap.style.transition = 'opacity ' + PROMPT_FADE_MS + 'ms ease';
+                    void tapWrap.offsetWidth;   /* commit the reset before transitioning */
+                    tapWrap.style.opacity = '0';
+                }
+
+                function whenVideoPainted(cb) {
+                    var fired = false;
+                    function go() {
+                        if (fired) return;
+                        fired = true;
+                        cb();
+                    }
+                    if (typeof video.requestVideoFrameCallback === 'function') {
+                        try { video.requestVideoFrameCallback(go); } catch (err) {}
+                    }
+                    video.addEventListener('playing', go, { once: true });
+                    video.addEventListener('timeupdate', go, { once: true });
+                    /* safety net: never leave the guest stuck on the envelope */
+                    setTimeout(go, 1200);
+                }
+
+                function sunRayReveal(){
+                    var c = document.createElement('canvas');
+                    c.style.cssText = 'position:fixed;inset:0;width:100%;height:100%;z-index:9998;pointer-events:none;';
+                    document.body.appendChild(c);
+                    var cx = c.getContext('2d');
+                    var W = window.innerWidth, H = window.innerHeight;
+                    var dpr = window.devicePixelRatio||1;
+                    c.width = W*dpr; c.height = H*dpr;
+                    cx.scale(dpr,dpr);
+                    var RAY_COUNT = 18;
+                    var t = 0;
+                    var maxT = 90; // frames
+                    function draw(){
+                        t++;
+                        cx.clearRect(0,0,W,H);
+                        var alpha = t < 30 ? t/30 : t > 60 ? 1-(t-60)/30 : 1;
+                        cx.save();
+                        cx.globalAlpha = alpha * 0.65;
+                        var ox = W/2, oy = H/2;
+                        for(var i=0;i<RAY_COUNT;i++){
+                            var ang = (i/RAY_COUNT)*Math.PI*2 + t*0.012;
+                            var len = Math.max(W,H)*1.4;
+                            var spread = Math.PI*2/RAY_COUNT * 0.38;
+                            var grad = cx.createLinearGradient(ox,oy, ox+Math.cos(ang)*len, oy+Math.sin(ang)*len);
+                            grad.addColorStop(0,'rgba(255,230,120,0.9)');
+                            grad.addColorStop(0.4,'rgba(255,210,80,0.3)');
+                            grad.addColorStop(1,'rgba(255,200,50,0)');
+                            cx.beginPath();
+                            cx.moveTo(ox,oy);
+                            cx.arc(ox,oy,len,ang-spread,ang+spread);
+                            cx.closePath();
+                            cx.fillStyle = grad;
+                            cx.fill();
+                        }
+                        // white flash on top
+                        var flashAlpha = t < 20 ? (1-t/20)*0.7 : 0;
+                        if(flashAlpha > 0){
+                            cx.globalAlpha = flashAlpha;
+                            cx.fillStyle = '#fff';
+                            cx.fillRect(0,0,W,H);
+                        }
+                        cx.restore();
+                        if(t < maxT) requestAnimationFrame(draw);
+                        else { c.remove(); }
+                    }
+                    draw();
+                }
+
+                function dissolveOverlay() {
+                    overlay.style.transition = 'opacity ' + OVERLAY_FADE_MS + 'ms cubic-bezier(0.4, 0, 0.2, 1)';
+                    overlay.style.opacity = '0';
+                    overlay.style.pointerEvents = 'none';
+                    setTimeout(function() {
+                        overlay.style.display = 'none';
+                    }, OVERLAY_FADE_MS + 120);
+                }
+
+                function endSequence() {
+                    sunRayReveal();
+                    document.body.classList.add('wei-revealed');
+                    /* if we got here via a video error the overlay may still be
+                       up — clear it, or it would strand the guest on a dead frame */
+                    dissolveOverlay();
+                    // Fade out video
+                    videoWrap.classList.remove('wei-video-in');
+                    videoWrap.classList.add('wei-video-out');
+                    setTimeout(function() {
+                        videoWrap.style.display = 'none';
+                    }, 1900);
+
+                    // Show floating audio button
+                    audioBtn.style.visibility = 'visible';
+                    audioBtn.style.opacity = '1';
+                }
+
+                // Tap/click envelope to begin
+                overlay.addEventListener('click', startVideo);
+                overlay.addEventListener('touchstart', startVideo, {
+                    passive: true
+                });
+
+                // Fade video 0.8s before end
+                video.addEventListener('timeupdate', function() {
+                    if (video.duration && video.currentTime >= video.duration - 0.8 && !video.dataset.fading) {
+                        video.dataset.fading = '1';
+                        endSequence();
+                    }
+                });
+
+                // Audio button toggle
+                audioBtn.addEventListener('click', function() {
+                    if (audio.paused) {
+                        audio.play();
+                        iconPlay.style.display = 'none';
+                        iconPause.style.display = 'block';
+                    } else {
+                        audio.pause();
+                        iconPlay.style.display = 'block';
+                        iconPause.style.display = 'none';
+                    }
+                });
+
+                video.addEventListener('error', endSequence);
+                setTimeout(function() { document.body.classList.add('wei-revealed'); }, 30000);
+                video.load();
+            }
+            )();
+        </script>
+
+        <!-- ==================== HERO ==================== -->
+        <section id="ssHero">
+            <div class="ss-hero-frame">
+                <img class="ss-hero-art" src="/image/hero-frame.png" alt="" draggable="false">
+                <canvas id="ssPetalCanvas" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;"></canvas>
+                <div class="ss-hero-copy">
+                    <div class="ss-hero-kicker"><div class="ss-atom">The wedding of</div></div>
+                    <div class="ss-hero-names"><div class="ss-atom">Hariharan</div></div>
+                    <div class="ss-hero-weds"><div class="ss-atom">weds</div></div>
+                    <div class="ss-hero-names-b"><div class="ss-atom">Sharon</div></div>
+                </div>
+            </div>
+            <div class="ss-hero-scroll">
+                    <div class="ss-scroll-label"><div class="ss-atom">Scroll down</div></div>
+                    <div class="ss-scroll-vector">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 44 62" role="img" aria-label="Scroll down">
+                            <g fill="none" stroke="#937100" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="14" y="1" width="16" height="27" rx="8" opacity="0.75"/>
+                                <circle class="ss-scroll-dot" cx="22" cy="8.5" r="1.7" fill="#937100" stroke="none"/>
+                                <path class="ss-scroll-arrow ss-arrow-1" d="M15.5 38 L22 44.5 L28.5 38"/>
+                                <path class="ss-scroll-arrow ss-arrow-2" d="M15.5 47 L22 53.5 L28.5 47"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            <div class="ss-hero-tail">
+                <img class="ss-hero-tail-paper" src="/image/paper.webp" alt="" aria-hidden="true">
+                <div class="ss-hero-quote ss-fadein">
+                    <div class="ss-atom">
+                        Two Souls <br/>One Destiny
+                        <span class="ss-quote-sub">A bond blessed for seven lifetimes</span>
+                    </div>
+                </div>
+                <div class="ss-hero-invite ss-fadein">
+                    <div class="ss-atom">
+                        Son of Smt. Mahalakshmi Agilan<br/>&amp; Sri. Agilan Ramaswamy <br/><br/>Daughter of Smt. Suchitra Benedict<br/>&amp; Dr. Benedict Xavier
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            /* keep the hero video playing at all times — browsers pause muted
+               autoplay video on tab switch, after the welcome sequence, on
+               low-power mode prompts, and when a media session takes over */
+            (function() {
+                var v = document.getElementById('ssHeroVideo');
+                if (!v) return;
+
+                function kick() {
+                    if (!v.paused && !v.ended) return;
+                    v.muted = true;
+                    v.defaultMuted = true;
+                    var p = v.play();
+                    if (p && p.catch) p.catch(function() {});
+                }
+
+                v.addEventListener('loadedmetadata', kick);
+                v.addEventListener('canplay', kick);
+                v.addEventListener('pause', kick);
+                v.addEventListener('stalled', kick);
+                v.addEventListener('suspend', kick);
+                v.addEventListener('ended', kick);
+
+                document.addEventListener('visibilitychange', function() {
+                    if (!document.hidden) kick();
+                });
+                window.addEventListener('pageshow', kick);
+                window.addEventListener('focus', kick);
+
+                /* the first real gesture unblocks playback where autoplay was refused */
+                ['click', 'touchstart', 'keydown'].forEach(function(evt) {
+                    document.addEventListener(evt, kick, { passive: true });
+                });
+
+                /* the welcome overlay covers the page at load; nudge again once it clears */
+                document.addEventListener('ss:date-revealed', kick);
+                setInterval(kick, 2000);
+                kick();
+            })();
+        </script>
+
+        <!-- ==================== PETAL RAIN ==================== -->
+        <script>
+        (function(){
+            var canvas = document.getElementById('ssPetalCanvas');
+            if (!canvas) return;
+
+            var PETAL_COLORS = ['#f4a7b9','#f7c5d0','#e8738a','#fce4ec','#f48fb1'];
+            var COUNT = 18;
+            var petals = [];
+            var W = 0, H = 0;
+            var running = false;
+            var rafId = null;
+
+            function resize(){
+                var rect = canvas.parentElement.getBoundingClientRect();
+                W = rect.width; H = rect.height;
+                canvas.width  = Math.round(W * window.devicePixelRatio);
+                canvas.height = Math.round(H * window.devicePixelRatio);
+            }
+
+            function rand(a,b){ return a + Math.random()*(b-a); }
+
+            function makePetal(randomY){
+                return {
+                    x: rand(0.08, 0.92) * W,
+                    y: randomY ? rand(-H*0.1, H*0.9) : rand(-60, -4),
+                    r: rand(4, 8),
+                    ry: rand(2, 5),
+                    angle: rand(0, Math.PI*2),
+                    spin: rand(-0.03, 0.03),
+                    vx: rand(-0.3, 0.3),
+                    vy: rand(0.5, 1.4),
+                    color: PETAL_COLORS[Math.floor(Math.random()*PETAL_COLORS.length)],
+                    alpha: rand(0.55, 0.9)
+                };
+            }
+
+            function init(){
+                resize();
+                petals = [];
+                for(var i=0;i<COUNT;i++) petals.push(makePetal(true));
+            }
+
+            function draw(){
+                var ctx = canvas.getContext('2d');
+                var dpr = window.devicePixelRatio || 1;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                for(var i=0;i<petals.length;i++){
+                    var p = petals[i];
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.translate(p.x * dpr, p.y * dpr);
+                    ctx.rotate(p.angle);
+                    ctx.beginPath();
+                    ctx.ellipse(0, 0, p.r*dpr, p.ry*dpr, 0, 0, Math.PI*2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+                    ctx.restore();
+                    // update
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.angle += p.spin;
+                    // small horizontal drift
+                    p.vx += Math.sin(p.y * 0.015) * 0.012;
+                    if(p.y > H + 10){
+                        Object.assign(p, makePetal(false));
+                    }
+                }
+                if(running) rafId = requestAnimationFrame(draw);
+            }
+
+            function start(){
+                if(running) return;
+                running = true;
+                resize();
+                draw();
+            }
+            function stop(){
+                running = false;
+                if(rafId) cancelAnimationFrame(rafId);
+            }
+
+            // Start once envelope is dismissed (wei-revealed body class)
+            var observer = new MutationObserver(function(){
+                if(document.body.classList.contains('wei-revealed')) start();
+            });
+            observer.observe(document.body, {attributes:true, attributeFilter:['class']});
+            if(document.body.classList.contains('wei-revealed')) start();
+
+            window.addEventListener('resize', function(){
+                if(running){ stop(); init(); start(); }
+            });
+
+            init();
+        })();
+
+            /* replaces tilda-animation-2.0's scroll-triggered "fadein" */
+            (function() {
+                var targets = document.querySelectorAll('#ssHero .ss-fadein');
+                if (!targets.length) return;
+                if (!('IntersectionObserver' in window)) {
+                    Array.prototype.forEach.call(targets, function(el) { el.classList.add('ss-in-view'); });
+                    return;
+                }
+                var io = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('ss-in-view');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+                Array.prototype.forEach.call(targets, function(el) { io.observe(el); });
+            })();
+        </script>
+
+<!-- ==================== SAVE THE DATE (TORN PAPER ROLL VIDEO REVEAL) ==================== -->
+        <style>
+            #ssSaveDate {
+                background: #f9f0e0;
+                padding: 56px 20px 68px;
+                text-align: center;
+                overflow: hidden;
+                position: relative;
+            }
+
+            #ssSaveDate .ss-sd-eyebrow {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 13px;
+                letter-spacing: 0.30em;
+                text-transform: uppercase;
+                color: #8a6b4f;
+                margin: 0 0 10px;
+            }
+
+            #ssSaveDate .ss-sd-title {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 33px;
+                letter-spacing: 0.15em;
+                text-transform: uppercase;
+                color: #a67d2b;
+                line-height: 1.4;
+                margin: 0 0 28px;
+            }
+
+            /* ---- the card: same footprint as the old scratch card, sized to the video ---- */
+            #ssRevealWrap {
+                position: relative;
+                width: 100%;
+                max-width: 420px;
+                margin: 0 auto;
+                aspect-ratio: 3 / 2;
+                border-radius: 16px;
+                overflow: hidden;
+                background: #fdf7ea;
+                border: 1px solid rgba(166,125,43,0.32);
+                box-shadow: 0 10px 32px rgba(90,60,20,0.14), inset 0 0 0 1px rgba(255,255,255,0.35);
+                cursor: grab;
+                touch-action: none;
+                user-select: none;
+                -webkit-user-select: none;
+                -webkit-user-drag: none;
+            }
+
+            @supports not (aspect-ratio: 3 / 2) {
+                #ssRevealWrap { height: 0; padding-bottom: 66.7%; }
+            }
+
+            #ssRevealWrap.ss-dragging {
+                cursor: grabbing;
+            }
+
+            /* ================= the two content layers =================
+               .ss-sd-under   masked — swipe-revealed with the sharp edge.
+                              Holds ONLY the date and the time.
+               .ss-sd-extras  unmasked — the day and the calendar CTA.
+                              Never touched by the swipe; fades in softly once
+                              the date is nearly out.
+               Both fill the card, and every line inside is absolutely placed
+               off a % of card height, so adding, removing or moving one line
+               can never shift any of the others.
+               ========================================================= */
+            #ssRevealWrap .ss-sd-under,
+            #ssRevealWrap .ss-sd-extras {
+                position: absolute;
+                inset: 0;
+                background: transparent;
+                z-index: 2;
+                pointer-events: none;
+            }
+
+            /* Mask no longer used — scratch canvas handles reveal */
+            #ssRevealWrap .ss-sd-under { --ss-edge: 100%; }
+
+            /* the unmasked layer: opacity is driven per-frame from JS, so the
+               day and the CTA feather in gently instead of being cut in */
+            #ssRevealWrap .ss-sd-extras {
+                --extras: 0;
+                opacity: var(--extras);
+                z-index: 4;
+            }
+
+            #ssSaveDate.ss-revealed #ssRevealWrap .ss-sd-extras {
+                pointer-events: auto;
+            }
+
+            /* ---- each line placed independently ---- */
+            /* Scratch card: text flows in flex column, no absolute positioning needed */
+            #ssRevealWrap .ss-sd-day,
+            #ssRevealWrap .ss-sd-full,
+            #ssRevealWrap .ss-sd-time {
+                position: static;
+                left: auto;
+                width: 100%;
+                padding: 0 10px;
+                margin: 0;
+                text-align: center;
+                transform: none;
+            }
+
+            #ssRevealWrap .ss-sd-day {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 17px;
+                letter-spacing: 0.28em;
+                text-indent: 0.28em;
+                text-transform: uppercase;
+                color: #b09263;
+            }
+
+            /* ---- engraved ivory: cut into the paper ----
+               Light falls from above, so the upper lip of the incision is in
+               shadow and the lower lip catches a faint highlight. */
+            #ssRevealWrap .ss-sd-full,
+            #ssRevealWrap .ss-sd-time {
+                color: #5a3822;
+                text-shadow: none;
+            }
+
+            #ssRevealWrap .ss-sd-full {
+                font-family: 'Marcellus', Georgia, serif;
+                font-weight: 400;
+                font-size: clamp(28px, 7vw, 42px);
+                line-height: 1.1;
+                letter-spacing: 0.14em;
+                text-indent: 0.14em;
+                white-space: nowrap;
+            }
+
+            #ssRevealWrap .ss-sd-time {
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-style: italic;
+                font-size: 21px;
+                line-height: 1.2;
+            }
+
+            /* Scratch card canvas sits on top */
+            #ssScratchCanvas {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 3;
+                cursor: crosshair;
+                touch-action: none;
+            }
+            /* Revealed content underneath */
+            .ss-sd-revealed-content {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                z-index: 1;
+                pointer-events: none;
+            }
+            .ss-sd-subtime {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: clamp(10px, 2.5vw, 14px);
+                letter-spacing: 0.18em;
+                color: #9b6e2a;
+                text-transform: uppercase;
+            }
+            #ssSaveDate.ss-revealed #ssScratchCanvas {
+                pointer-events: none;
+            }
+
+            /* ---- hint: centred on the card, gesture above the label ----
+               Safe to sit dead centre: before the first swipe the date layer is
+               fully masked out and the extras layer is at zero opacity, so the
+               middle of the card is empty. */
+            #ssRevealHint {
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 12px;
+                pointer-events: none;
+                z-index: 3;
+                transition: opacity 0.5s ease;
+            }
+
+            #ssRevealHint .ss-hint-label {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 13px;
+                font-weight: 600;
+                letter-spacing: 0.26em;
+                text-indent: 0.26em;
+                text-transform: uppercase;
+                color: rgba(104, 74, 38, 0.95);
+                white-space: nowrap;
+                text-shadow: 0 1px 0 rgba(255, 252, 244, 0.55);
+                animation: ssHintPulse 2.6s ease-in-out infinite;
+            }
+
+            @keyframes ssHintPulse {
+                0%, 100% { opacity: 0.62; letter-spacing: 0.26em; }
+                50%      { opacity: 1;    letter-spacing: 0.30em; }
+            }
+
+            /* ---- the swipe gesture ---- */
+            #ssRevealHint .ss-hint-gesture {
+                display: block;
+                width: 78px;
+                height: auto;
+                overflow: visible;
+            }
+
+            #ssRevealHint .ss-hint-gesture g {
+                fill: none;
+                stroke: rgba(112, 82, 44, 0.85);
+                stroke-width: 1.5;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            #ssRevealHint .ss-hint-ring { opacity: 0.5; }
+            #ssRevealHint .ss-hint-dot  { fill: rgba(112, 82, 44, 0.9); stroke: none; }
+
+            /* the touch point travels left to right, fading in and out */
+            #ssRevealHint .ss-hint-touch {
+                animation: ssHintSwipe 2.6s cubic-bezier(0.45, 0, 0.25, 1) infinite;
+            }
+
+            @keyframes ssHintSwipe {
+                0%        { transform: translateX(0);    opacity: 0; }
+                14%       { transform: translateX(2px);  opacity: 1; }
+                68%       { transform: translateX(23px); opacity: 1; }
+                86%, 100% { transform: translateX(26px); opacity: 0; }
+            }
+
+            /* chevrons flick on just ahead of the travelling dot */
+            #ssRevealHint .ss-hint-chevrons path {
+                opacity: 0.28;
+                animation: ssHintChev 2.6s ease-in-out infinite;
+            }
+
+            #ssRevealHint .ss-hint-chevrons path:nth-child(2) { animation-delay: 0.18s; }
+
+            @keyframes ssHintChev {
+                0%, 42%, 100% { opacity: 0.24; }
+                64%           { opacity: 1; }
+            }
+
+            #ssSaveDate.ss-started #ssRevealHint,
+            #ssSaveDate.ss-revealed #ssRevealHint {
+                opacity: 0;
+                visibility: hidden;
+                animation: none;
+                transition: none;
+            }
+
+            /* ---- reveal-anyway fallback ---- */
+            #ssRevealBtn {
+                display: none;
+                margin: 22px auto 0;
+                padding: 9px 22px;
+                background: transparent;
+                border: 1px solid rgba(166,125,43,0.45);
+                border-radius: 20px;
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 12px;
+                letter-spacing: 0.22em;
+                text-transform: uppercase;
+                color: #a67d2b;
+                cursor: pointer;
+            }
+
+            #ssSaveDate.ss-offer-skip #ssRevealBtn { display: block; }
+            #ssSaveDate.ss-revealed #ssRevealBtn { display: none; }
+
+            /* ---- add-to-calendar CTA: appears with the revealed date ----
+               Absolutely positioned, so it sits OUTSIDE the flex column that
+               centres the date. It can appear, animate and disappear without
+               ever contributing height — the date holds exactly the same
+               position before, during and after the swipe. */
+            #ssCalBtn {
+                position: absolute;
+                left: 50%;
+                bottom: 5%;
+                transform: translateX(-50%);
+                margin: 0;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 9px 20px;
+                background: transparent;
+                border: 1px solid rgba(166,125,43,0.45);
+                border-radius: 22px;
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 11px;
+                letter-spacing: 0.18em;
+                text-indent: 0.18em;
+                text-transform: uppercase;
+                color: #a67d2b;
+                cursor: pointer;
+                white-space: nowrap;
+                pointer-events: none;
+                text-shadow: none;
+                transition: border-color 0.35s ease, color 0.35s ease, background 0.35s ease;
+            }
+
+            /* the button no longer animates itself in — it rides the .ss-sd-extras
+               layer's soft fade along with the day. Position and styling are
+               exactly as before; only what triggers its appearance changed. */
+            #ssSaveDate.ss-revealed #ssCalBtn {
+                pointer-events: auto;
+            }
+
+            #ssCalBtn:hover {
+                border-color: rgba(166,125,43,0.85);
+                background: rgba(166,125,43,0.06);
+                color: #8a6b4f;
+            }
+
+            #ssCalBtn svg {
+                width: 14px;
+                height: 14px;
+                flex: 0 0 auto;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.3;
+                margin-right: -3px;
+            }
+
+            @media screen and (max-width: 479px) {
+                #ssCalBtn { font-size: 9px; letter-spacing: 0.12em; text-indent: 0.12em; padding: 8px 15px; gap: 6px; }
+                #ssCalBtn svg { width: 12px; height: 12px; }
+            }
+
+            /* ---- chrysanthemum shower: full-screen, above everything ---- */
+            #ssPetals {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                overflow: hidden;
+                z-index: 2147483000;
+                display: none;
+                contain: layout paint;
+            }
+
+            #ssPetals.ss-petals-on {
+                display: block;
+            }
+
+            #ssPetals img {
+                position: absolute;
+                top: -14vh;
+                display: block;
+                height: auto;
+                will-change: transform, opacity;
+                animation: ssPetalFall linear forwards;
+                /* the artwork is on transparent ground; a whisper of shadow keeps
+                   the blooms from looking pasted on over light sections */
+                filter: drop-shadow(0 3px 5px rgba(120, 60, 70, 0.18));
+            }
+
+            @keyframes ssPetalFall {
+                0%   { transform: translate3d(0,0,0) rotate(0deg);        opacity: 0; }
+                12%  { opacity: 1; }
+                85%  { opacity: 1; }
+                100% { transform: translate3d(var(--dx),125vh,0) rotate(var(--rot)); opacity: 0; }
+            }
+
+            @media screen and (max-width: 479px) {
+                #ssSaveDate { padding: 44px 16px 54px; }
+                #ssSaveDate .ss-sd-title { font-size: 27px; }
+                #ssRevealWrap .ss-sd-day { font-size: 13px; letter-spacing: 0.2em; text-indent: 0.2em; }
+                #ssRevealWrap .ss-sd-full { font-size: 30px; letter-spacing: 0.12em; }
+                #ssRevealWrap .ss-sd-time { font-size: 17px; }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                #ssRevealHint { opacity: 0.85; }
+                #ssRevealHint .ss-hint-label,
+                #ssRevealHint .ss-hint-touch,
+                #ssRevealHint .ss-hint-chevrons path { animation: none; }
+                #ssRevealHint .ss-hint-chevrons path { opacity: 0.7; }
+            }
+        </style>
+        <div id="ssSaveDate">
+            <p class="ss-sd-eyebrow">Mark your calendar</p>
+            <h2 class="ss-sd-title">Save the Date</h2>
+            <div id="ssRevealWrap">
+                <!-- Date content shown beneath the scratch surface -->
+                <div class="ss-sd-under ss-sd-revealed-content">
+                    <div class="ss-sd-full">THURSDAY</div>
+                    <div class="ss-sd-time">28th January 2027</div>
+                    <div class="ss-sd-subtime">9:00 AM · 3:30 PM · 7:00 PM</div>
+                </div>
+                <!-- Red scratch surface canvas -->
+                <canvas id="ssScratchCanvas" aria-label="Scratch to reveal the date"></canvas>
+                <div id="ssRevealHint">
+                    <svg class="ss-hint-gesture" viewBox="0 0 72 24" aria-hidden="true">
+                        <g class="ss-hint-chevrons">
+                            <path d="M50 7.5 L55.5 12 L50 16.5"/>
+                            <path d="M59 7.5 L64.5 12 L59 16.5"/>
+                        </g>
+                        <g class="ss-hint-touch">
+                            <circle class="ss-hint-ring" cx="13" cy="12" r="8.5"/>
+                            <circle class="ss-hint-dot" cx="13" cy="12" r="3.4"/>
+                        </g>
+                    </svg>
+                    <span class="ss-hint-label">Scratch to reveal</span>
+                </div>
+            </div>
+            <button type="button" id="ssRevealBtn">Reveal the date</button>
+        </div>
+        <script>
+        (function(){
+            var section = document.getElementById('ssSaveDate');
+            var wrap = document.getElementById('ssRevealWrap');
+            var canvas = document.getElementById('ssScratchCanvas');
+            var hint = document.getElementById('ssRevealHint');
+            var btn = document.getElementById('ssRevealBtn');
+            if (!section || !wrap || !canvas) return;
+
+            var ctx = canvas.getContext('2d');
+            var W = 0, H = 0;
+            var scratched = false;
+            var painting = false;
+            var THRESHOLD = 0.55; // 55% scratched = reveal
+
+            function resize(){
+                var rect = wrap.getBoundingClientRect();
+                W = rect.width; H = rect.height;
+                var dpr = window.devicePixelRatio || 1;
+                canvas.width  = Math.round(W * dpr);
+                canvas.height = Math.round(H * dpr);
+                canvas.style.width  = W + 'px';
+                canvas.style.height = H + 'px';
+                ctx.setTransform(dpr,0,0,dpr,0,0);
+                drawSurface();
+            }
+
+            function drawSurface(){
+                // Red scratch card surface
+                var grad = ctx.createLinearGradient(0,0,W,H);
+                grad.addColorStop(0,   '#8b1a1a');
+                grad.addColorStop(0.4, '#c0392b');
+                grad.addColorStop(0.65,'#e74c3c');
+                grad.addColorStop(1,   '#922b21');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0,0,W,H);
+
+                // Subtle texture lines
+                ctx.save();
+                ctx.globalAlpha = 0.07;
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 0.8;
+                for(var i=0;i<W;i+=8){
+                    ctx.beginPath();
+                    ctx.moveTo(i,0); ctx.lineTo(i,H);
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                // "Scratch here" text
+                ctx.save();
+                ctx.globalAlpha = 0.55;
+                ctx.fillStyle = '#fff';
+                ctx.font = 'bold ' + Math.round(H*0.09) + 'px Marcellus, Georgia, serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.letterSpacing = '0.12em';
+                ctx.fillText('✦  Scratch to Reveal  ✦', W/2, H/2);
+                ctx.restore();
+
+                // Decorative border
+                ctx.save();
+                ctx.globalAlpha = 0.3;
+                ctx.strokeStyle = '#ffe082';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(8, 8, W-16, H-16);
+                ctx.restore();
+            }
+
+            function scratch(x, y, r){
+                ctx.save();
+                ctx.globalCompositeOperation = 'destination-out';
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI*2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function getPos(e){
+                var rect = canvas.getBoundingClientRect();
+                var src = e.touches ? e.touches[0] : e;
+                return {
+                    x: src.clientX - rect.left,
+                    y: src.clientY - rect.top
+                };
+            }
+
+            function checkThreshold(){
+                if(scratched) return;
+                var data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+                var total = data.length/4;
+                var cleared = 0;
+                for(var i=3;i<data.length;i+=4){
+                    if(data[i] === 0) cleared++;
+                }
+                if(cleared/total >= THRESHOLD) complete();
+            }
+
+            function complete(){
+                if(scratched) return;
+                scratched = true;
+                // Animate remaining surface away
+                (function fade(){
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.globalAlpha = 0.08;
+                    ctx.fillRect(0,0,W,H);
+                    ctx.restore();
+                    var data = ctx.getImageData(0,0,canvas.width,canvas.height).data;
+                    var hasPixels = false;
+                    for(var i=3;i<data.length;i+=4){ if(data[i]>0){ hasPixels=true; break; } }
+                    if(hasPixels) requestAnimationFrame(fade);
+                    else {
+                        canvas.style.pointerEvents = 'none';
+                        section.classList.add('ss-revealed');
+                        try { document.dispatchEvent(new CustomEvent('ss:date-revealed')); } catch(e){}
+                        shower();
+                    }
+                })();
+            }
+
+            function shower(){
+                var petals = document.getElementById('ssPetals');
+                if(!petals) return;
+                petals.classList.add('ss-petals-on');
+                setTimeout(function(){ petals.classList.remove('ss-petals-on'); }, 3200);
+            }
+
+            canvas.addEventListener('pointerdown', function(e){
+                painting = true;
+                section.classList.add('ss-started');
+                if(hint) { hint.style.opacity='0'; hint.style.visibility='hidden'; }
+                var p = getPos(e);
+                scratch(p.x, p.y, 22);
+            });
+            canvas.addEventListener('pointermove', function(e){
+                if(!painting) return;
+                var p = getPos(e);
+                scratch(p.x, p.y, 22);
+                checkThreshold();
+            });
+            canvas.addEventListener('pointerup',   function(){ painting=false; checkThreshold(); });
+            canvas.addEventListener('pointerleave', function(){ painting=false; });
+
+            if(btn) btn.addEventListener('click', complete);
+
+            // Show reveal button after 12s
+            setTimeout(function(){
+                if(!scratched && btn) btn.style.display = 'block';
+            }, 12000);
+
+            window.addEventListener('resize', function(){
+                if(!scratched) resize();
+            });
+
+            resize();
+        })();
+        </script>
+        <!-- ==================== COUNTDOWN (FINAL SECTION) ==================== -->
+        <style>
+            /* ---- countdown: hidden entirely until the date is revealed ---- */
+                            #ssCountdown {
+                                display: none;
+                                background: #f9f0e0;
+                                padding: 62px 20px 70px;
+                                text-align: center;
+                                position: relative;
+                                overflow: hidden;
+                            }
+
+                            #ssCountdown.ss-cd-mounted {
+                                display: block;
+                                opacity: 0;
+                                transform: translateY(26px);
+                            }
+
+                            #ssCountdown.ss-cd-live {
+                                opacity: 1;
+                                transform: translateY(0);
+                                transition: opacity 1.25s ease, transform 1.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+                            }
+
+                            #ssCountdown .ss-cd-title {
+                                margin: 0 0 6px;
+                                line-height: 1;
+                            }
+
+                            #ssCountdown .ss-cd-l1 {
+                                display: block;
+                                font-family: 'Cormorant Garamond', Georgia, serif;
+                                font-style: italic;
+                                font-weight: 300;
+                                font-size: 27px;
+                                letter-spacing: 0.01em;
+                                color: #8a6b4f;
+                                margin-bottom: 8px;
+                            }
+
+                            #ssCountdown .ss-cd-l2 {
+                                display: block;
+                                font-family: 'Marcellus', Georgia, serif;
+                                font-weight: 400;
+                                font-size: 25px;
+                                letter-spacing: 0.2em;
+                                text-indent: 0.2em;
+                                text-transform: uppercase;
+                                color: #a67d2b;
+                            }
+
+                            #ssCountdown .ss-cd-orn {
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                gap: 10px;
+                                margin: 18px auto 34px;
+                                max-width: 180px;
+                            }
+
+                            #ssCountdown .ss-cd-orn i {
+                                display: block;
+                                height: 1px;
+                                flex: 1 1 auto;
+                                background: linear-gradient(to right, rgba(200, 171, 109, 0), rgba(200, 171, 109, 0.8));
+                            }
+
+                            #ssCountdown .ss-cd-orn i + i {
+                                background: linear-gradient(to left, rgba(200, 171, 109, 0), rgba(200, 171, 109, 0.8));
+                            }
+
+                            #ssCountdown .ss-cd-orn span {
+                                width: 6px;
+                                height: 6px;
+                                transform: rotate(45deg);
+                                background: #c8ab6d;
+                                flex: 0 0 auto;
+                            }
+
+                            #countdownContainer {
+                                display: flex;
+                                align-items: stretch;
+                                justify-content: center;
+                                gap: 14px;
+                                max-width: 560px;
+                                margin: 0 auto;
+                            }
+
+                            .time-block {
+                                flex: 1 1 0;
+                                min-width: 0;
+                                padding: 22px 6px 18px;
+                                background: linear-gradient(180deg, #fdf7ea 0%, #f8efdd 100%);
+                                border: 1px solid rgba(180, 140, 61, 0.28);
+                                border-radius: 3px;
+                                box-shadow: 0 10px 28px -18px rgba(122, 90, 50, 0.55), inset 0 0 30px rgba(166, 125, 43, 0.06);
+                                text-align: center;
+                                opacity: 0;
+                                transform: translateY(16px);
+                                transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 0.61, 0.36, 1);
+                            }
+
+                            #ssCountdown.ss-cd-live .time-block { opacity: 1; transform: translateY(0); }
+
+                            #ssCountdown.ss-cd-live #tb-days  { transition-delay: 0.15s; }
+                            #ssCountdown.ss-cd-live #tb-hours { transition-delay: 0.28s; }
+                            #ssCountdown.ss-cd-live #tb-mins  { transition-delay: 0.41s; }
+                            #ssCountdown.ss-cd-live #tb-secs  { transition-delay: 0.54s; }
+
+                            .number-wrap {
+                                overflow: hidden;
+                                height: 56px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+
+                            .number {
+                                font-family: 'Cormorant Garamond', Georgia, serif;
+                                font-weight: 300;
+                                font-size: 46px;
+                                line-height: 1.2;
+                                letter-spacing: 0.02em;
+                                display: block;
+                                white-space: nowrap;
+                                background: linear-gradient(105deg, #B48C3D 0%, #B48C3D 25%, #cda95a 46%, #d8ba72 52%, #cda95a 58%, #B48C3D 75%, #B48C3D 100%);
+                                background-size: 300% 100%;
+                                -webkit-background-clip: text;
+                                -webkit-text-fill-color: transparent;
+                                background-clip: text;
+                                clip-path: inset(0 100% 0 0);
+                                transition: transform 0.55s cubic-bezier(0.25, 0.1, 0.25, 1), opacity 0.55s ease;
+                            }
+
+                            .number.revealed {
+                                animation: inkReveal 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards, candleShimmer 4.5s ease-in-out 1.1s infinite;
+                            }
+
+                            #tb-days .number.revealed  { animation-delay: 0.15s, 1.25s; }
+                            #tb-hours .number.revealed { animation-delay: 0.33s, 1.43s; }
+                            #tb-mins .number.revealed  { animation-delay: 0.51s, 1.61s; }
+                            #tb-secs .number.revealed  { animation-delay: 0.69s, 1.79s; }
+
+                            @keyframes inkReveal {
+                                0%   { clip-path: inset(0 100% 0 0); }
+                                100% { clip-path: inset(0 0% 0 0); }
+                            }
+
+                            @keyframes candleShimmer {
+                                0%   { background-position: 100% 0; }
+                                50%  { background-position: 0% 0; }
+                                100% { background-position: 100% 0; }
+                            }
+
+                            .number.flip-out { transform: translateY(-60%); opacity: 0; }
+                            .number.flip-in  { transform: translateY(60%);  opacity: 0; transition: none; }
+
+                            .ss-cd-hair {
+                                width: 26px;
+                                height: 1px;
+                                margin: 12px auto 10px;
+                                background: rgba(200, 171, 109, 0.7);
+                            }
+
+                            .label {
+                                font-family: 'Marcellus', Georgia, serif;
+                                font-size: 11px;
+                                letter-spacing: 0.24em;
+                                text-indent: 0.24em;
+                                text-transform: uppercase;
+                                color: #8a6b4f;
+                                opacity: 0;
+                                transition: opacity 0.8s ease;
+                            }
+
+                            .label.revealed { opacity: 0.92; }
+
+                            #tb-days .label.revealed  { transition-delay: 1.0s; }
+                            #tb-hours .label.revealed { transition-delay: 1.18s; }
+                            #tb-mins .label.revealed  { transition-delay: 1.36s; }
+                            #tb-secs .label.revealed  { transition-delay: 1.54s; }
+
+                            #ssCountdown .ss-cd-foot {
+                                font-family: 'Cormorant Garamond', Georgia, serif;
+                                font-style: italic;
+                                font-size: 20px;
+                                color: #8a6b4f;
+                                margin: 30px 0 0;
+                                opacity: 0;
+                                transition: opacity 1s ease 1.5s;
+                            }
+
+                            #ssCountdown.ss-cd-live .ss-cd-foot { opacity: 0.9; }
+
+                            @media screen and (max-width: 639px) {
+                                #ssCountdown { padding: 50px 14px 56px; }
+                                #ssCountdown .ss-cd-l1 { font-size: 21px; margin-bottom: 6px; }
+                                #ssCountdown .ss-cd-l2 { font-size: 18px; letter-spacing: 0.16em; text-indent: 0.16em; }
+                                #countdownContainer { gap: 8px; }
+                                .time-block { padding: 16px 2px 14px; border-radius: 2px; }
+                                .number-wrap { height: 42px; }
+                                .number { font-size: 33px; }
+                                .label { font-size: 9px; letter-spacing: 0.14em; text-indent: 0.14em; }
+                                .ss-cd-hair { width: 18px; margin: 9px auto 8px; }
+                                #ssCountdown .ss-cd-foot { font-size: 17px; }
+                            }
+
+                            @media (prefers-reduced-motion: reduce) {
+                                #ssCountdown.ss-cd-mounted { transform: none; }
+                                #ssCountdown.ss-cd-live { transition: opacity 0.3s ease; }
+                                .time-block { transform: none; transition: opacity 0.3s ease; }
+                                .number.revealed { animation: inkReveal 0.3s linear forwards; }
+                            }
+        </style>
+        <section id="ssCountdown" aria-hidden="true">
+                        <h2 class="ss-cd-title">
+                            <span class="ss-cd-l1">Counting down to</span>
+                            <span class="ss-cd-l2">Our Special Day</span>
+                        </h2>
+                        <div class="ss-cd-orn" aria-hidden="true"><i></i><span></span><i></i></div>
+                        <div id="countdownContainer">
+                            <div class="time-block" id="tb-days">
+                                <div class="number-wrap">
+                                    <div class="number" id="days">168</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Days</div>
+                            </div>
+                            <div class="time-block" id="tb-hours">
+                                <div class="number-wrap">
+                                    <div class="number" id="hours">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Hours</div>
+                            </div>
+                            <div class="time-block" id="tb-mins">
+                                <div class="number-wrap">
+                                    <div class="number" id="minutes">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Minutes</div>
+                            </div>
+                            <div class="time-block" id="tb-secs">
+                                <div class="number-wrap">
+                                    <div class="number" id="seconds">00</div>
+                                </div>
+                                <div class="ss-cd-hair" aria-hidden="true"></div>
+                                <div class="label">Seconds</div>
+                            </div>
+                        </div>
+                        <p class="ss-cd-foot">Until we say forever</p>
+                    </section>
+                    <script>
+                        (function() {
+                            var eventDate = new Date(2027, 0, 28, 9, 0, 0);
+                            var root = document.getElementById('ssCountdown');
+                            var container = document.getElementById('countdownContainer');
+                            var elDays = document.getElementById('days');
+                            var elHours = document.getElementById('hours');
+                            var elMins = document.getElementById('minutes');
+                            var elSecs = document.getElementById('seconds');
+                            if (!root || !elDays) return;
+
+                            var prev = { days: null, hours: null, minutes: null, seconds: null };
+                            var revealed = false, live = false, timer = null;
+
+                            function flip(el, newVal) {
+                                if (el.textContent === newVal) return;
+                                if (!live) { el.textContent = newVal; return; }
+                                el.classList.add('flip-out');
+                                setTimeout(function() {
+                                    el.classList.remove('flip-out');
+                                    el.classList.add('flip-in');
+                                    el.textContent = newVal;
+                                    el.offsetHeight;
+                                    el.classList.remove('flip-in');
+                                }, 520);
+                            }
+
+                            function tick() {
+                                var dist = eventDate - new Date();
+                                if (dist < 0) {
+                                    container.innerHTML = '<p class="ss-cd-foot" style="opacity:0.9">See you there!</p>';
+                                    if (timer) clearInterval(timer);
+                                    return;
+                                }
+                                var d = String(Math.floor(dist / 86400000));
+                                var h = String(Math.floor((dist % 86400000) / 3600000)).padStart(2, '0');
+                                var m = String(Math.floor((dist % 3600000) / 60000)).padStart(2, '0');
+                                var s = String(Math.floor((dist % 60000) / 1000)).padStart(2, '0');
+                                if (d !== prev.days)    { flip(elDays, d);  prev.days = d; }
+                                if (h !== prev.hours)   { flip(elHours, h); prev.hours = h; }
+                                if (m !== prev.minutes) { flip(elMins, m);  prev.minutes = m; }
+                                if (s !== prev.seconds) { flip(elSecs, s);  prev.seconds = s; }
+                            }
+
+                            function doReveal() {
+                                if (revealed) return;
+                                revealed = true;
+                                root.querySelectorAll('.number, .label').forEach(function(el) {
+                                    el.classList.add('revealed');
+                                });
+                            }
+
+                            /* the section only exists on the page once the date has been scratched open */
+                            function goLive() {
+                                if (live) return;
+                                live = true;
+                                tick();
+                                root.setAttribute('aria-hidden', 'false');
+                                root.classList.add('ss-cd-mounted');
+                                root.offsetHeight; /* force layout so the fade-up plays */
+                                requestAnimationFrame(function() {
+                                    root.classList.add('ss-cd-live');
+                                    doReveal();
+                                });
+                                timer = setInterval(tick, 1000);
+                            }
+
+                            var saveDate = document.getElementById('ssSaveDate');
+
+                            function dateIsOut() {
+                                if (window.ssDateRevealed) return true;
+                                return !!(saveDate && saveDate.classList.contains('ss-revealed'));
+                            }
+
+                            if (!saveDate) {
+                                goLive();
+                            } else if (dateIsOut()) {
+                                goLive();
+                            } else {
+                                document.addEventListener('ss:date-revealed', goLive);
+                                var poll = setInterval(function() {
+                                    if (dateIsOut()) { clearInterval(poll); goLive(); }
+                                }, 400);
+                            }
+                        })();
+                    </script>
+        <!-- ==================== EVENTS ==================== -->
+        <style>
+            #ssCountdown, #ssEvents, #ssDress, #ssGallery {
+                scroll-snap-align: start;
+                scroll-snap-stop: always;
+                min-height: 100svh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+
+            #ssEvents {
+                position: relative;
+                background: #f9f0e0;
+                padding: 62px 20px 70px;
+                overflow: hidden;
+            }
+
+            /* ---- marigold garland: the join between countdown and events ---- */
+            #ssEvents .ss-ev-garland {
+                display: block;
+                width: calc(100% + 40px);
+                margin: -62px -20px 44px;
+                padding: 0;
+                line-height: 0;
+                pointer-events: none;
+            }
+
+            #ssEvents .ss-ev-garland img {
+                display: block;
+                width: 100%;
+                height: auto;
+                max-width: none;
+            }
+
+            #ssEvents .ss-ev-head {
+                text-align: center;
+                margin: 0 0 34px;
+            }
+
+            #ssEvents .ss-ev-l1 {
+                display: block;
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-style: italic;
+                font-weight: 300;
+                font-size: 27px;
+                letter-spacing: 0.01em;
+                color: #8a6b4f;
+                margin-bottom: 8px;
+            }
+
+            #ssEvents .ss-ev-l2 {
+                display: block;
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 25px;
+                letter-spacing: 0.2em;
+                text-indent: 0.2em;
+                text-transform: uppercase;
+                color: #a67d2b;
+            }
+
+            #ssEvents .ss-ev-orn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin: 18px auto 0;
+                max-width: 180px;
+            }
+
+            #ssEvents .ss-ev-orn i {
+                display: block;
+                height: 1px;
+                flex: 1 1 auto;
+                background: linear-gradient(to right, rgba(200,171,109,0), rgba(200,171,109,0.8));
+            }
+
+            #ssEvents .ss-ev-orn i + i {
+                background: linear-gradient(to left, rgba(200,171,109,0), rgba(200,171,109,0.8));
+            }
+
+            #ssEvents .ss-ev-orn span {
+                width: 6px;
+                height: 6px;
+                transform: rotate(45deg);
+                background: #c8ab6d;
+                flex: 0 0 auto;
+            }
+
+            /* ---- one event: illustration left, details right, at every width ---- */
+            #ssEvents .ss-ev-card + .ss-ev-card {
+                margin-top: clamp(38px, 7vw, 78px);
+            }
+
+            #ssEvents .ss-ev-card {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                align-items: center;
+                justify-content: space-between;
+                gap: clamp(12px, 3.4vw, 40px);
+                max-width: 980px;
+                margin: 0 auto;
+                padding: 0 clamp(4px, 2vw, 24px);
+                opacity: 0;
+                transform: translateY(22px);
+            }
+
+            #ssEvents .ss-ev-card.ss-in-view {
+                animation: ssEvIn 1.2s cubic-bezier(0.22,0.61,0.36,1) forwards;
+            }
+
+            #ssEvents .ss-ev-info {
+                max-width: 46%;
+            }
+
+            @keyframes ssEvIn {
+                to { opacity: 1; transform: translateY(0); }
+            }
+
+            #ssEvents .ss-ev-art {
+                flex: 0 0 min(220px, 48%);
+                width: min(220px, 48%);
+                min-width: 0;
+            }
+
+            #ssEvents .ss-ev-art img {
+                display: block;
+                width: 100%;
+                height: auto;
+                max-width: 100%;
+            }
+
+            #ssEvents .ss-ev-info {
+                flex: 0 0 auto;
+                min-width: 0;
+                margin-left: auto;
+                margin-right: clamp(6px, 3.5vw, 56px);
+                text-align: left;
+            }
+
+            #ssEvents .ss-ev-name {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: clamp(17px, 4.4vw, 33px);
+                letter-spacing: 0.13em;
+                text-indent: 0.13em;
+                text-transform: uppercase;
+                color: #a67d2b;
+                line-height: 1.25;
+                margin: 0;
+            }
+
+            #ssEvents .ss-ev-rule {
+                width: clamp(34px, 9vw, 60px);
+                height: 1px;
+                background: #c8ab6d;
+                opacity: 0.8;
+                margin: clamp(10px, 2.4vw, 18px) auto clamp(10px, 2.4vw, 16px) 0;
+            }
+
+            #ssEvents .ss-ev-date {
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-weight: 400;
+                font-size: clamp(13px, 3.4vw, 23px);
+                letter-spacing: 0.03em;
+                color: #6c513f;
+                line-height: 1.35;
+                margin: 0;
+            }
+
+            #ssEvents .ss-ev-time {
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-style: italic;
+                font-weight: 300;
+                font-size: clamp(12px, 3.1vw, 21px);
+                color: #8a6b4f;
+                line-height: 1.35;
+                margin: 5px 0 0;
+            }
+
+            /* ---- venue ---- */
+            #ssEvents .ss-ev-venue-label {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: clamp(9px, 2.1vw, 12px);
+                letter-spacing: 0.22em;
+                text-indent: 0.22em;
+                text-transform: uppercase;
+                color: #b09263;
+                margin: clamp(12px, 2.6vw, 20px) 0 clamp(4px, 1vw, 7px);
+            }
+
+            #ssEvents .ss-ev-venue {
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-weight: 400;
+                font-size: clamp(12px, 3.2vw, 21px);
+                color: #6c513f;
+                line-height: 1.4;
+                margin: 0;
+            }
+
+            #ssEvents .ss-ev-venue span {
+                display: block;
+                font-style: italic;
+                font-weight: 300;
+                font-size: 0.88em;
+                color: #8a6b4f;
+            }
+
+            #ssEvents .ss-ev-dir {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: clamp(8px, 1.8vw, 14px);
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: clamp(9px, 2.1vw, 12px);
+                letter-spacing: 0.18em;
+                text-indent: 0.18em;
+                text-transform: uppercase;
+                color: #a67d2b;
+                text-decoration: none;
+                border-bottom: 1px solid rgba(166,125,43,0.35);
+                padding-bottom: 3px;
+                transition: border-color 0.3s ease, color 0.3s ease;
+            }
+
+            #ssEvents .ss-ev-dir:hover {
+                color: #8a6b4f;
+                border-bottom-color: rgba(138,107,79,0.7);
+            }
+
+            #ssEvents .ss-ev-dir svg {
+                width: 1em;
+                height: 1em;
+                flex: 0 0 auto;
+                stroke: currentColor;
+                fill: none;
+                stroke-width: 1.4;
+                margin-left: -3px;
+            }
+
+            /* ---- flipped card: details left, illustration right ---- */
+            #ssEvents .ss-ev-card--flip {
+                flex-direction: row-reverse;
+            }
+
+            #ssEvents .ss-ev-card--flip .ss-ev-info {
+                margin-left: clamp(6px, 3.5vw, 56px);
+                margin-right: auto;
+            }
+
+            @media screen and (max-width: 639px) {
+                #ssEvents { padding: 50px 14px 56px; }
+                #ssEvents .ss-ev-garland { width: calc(100% + 28px); margin: -50px -14px 32px; }
+                #ssEvents .ss-ev-l1 { font-size: 21px; margin-bottom: 6px; }
+                #ssEvents .ss-ev-l2 { font-size: 18px; letter-spacing: 0.16em; text-indent: 0.16em; }
+                #ssEvents .ss-ev-head { margin-bottom: 26px; }
+            }
+
+            @media screen and (max-width: 479px) {
+                #ssEvents { padding: 44px 14px 50px; }
+                #ssEvents .ss-ev-garland { margin: -44px -14px 26px; }
+                #ssEvents .ss-ev-card { gap: 10px; padding: 0; }
+                #ssEvents .ss-ev-art { flex-basis: 48%; }
+                #ssEvents .ss-ev-info { max-width: 52%; }
+                #ssEvents .ss-ev-name { letter-spacing: 0.06em; text-indent: 0.06em; }
+                #ssEvents .ss-ev-dir { letter-spacing: 0.12em; text-indent: 0.12em; }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                #ssEvents .ss-ev-card { opacity: 1; transform: none; }
+                #ssEvents .ss-ev-card.ss-in-view { animation: none; }
+            }
+
+            /* ---- Muhurtham animated art wrapper ---- */
+            .ss-muh-wrap {
+                position: relative;
+                width: 100%;
+                aspect-ratio: 1 / 1;
+                overflow: hidden;
+                border-radius: 12px;
+                background: transparent;
+                /* force equal size for all three */
+                min-height: 0;
+            }
+            .ss-muh-canvas {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 1;
+            }
+            .ss-muh-couple {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: bottom center;
+                z-index: 2;
+                pointer-events: none;
+            }
+            /* Church arch background */
+            .ss-church-arch {
+                position: absolute;
+                top: -10%;
+                left: -10%;
+                width: 120%;
+                height: 120%;
+                object-fit: cover;
+                object-position: top center;
+                z-index: 0;
+                pointer-events: none;
+                border-radius: 12px;
+            }
+        </style>
+        <section id="ssEvents">
+            <div class="ss-ev-garland" aria-hidden="true">
+                <img src="/image/garland.webp" alt=""/>
+            </div>
+
+            <div class="ss-ev-head">
+                <span class="ss-ev-l1">You are invited to our</span>
+                <span class="ss-ev-l2">Celebrations</span>
+                <div class="ss-ev-orn" aria-hidden="true"><i></i><span></span><i></i></div>
+            </div>
+
+            <div class="ss-ev-card">
+                <div class="ss-ev-art">
+                    <div class="ss-muh-wrap">
+                        <canvas class="ss-muh-canvas" id="ssMuhCanvas" aria-hidden="true"></canvas>
+                        <img class="ss-muh-couple" src="/image/muhurtham-couple.png" alt="Hariharan and Sharon"/>
+                    </div>
+                </div>
+                <div class="ss-ev-info">
+                    <h3 class="ss-ev-name">Muhurtham</h3>
+                    <div class="ss-ev-rule" aria-hidden="true"></div>
+                    <p class="ss-ev-date">Thursday, 28 January 2027</p>
+                    <p class="ss-ev-time">9:00 AM – 10:30 AM</p>
+                    <p class="ss-ev-venue-label">Venue</p>
+                    <p class="ss-ev-venue">Lawn Venue<span>Le Royal Méridien, 1 (GST) Road, Alandur / St. Thomas Mount, Chennai – 600016</span></p>
+                    <a class="ss-ev-dir" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Royal+M%C3%A9ridien%2C+GST+Road%2C+Chennai" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+                        Get directions
+                    </a>
+                </div>
+            </div>
+
+            <div class="ss-ev-card ss-ev-card--flip">
+                <div class="ss-ev-art">
+                    <div class="ss-muh-wrap ss-church-wrap">
+                        <canvas class="ss-muh-canvas" id="ssChurchCanvas" aria-hidden="true"></canvas>
+                        <img class="ss-muh-couple" src="/image/church-couple.png" alt="Hariharan and Sharon church blessing"/>
+                    </div>
+                </div>
+                <div class="ss-ev-info">
+                    <h3 class="ss-ev-name">Church Blessing</h3>
+                    <div class="ss-ev-rule" aria-hidden="true"></div>
+                    <p class="ss-ev-date">Thursday, 28 January 2027</p>
+                    <p class="ss-ev-time">3:30 PM</p>
+                    <p class="ss-ev-venue-label">Venue</p>
+                    <p class="ss-ev-venue">Santhome Cathedral Basilica<span>Mylapore, Chennai – 600004</span></p>
+                    <a class="ss-ev-dir" href="https://www.google.com/maps/search/?api=1&amp;query=Santhome+Cathedral+Basilica%2C+Mylapore%2C+Chennai" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+                        Get directions
+                    </a>
+                </div>
+            </div>
+
+            <div class="ss-ev-card">
+                <div class="ss-ev-art">
+                    <div class="ss-muh-wrap ss-reception-wrap">
+                        <canvas class="ss-muh-canvas" id="ssRecCanvas" aria-hidden="true"></canvas>
+                        <img class="ss-muh-couple" src="/image/reception-couple.png" alt="Hariharan and Sharon reception"/>
+                    </div>
+                </div>
+                <div class="ss-ev-info">
+                    <h3 class="ss-ev-name">Reception</h3>
+                    <div class="ss-ev-rule" aria-hidden="true"></div>
+                    <p class="ss-ev-date">Thursday, 28 January 2027</p>
+                    <p class="ss-ev-time">7:00 PM onwards</p>
+                    <p class="ss-ev-venue-label">Venue</p>
+                    <p class="ss-ev-venue">Grand Madras Ballroom<span>Le Royal Méridien, 1 (GST) Road, Alandur / St. Thomas Mount, Chennai – 600016</span></p>
+                    <a class="ss-ev-dir" href="https://www.google.com/maps/search/?api=1&amp;query=Le+Royal+M%C3%A9ridien%2C+GST+Road%2C+Chennai" target="_blank" rel="noopener">
+                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.4"/></svg>
+                        Get directions
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <script>
+            (function() {
+                var cards = document.querySelectorAll('#ssEvents .ss-ev-card');
+                if (!cards.length) return;
+                if (!('IntersectionObserver' in window)) {
+                    Array.prototype.forEach.call(cards, function(el) { el.classList.add('ss-in-view'); });
+                    return;
+                }
+                var io = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('ss-in-view');
+                            io.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.2 });
+                Array.prototype.forEach.call(cards, function(el) { io.observe(el); });
+            })();
+        </script>
+
+        <!-- ==================== MUHURTHAM CANVAS ANIMATION ==================== -->
+        <script>
+        (function(){
+            var canvas = document.getElementById('ssMuhCanvas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var W = 0, H = 0, t = 0;
+            var particles = [];
+            var started = false, rafId = null;
+
+            function rand(a,b){ return a + Math.random()*(b-a); }
+
+            /* =========================================================
+               STATIC SCENE ELEMENTS
+            ========================================================= */
+
+            // --- Mandap pillars (4 corners) ---
+            function drawMandap(){
+                ctx.save();
+                var pillarW = W * 0.07;
+                var pillarH = H * 0.72;
+                var positions = [0.05, 0.88]; // left & right X fractions
+                var GOLD = '#c9a84c';
+                var DARK = '#8b6914';
+
+                positions.forEach(function(xf){
+                    var px = xf * W;
+                    // pillar body
+                    var grad = ctx.createLinearGradient(px, 0, px + pillarW, 0);
+                    grad.addColorStop(0, '#e8c84a');
+                    grad.addColorStop(0.4, '#fffde7');
+                    grad.addColorStop(1, '#c9a84c');
+                    ctx.globalAlpha = 0.82;
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.rect(px, H*0.1, pillarW, pillarH);
+                    ctx.fill();
+                    // pillar border
+                    ctx.strokeStyle = GOLD;
+                    ctx.lineWidth = 1.5;
+                    ctx.globalAlpha = 0.9;
+                    ctx.stroke();
+                    // decorative rings on pillar
+                    for(var r=0;r<5;r++){
+                        var ry = H*0.1 + r*(pillarH/5) + pillarH/10;
+                        ctx.beginPath();
+                        ctx.rect(px, ry, pillarW, 4);
+                        ctx.fillStyle = DARK;
+                        ctx.globalAlpha = 0.5;
+                        ctx.fill();
+                    }
+                    // capital (top decoration)
+                    ctx.globalAlpha = 0.9;
+                    ctx.fillStyle = GOLD;
+                    ctx.beginPath();
+                    ctx.rect(px - 4, H*0.08, pillarW + 8, 14);
+                    ctx.fill();
+                    // base
+                    ctx.beginPath();
+                    ctx.rect(px - 4, H*0.1 + pillarH, pillarW + 8, 12);
+                    ctx.fill();
+                });
+                ctx.restore();
+            }
+
+            // --- Top beam with marigold garlands ---
+            function drawTopBeam(){
+                ctx.save();
+                var beamY = H * 0.1;
+                // beam
+                var grad = ctx.createLinearGradient(0, beamY, 0, beamY+14);
+                grad.addColorStop(0, '#e8c84a');
+                grad.addColorStop(1, '#c9a84c');
+                ctx.globalAlpha = 0.85;
+                ctx.fillStyle = grad;
+                ctx.beginPath();
+                ctx.rect(W*0.05, beamY, W*0.9, 14);
+                ctx.fill();
+
+                // marigold garland hanging from beam
+                var garlandY = beamY + 14;
+                var garlandCount = 3;
+                for(var g=0; g<garlandCount; g++){
+                    var gx1 = W * (0.1 + g * 0.3);
+                    var gx2 = W * (0.1 + (g+1) * 0.3);
+                    var dropY = garlandY + H*0.08;
+                    // garland string (catenary curve)
+                    ctx.beginPath();
+                    ctx.moveTo(gx1, garlandY);
+                    ctx.quadraticCurveTo((gx1+gx2)/2, dropY, gx2, garlandY);
+                    ctx.strokeStyle = '#388e3c';
+                    ctx.lineWidth = 2;
+                    ctx.globalAlpha = 0.6;
+                    ctx.stroke();
+                    // marigold flowers along string (10 per garland)
+                    for(var f=0; f<=10; f++){
+                        var ft = f/10;
+                        var fxc = gx1 + (gx2-gx1)*ft;
+                        var fyc = garlandY + (dropY - garlandY)*4*ft*(1-ft);
+                        drawMarigoldSmall(fxc, fyc, 5 + (ft>0.3&&ft<0.7?2:0), 0.9);
+                    }
+                }
+                ctx.restore();
+            }
+
+            function drawMarigoldSmall(x, y, r, alpha){
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.translate(x, y);
+                for(var i=0;i<8;i++){
+                    ctx.beginPath();
+                    ctx.ellipse(r, 0, r*0.5, r*0.28, 0, 0, Math.PI*2);
+                    ctx.fillStyle = i%2===0 ? '#ffb300' : '#ff8f00';
+                    ctx.fill();
+                    ctx.rotate(Math.PI*2/8);
+                }
+                ctx.beginPath();
+                ctx.arc(0,0,r*0.35,0,Math.PI*2);
+                ctx.fillStyle = '#fff176';
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // --- Banana leaves at base corners ---
+            function drawBananaLeaf(tx, ty, rot, color, w, h, alpha){
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.fillStyle = color;
+                ctx.translate(tx, ty);
+                ctx.rotate(rot);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, w, h, 0, 0, Math.PI*2);
+                ctx.fill();
+                ctx.strokeStyle = '#2e7d32';
+                ctx.lineWidth = 1.2;
+                ctx.beginPath();
+                ctx.moveTo(0,-h); ctx.lineTo(0,h);
+                ctx.stroke();
+                // side veins
+                for(var v=1;v<4;v++){
+                    var vy = -h*0.5 + v*(h*0.35);
+                    ctx.beginPath();
+                    ctx.moveTo(0,vy); ctx.lineTo(w*0.85, vy+8);
+                    ctx.moveTo(0,vy); ctx.lineTo(-w*0.85, vy+8);
+                    ctx.globalAlpha = alpha*0.5;
+                    ctx.stroke();
+                    ctx.globalAlpha = alpha;
+                }
+                ctx.restore();
+            }
+            function drawBananaLeaves(){
+                // left cluster — 3 leaves at different angles
+                drawBananaLeaf(W*0.08, H*0.70, -0.5, '#2e7d32', 14, 60, 0.75);
+                drawBananaLeaf(W*0.13, H*0.65, -0.15, '#388e3c', 17, 70, 0.80);
+                drawBananaLeaf(W*0.18, H*0.72, 0.1, '#43a047', 13, 55, 0.70);
+                // behind left pillar
+                drawBananaLeaf(W*0.06, H*0.50, -0.6, '#1b5e20', 12, 65, 0.55);
+                drawBananaLeaf(W*0.20, H*0.45, 0.2, '#33691e', 10, 50, 0.50);
+                // right cluster
+                drawBananaLeaf(W*0.92, H*0.70, 0.5, '#2e7d32', 14, 60, 0.75);
+                drawBananaLeaf(W*0.87, H*0.65, 0.15, '#388e3c', 17, 70, 0.80);
+                drawBananaLeaf(W*0.82, H*0.72, -0.1, '#43a047', 13, 55, 0.70);
+                // behind right pillar
+                drawBananaLeaf(W*0.94, H*0.50, 0.6, '#1b5e20', 12, 65, 0.55);
+                drawBananaLeaf(W*0.80, H*0.45, -0.2, '#33691e', 10, 50, 0.50);
+            }
+
+            // --- Brass lamps (vilakku) ---
+            function drawBrassLamp(x, y, scale, flameT){
+                ctx.save();
+                ctx.translate(x, y);
+                ctx.scale(scale, scale);
+                ctx.globalAlpha = 0.88;
+                // base disc
+                var baseGrad = ctx.createRadialGradient(0,8,2,0,8,16);
+                baseGrad.addColorStop(0,'#ffe082');
+                baseGrad.addColorStop(1,'#c9a84c');
+                ctx.fillStyle = baseGrad;
+                ctx.beginPath();
+                ctx.ellipse(0, 10, 16, 5, 0, 0, Math.PI*2);
+                ctx.fill();
+                // stem
+                ctx.fillStyle = '#c9a84c';
+                ctx.beginPath();
+                ctx.rect(-3, -18, 6, 28);
+                ctx.fill();
+                // bowl
+                ctx.beginPath();
+                ctx.arc(0, -18, 10, 0, Math.PI*2);
+                ctx.fillStyle = '#e8c84a';
+                ctx.fill();
+                ctx.strokeStyle = '#b8860b';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                // oil surface
+                ctx.beginPath();
+                ctx.ellipse(0, -18, 7, 3, 0, 0, Math.PI*2);
+                ctx.fillStyle = '#fff9c4';
+                ctx.globalAlpha = 0.6;
+                ctx.fill();
+                // flame
+                var flicker = Math.sin(flameT)*1.5;
+                ctx.globalAlpha = 0.95;
+                ctx.beginPath();
+                ctx.ellipse(0, -28+flicker*0.3, 3.5, 7+flicker*0.5, 0, 0, Math.PI*2);
+                ctx.fillStyle = '#ffca28';
+                ctx.fill();
+                ctx.beginPath();
+                ctx.ellipse(0, -30+flicker*0.3, 1.8, 4, 0, 0, Math.PI*2);
+                ctx.fillStyle = '#fff9c4';
+                ctx.fill();
+                // glow
+                ctx.beginPath();
+                ctx.arc(0, -28, 10+flicker, 0, Math.PI*2);
+                ctx.fillStyle = 'rgba(255,200,50,0.1)';
+                ctx.globalAlpha = 1;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // --- Sacred fire (homa kund) in centre ---
+            function drawHomaKund(){
+                var cx = W/2, cy = H*0.80;
+                ctx.save();
+                // square brick kund
+                ctx.globalAlpha = 0.75;
+                ctx.fillStyle = '#bf360c';
+                ctx.beginPath();
+                ctx.rect(cx-22, cy-14, 44, 20);
+                ctx.fill();
+                // brick lines
+                ctx.strokeStyle = '#e64a19';
+                ctx.lineWidth = 0.8;
+                ctx.globalAlpha = 0.5;
+                for(var br=0;br<3;br++){
+                    ctx.beginPath();
+                    ctx.moveTo(cx-22, cy-14+br*7);
+                    ctx.lineTo(cx+22, cy-14+br*7);
+                    ctx.stroke();
+                }
+                // fire layers (3 animated flames)
+                var fireColors = ['#e65100','#ff6d00','#ffca28','#fff9c4'];
+                for(var fi=0;fi<3;fi++){
+                    var fw = (3-fi)*9;
+                    var fh = (3-fi)*10 + Math.sin(t*0.14+fi)*4;
+                    ctx.beginPath();
+                    ctx.ellipse(cx + Math.sin(t*0.09+fi)*3, cy - 14 - fh*0.5, fw, fh, 0, 0, Math.PI*2);
+                    ctx.fillStyle = fireColors[fi];
+                    ctx.globalAlpha = 0.85 - fi*0.1;
+                    ctx.fill();
+                }
+                // smoke wisps
+                for(var s=0;s<3;s++){
+                    ctx.globalAlpha = 0.12 + 0.04*Math.sin(t*0.08+s*2);
+                    ctx.beginPath();
+                    ctx.arc(cx + Math.sin(t*0.05+s)*12, cy - 55 - s*14, 8+s*3, 0, Math.PI*2);
+                    ctx.fillStyle = '#bdbdbd';
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+
+            // --- Kolam (rangoli dots) at bottom ---
+            function drawKolam(){
+                ctx.save();
+                var kx = W/2, ky = H*0.93;
+                var KOLAM_COLORS = ['#e53935','#ff8f00','#43a047','#1565c0','#8e24aa'];
+                var rows = [5,7,9,7,5];
+                rows.forEach(function(dots, ri){
+                    for(var d=0;d<dots;d++){
+                        var dx = kx + (d-(dots-1)/2)*10;
+                        var dy = ky + (ri-2)*9;
+                        ctx.beginPath();
+                        ctx.arc(dx, dy, 2.5, 0, Math.PI*2);
+                        ctx.fillStyle = KOLAM_COLORS[(ri+d)%KOLAM_COLORS.length];
+                        ctx.globalAlpha = 0.7;
+                        ctx.fill();
+                    }
+                });
+                ctx.restore();
+            }
+
+            /* =========================================================
+               FALLING PARTICLES
+            ========================================================= */
+            var PCONFIGS = [
+                { type:'jasmine',  count:10, speed:[0.3,0.7] },
+                { type:'marigold', count:8,  speed:[0.3,0.65] },
+                { type:'spark',    count:12, speed:[0.5,1.1] }
+            ];
+
+            function makeParticle(cfg, randomY){
+                return {
+                    type: cfg.type,
+                    x: rand(0.05,0.95)*W,
+                    y: randomY ? rand(-H*0.05, H*0.9) : rand(-40,-4),
+                    r: rand(3,7),
+                    alpha: rand(0.5,0.9),
+                    angle: rand(0,Math.PI*2),
+                    spin: rand(-0.03,0.03),
+                    vx: rand(-0.3,0.3),
+                    vy: rand(cfg.speed[0],cfg.speed[1])
+                };
+            }
+
+            function drawJasmine(x,y,r,alpha,angle){
+                ctx.save(); ctx.globalAlpha=alpha;
+                ctx.translate(x,y); ctx.rotate(angle);
+                for(var i=0;i<5;i++){
+                    ctx.beginPath();
+                    ctx.ellipse(r*0.9,0,r*0.55,r*0.3,0,0,Math.PI*2);
+                    ctx.fillStyle='#fffde7'; ctx.fill();
+                    ctx.rotate(Math.PI*2/5);
+                }
+                ctx.beginPath(); ctx.arc(0,0,r*0.3,0,Math.PI*2);
+                ctx.fillStyle='#fff176'; ctx.fill();
+                ctx.restore();
+            }
+
+            function drawMarigoldP(x,y,r,alpha,angle){
+                ctx.save(); ctx.globalAlpha=alpha;
+                ctx.translate(x,y); ctx.rotate(angle);
+                for(var i=0;i<8;i++){
+                    ctx.beginPath();
+                    ctx.ellipse(r,0,r*0.5,r*0.28,0,0,Math.PI*2);
+                    ctx.fillStyle=i%2===0?'#ffb300':'#ff8f00'; ctx.fill();
+                    ctx.rotate(Math.PI*2/8);
+                }
+                ctx.beginPath(); ctx.arc(0,0,r*0.3,0,Math.PI*2);
+                ctx.fillStyle='#fff176'; ctx.fill();
+                ctx.restore();
+            }
+
+            function drawSparkP(x,y,r,alpha){
+                ctx.save(); ctx.globalAlpha=alpha;
+                ctx.beginPath(); ctx.arc(x,y,r,0,Math.PI*2);
+                ctx.fillStyle='#ffe082';
+                ctx.shadowColor='#ffca28'; ctx.shadowBlur=6;
+                ctx.fill(); ctx.restore();
+            }
+
+            function resize(){
+                var rect = canvas.parentElement.getBoundingClientRect();
+                W = rect.width||300; H = rect.height||300;
+                canvas.width  = Math.round(W*(window.devicePixelRatio||1));
+                canvas.height = Math.round(H*(window.devicePixelRatio||1));
+                ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+            }
+
+            function init(randomY){
+                particles = [];
+                PCONFIGS.forEach(function(cfg){
+                    for(var i=0;i<cfg.count;i++) particles.push(makeParticle(cfg,randomY));
+                });
+            }
+
+            function frame(){
+                t++;
+                ctx.clearRect(0,0,W,H);
+                // ---- scene ----
+                drawMandap();
+                drawTopBeam();
+                drawBananaLeaves();
+                drawBrassLamp(W*0.22, H*0.78, 0.9, t*0.12);
+                drawBrassLamp(W*0.78, H*0.78, 0.9, t*0.12+1.5);
+                // drawHomaKund(); // removed per user request
+                drawKolam();
+                // ---- particles ----
+                particles.forEach(function(p){
+                    if(p.type==='jasmine')     drawJasmine(p.x,p.y,p.r,p.alpha,p.angle);
+                    else if(p.type==='marigold') drawMarigoldP(p.x,p.y,p.r,p.alpha,p.angle);
+                    else                       drawSparkP(p.x,p.y,p.r,p.alpha);
+                    p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin;
+                    p.vx+=Math.sin(p.y*0.012)*0.01;
+                    if(p.y>H+20){
+                        var cfg=PCONFIGS.find(function(c){return c.type===p.type;})||PCONFIGS[0];
+                        Object.assign(p,makeParticle(cfg,false));
+                    }
+                });
+                rafId = requestAnimationFrame(frame);
+            }
+
+            function start(){
+                if(started) return;
+                started=true; resize(); init(true); frame();
+            }
+
+            if('IntersectionObserver' in window){
+                var io=new IntersectionObserver(function(entries){
+                    if(entries[0].isIntersecting){start();io.disconnect();}
+                },{threshold:0.1});
+                io.observe(canvas.parentElement);
+            } else { start(); }
+
+            window.addEventListener('resize',function(){
+                if(!started) return;
+                cancelAnimationFrame(rafId); started=false; start();
+            });
+        })();
+        </script>
+
+        <!-- ==================== RECEPTION CANVAS ANIMATION ==================== -->
+        <script>
+        (function(){
+            var canvas = document.getElementById('ssRecCanvas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var W=0, H=0, t=0, started=false, rafId=null;
+            var particles=[];
+
+            function rand(a,b){ return a+Math.random()*(b-a); }
+
+            /* ---- Scene: Indian reception — stage backdrop, fairy lights, drapes, floral arch ---- */
+
+            function drawBackdrop(){
+                // Deep navy/gold gradient backdrop
+                var grad = ctx.createLinearGradient(0,0,0,H);
+                grad.addColorStop(0,'#1a1035');
+                grad.addColorStop(0.5,'#2c1a5e');
+                grad.addColorStop(1,'#1a0a2e');
+                ctx.save();
+                ctx.globalAlpha = 0.88;
+                ctx.fillStyle = grad;
+                ctx.fillRect(0,0,W,H);
+                ctx.restore();
+            }
+
+            function drawDrapes(){
+                // Two side drapes (rich maroon/burgundy)
+                ctx.save();
+                var drapeColors = ['#6a0d2e','#8b1538','#5c0a27'];
+                // left drape
+                ctx.globalAlpha = 0.72;
+                ctx.beginPath();
+                ctx.moveTo(0,0);
+                ctx.bezierCurveTo(W*0.22,H*0.1, W*0.18,H*0.4, W*0.08,H*0.75);
+                ctx.lineTo(0,H); ctx.closePath();
+                ctx.fillStyle = drapeColors[0]; ctx.fill();
+                // left drape fold highlight
+                ctx.beginPath();
+                ctx.moveTo(W*0.04,0);
+                ctx.bezierCurveTo(W*0.16,H*0.08, W*0.12,H*0.35, W*0.05,H*0.65);
+                ctx.lineWidth=2; ctx.strokeStyle='rgba(200,160,80,0.3)'; ctx.stroke();
+                // right drape
+                ctx.beginPath();
+                ctx.moveTo(W,0);
+                ctx.bezierCurveTo(W*0.78,H*0.1, W*0.82,H*0.4, W*0.92,H*0.75);
+                ctx.lineTo(W,H); ctx.closePath();
+                ctx.fillStyle = drapeColors[1]; ctx.fill();
+                ctx.beginPath();
+                ctx.moveTo(W*0.96,0);
+                ctx.bezierCurveTo(W*0.84,H*0.08, W*0.88,H*0.35, W*0.95,H*0.65);
+                ctx.lineWidth=2; ctx.strokeStyle='rgba(200,160,80,0.3)'; ctx.stroke();
+                ctx.restore();
+            }
+
+            function drawFairyLights(){
+                // Strings of fairy lights across top
+                ctx.save();
+                var strands = 3;
+                for(var s=0;s<strands;s++){
+                    var y0 = H*0.04 + s*H*0.045;
+                    // string
+                    ctx.beginPath();
+                    ctx.globalAlpha=0.35;
+                    ctx.strokeStyle='#c9a84c';
+                    ctx.lineWidth=0.8;
+                    for(var xi=0;xi<=W;xi+=2){
+                        var yy = y0 + Math.sin(xi/W*Math.PI*2+s)*H*0.025;
+                        xi===0?ctx.moveTo(xi,yy):ctx.lineTo(xi,yy);
+                    }
+                    ctx.stroke();
+                    // bulbs
+                    var bulbCount = 14+s*2;
+                    for(var b=0;b<bulbCount;b++){
+                        var bx = (b+0.5)/bulbCount*W;
+                        var by = y0 + Math.sin(bx/W*Math.PI*2+s)*H*0.025;
+                        var flicker = 0.6+0.4*Math.sin(t*0.08+b*1.7+s*3);
+                        // glow
+                        ctx.beginPath();
+                        ctx.arc(bx,by,5,0,Math.PI*2);
+                        ctx.fillStyle='rgba(255,220,80,'+( flicker*0.15)+')';
+                        ctx.globalAlpha=1; ctx.fill();
+                        // bulb
+                        ctx.beginPath();
+                        ctx.arc(bx,by,2.2,0,Math.PI*2);
+                        ctx.fillStyle = b%3===0?'#ff8f00':b%3===1?'#fff9c4':'#ffca28';
+                        ctx.globalAlpha=flicker*0.95;
+                        ctx.fill();
+                    }
+                }
+                ctx.restore();
+            }
+
+            function drawFlowerArch(){
+                // top arch over stage area
+                var cx=W/2, cy=H*0.55, rx=W*0.38, ry=H*0.42;
+                ctx.save();
+                // arch frame gold
+                ctx.globalAlpha=0.6;
+                ctx.strokeStyle='#c9a84c';
+                ctx.lineWidth=2.5;
+                ctx.beginPath();
+                ctx.ellipse(cx,cy,rx,ry,0,Math.PI,0,true);
+                ctx.lineTo(cx+rx,H); ctx.moveTo(cx-rx,cy); ctx.lineTo(cx-rx,H);
+                ctx.stroke();
+                // flowers along arch
+                var FCOLORS=['#e53935','#f06292','#ff8f00','#fff9c4','#ce93d8','#ffffff'];
+                var pts=16;
+                for(var i=0;i<pts;i++){
+                    var ang=Math.PI+(i/(pts-1))*Math.PI;
+                    var ex=cx+rx*Math.cos(ang);
+                    var ey=cy+ry*Math.sin(ang);
+                    var fr=5+(i%3)*2;
+                    ctx.globalAlpha=0.85;
+                    ctx.translate(ex,ey);
+                    for(var p=0;p<6;p++){
+                        ctx.beginPath();
+                        ctx.ellipse(fr,0,fr*0.5,fr*0.28,0,0,Math.PI*2);
+                        ctx.fillStyle=FCOLORS[(i+p)%FCOLORS.length];
+                        ctx.fill();
+                        ctx.rotate(Math.PI*2/6);
+                    }
+                    ctx.beginPath();
+                    ctx.arc(0,0,fr*0.3,0,Math.PI*2);
+                    ctx.fillStyle='#fff9c4'; ctx.fill();
+                    ctx.setTransform(window.devicePixelRatio||1,0,0,window.devicePixelRatio||1,0,0);
+                }
+                ctx.restore();
+            }
+
+            function drawStageFloor(){
+                // glossy stage floor
+                ctx.save();
+                ctx.globalAlpha=0.35;
+                var floorGrad=ctx.createLinearGradient(0,H*0.82,0,H);
+                floorGrad.addColorStop(0,'#c9a84c');
+                floorGrad.addColorStop(1,'rgba(201,168,76,0)');
+                ctx.fillStyle=floorGrad;
+                ctx.fillRect(0,H*0.82,W,H*0.18);
+                // reflection line
+                ctx.globalAlpha=0.15;
+                ctx.strokeStyle='#fffde7';
+                ctx.lineWidth=1;
+                ctx.beginPath();
+                ctx.moveTo(0,H*0.84); ctx.lineTo(W,H*0.84);
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            /* ---- Falling particles: gold confetti, rose petals, sparkles ---- */
+            var PCONFIGS=[
+                {type:'confetti', count:16, speed:[0.4,1.0]},
+                {type:'petal',    count:10, speed:[0.3,0.7]},
+                {type:'spark',    count:14, speed:[0.5,1.2]}
+            ];
+            function makeParticle(cfg,randomY){
+                return {
+                    type:cfg.type,
+                    x:rand(0.03,0.97)*W,
+                    y:randomY?rand(-H*0.05,H*0.9):rand(-40,-4),
+                    r:rand(3,7), alpha:rand(0.5,0.9),
+                    angle:rand(0,Math.PI*2), spin:rand(-0.04,0.04),
+                    vx:rand(-0.4,0.4), vy:rand(cfg.speed[0],cfg.speed[1]),
+                    color:['#c9a84c','#ffe082','#f8bbd0','#ce93d8','#ffffff'][Math.floor(rand(0,5))]
+                };
+            }
+            function drawConfetti(p){
+                ctx.save(); ctx.globalAlpha=p.alpha;
+                ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+                ctx.fillStyle=p.color;
+                ctx.fillRect(-p.r,-p.r*0.4,p.r*2,p.r*0.8);
+                ctx.restore();
+            }
+            function drawPetalP(p){
+                ctx.save(); ctx.globalAlpha=p.alpha;
+                ctx.translate(p.x,p.y); ctx.rotate(p.angle);
+                ctx.beginPath();
+                ctx.ellipse(0,0,p.r,p.r*0.45,0,0,Math.PI*2);
+                ctx.fillStyle=p.color; ctx.fill(); ctx.restore();
+            }
+            function drawSparkP(p){
+                ctx.save(); ctx.globalAlpha=p.alpha;
+                ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+                ctx.fillStyle=p.color;
+                ctx.shadowColor='#ffe082'; ctx.shadowBlur=8;
+                ctx.fill(); ctx.restore();
+            }
+
+            function resize(){
+                var rect=canvas.parentElement.getBoundingClientRect();
+                W=rect.width||300; H=rect.height||300;
+                canvas.width=Math.round(W*(window.devicePixelRatio||1));
+                canvas.height=Math.round(H*(window.devicePixelRatio||1));
+                ctx.scale(window.devicePixelRatio||1,window.devicePixelRatio||1);
+            }
+            function init(randomY){
+                particles=[];
+                PCONFIGS.forEach(function(cfg){
+                    for(var i=0;i<cfg.count;i++) particles.push(makeParticle(cfg,randomY));
+                });
+            }
+            function frame(){
+                t++;
+                ctx.clearRect(0,0,W,H);
+
+                drawFairyLights();
+                drawFlowerArch();
+                // drawStageFloor(); // removed — transparent bg
+                particles.forEach(function(p){
+                    if(p.type==='confetti') drawConfetti(p);
+                    else if(p.type==='petal') drawPetalP(p);
+                    else drawSparkP(p);
+                    p.x+=p.vx; p.y+=p.vy; p.angle+=p.spin;
+                    if(p.y>H+20){
+                        var cfg=PCONFIGS.find(function(c){return c.type===p.type;})||PCONFIGS[0];
+                        Object.assign(p,makeParticle(cfg,false));
+                    }
+                });
+                rafId=requestAnimationFrame(frame);
+            }
+            function start(){
+                if(started) return;
+                started=true; resize(); init(true); frame();
+            }
+            if('IntersectionObserver' in window){
+                var io=new IntersectionObserver(function(entries){
+                    if(entries[0].isIntersecting){start();io.disconnect();}
+                },{threshold:0.1});
+                io.observe(canvas.parentElement);
+            } else { start(); }
+            window.addEventListener('resize',function(){
+                if(!started) return;
+                cancelAnimationFrame(rafId); started=false; start();
+            });
+        })();
+        </script>
+
+        <!-- ==================== CHURCH CANVAS ANIMATION ==================== -->
+        <script>
+        (function(){
+            var canvas = document.getElementById('ssChurchCanvas');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var W = 0, H = 0;
+            var items = [];
+            var started = false;
+            var rafId = null;
+            var t = 0; // global tick for chandelier sway
+
+            var CONFIGS = [
+                { type:'petal',  count:14, colors:['#ffffff','#fce4ec','#f8bbd0','#ffcdd2'], speed:[0.35,0.8] },
+                { type:'cross',  count:4,  colors:['#c9a84c','#e8c84a','#b8860b'],           speed:[0.18,0.45] },
+                { type:'spark',  count:12, colors:['#fffde7','#fff9c4','#ffffff'],            speed:[0.4,1.0] },
+                { type:'dove',   count:3,  colors:['#ffffff','#f5f5f5'],                      speed:[0.25,0.6] }
+            ];
+
+            function rand(a,b){ return a + Math.random()*(b-a); }
+
+            function makeItem(cfg, randomY){
+                return {
+                    type: cfg.type,
+                    x: rand(0.05, 0.95) * W,
+                    y: randomY ? rand(-H*0.05, H*0.95) : rand(-50,-4),
+                    r: cfg.type==='cross' ? rand(7,13) : cfg.type==='dove' ? rand(10,16) : rand(3,7),
+                    color: cfg.colors[Math.floor(Math.random()*cfg.colors.length)],
+                    alpha: rand(0.5, 0.9),
+                    angle: rand(0, Math.PI*2),
+                    spin: rand(-0.015, 0.015),
+                    vx: rand(-0.3, 0.3),
+                    vy: rand(cfg.speed[0], cfg.speed[1]),
+                    wingPhase: rand(0, Math.PI*2),
+                    wingSpeed: rand(0.06, 0.12)
+                };
+            }
+
+            function drawPetal(p){
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, p.r, p.r*0.45, 0, 0, Math.PI*2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function drawCross(p){
+                ctx.save();
+                ctx.globalAlpha = p.alpha * 0.75;
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.strokeStyle = p.color;
+                ctx.lineWidth = p.r * 0.28;
+                ctx.lineCap = 'round';
+                ctx.beginPath();
+                ctx.moveTo(0, -p.r); ctx.lineTo(0, p.r);       // vertical
+                ctx.moveTo(-p.r*0.65, -p.r*0.25); ctx.lineTo(p.r*0.65, -p.r*0.25); // horizontal
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            function drawSpark(p){
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+                ctx.fillStyle = p.color;
+                ctx.shadowColor = '#fff9c4';
+                ctx.shadowBlur = 7;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function drawDove(p){
+                // simple dove silhouette: body oval + two wing arcs
+                p.wingPhase += p.wingSpeed;
+                var wingAmp = Math.sin(p.wingPhase) * p.r * 0.5;
+                ctx.save();
+                ctx.globalAlpha = p.alpha * 0.8;
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.fillStyle = p.color;
+                // body
+                ctx.beginPath();
+                ctx.ellipse(0, 0, p.r, p.r*0.45, 0, 0, Math.PI*2);
+                ctx.fill();
+                // left wing
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-p.r*0.5, -wingAmp, -p.r*1.3, -wingAmp*0.5, -p.r*1.4, p.r*0.2);
+                ctx.bezierCurveTo(-p.r*0.8, p.r*0.4, -p.r*0.3, p.r*0.3, 0, 0);
+                ctx.fill();
+                // right wing
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo( p.r*0.5, -wingAmp,  p.r*1.3, -wingAmp*0.5,  p.r*1.4, p.r*0.2);
+                ctx.bezierCurveTo( p.r*0.8,  p.r*0.4,  p.r*0.3,  p.r*0.3,  0, 0);
+                ctx.fill();
+                // head
+                ctx.beginPath();
+                ctx.arc(p.r*0.75, -p.r*0.1, p.r*0.28, 0, Math.PI*2);
+                ctx.fill();
+                ctx.restore();
+            }
+
+            // ---- Draw the gold arch frame ----
+            function drawArch(){
+                var cx = W/2, cy = H*0.52;
+                var rx = W*0.42, ry = H*0.46;
+                // Three concentric gold ring arcs
+                var rings = [
+                    {rxi: rx,       ryi: ry,       lw: 3.5, alpha: 0.9},
+                    {rxi: rx*0.88,  ryi: ry*0.88,  lw: 2.5, alpha: 0.65},
+                    {rxi: rx*0.76,  ryi: ry*0.76,  lw: 1.8, alpha: 0.45}
+                ];
+                rings.forEach(function(r){
+                    ctx.save();
+                    ctx.globalAlpha = r.alpha;
+                    ctx.strokeStyle = '#c9a84c';
+                    ctx.lineWidth = r.lw;
+                    ctx.beginPath();
+                    ctx.ellipse(cx, cy, r.rxi, r.ryi, 0, Math.PI, 0, true); // top semicircle
+                    // extend down as straight pillars
+                    ctx.lineTo(cx + r.rxi, H);
+                    ctx.moveTo(cx - r.rxi, cy);
+                    ctx.lineTo(cx - r.rxi, H);
+                    ctx.stroke();
+                    ctx.restore();
+                });
+            }
+
+            // ---- Draw rose clusters at arch top + sides ----
+            function drawRose(x, y, r, color, alpha){
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                // 4 overlapping petals
+                var pColors = [color, shiftColor(color, 20), shiftColor(color, -20)];
+                for(var i=0;i<5;i++){
+                    var ang = i * Math.PI*2/5;
+                    ctx.beginPath();
+                    ctx.ellipse(x + Math.cos(ang)*r*0.55, y + Math.sin(ang)*r*0.55, r*0.65, r*0.42, ang, 0, Math.PI*2);
+                    ctx.fillStyle = pColors[i%pColors.length];
+                    ctx.globalAlpha = alpha * 0.85;
+                    ctx.fill();
+                }
+                // centre
+                ctx.beginPath();
+                ctx.arc(x, y, r*0.32, 0, Math.PI*2);
+                ctx.fillStyle = shiftColor(color, 30);
+                ctx.globalAlpha = alpha;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function shiftColor(hex, amt){
+                // lighten/darken a hex color slightly
+                var r = parseInt(hex.slice(1,3),16);
+                var g = parseInt(hex.slice(3,5),16);
+                var b = parseInt(hex.slice(5,7),16);
+                r = Math.min(255, Math.max(0, r+amt));
+                g = Math.min(255, Math.max(0, g+amt));
+                b = Math.min(255, Math.max(0, b+amt));
+                return '#' + [r,g,b].map(function(v){ return v.toString(16).padStart(2,'0'); }).join('');
+            }
+
+            function drawLeaf(x, y, size, angle, alpha){
+                ctx.save();
+                ctx.globalAlpha = alpha;
+                ctx.translate(x, y);
+                ctx.rotate(angle);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, size, size*0.45, 0, 0, Math.PI*2);
+                ctx.fillStyle = '#4caf50';
+                ctx.fill();
+                ctx.restore();
+            }
+
+            var ROSE_COLORS = ['#c0392b','#e74c3c','#f1948a','#f8c8c8','#fff0f0','#ffb347'];
+
+            function drawFlowerClusters(){
+                var cx = W/2, cy = H*0.52;
+                var rx = W*0.42, ry = H*0.46;
+
+                // Top cluster along arch crown
+                var topCount = 18;
+                for(var i=0; i<topCount; i++){
+                    var ang = Math.PI + (i/(topCount-1)) * Math.PI; // π to 2π (top arc)
+                    var ex = cx + rx * Math.cos(ang);
+                    var ey = cy + ry * Math.sin(ang);
+                    var roseR = 7 + (i%3)*3;
+                    var col = ROSE_COLORS[i % ROSE_COLORS.length];
+                    // leaves
+                    if(i%3===0) drawLeaf(ex + 5, ey + 3, roseR*0.7, ang+0.5, 0.75);
+                    if(i%3===1) drawLeaf(ex - 4, ey + 4, roseR*0.65, ang-0.4, 0.7);
+                    drawRose(ex, ey, roseR, col, 0.9);
+                }
+
+                // Left pillar cluster (lower portion)
+                var pillarCount = 8;
+                for(var j=0; j<pillarCount; j++){
+                    var py = cy + ry*0.3 + j*(H - (cy+ry*0.3))/pillarCount;
+                    var px = cx - rx + Math.sin(j*0.9)*6;
+                    var pr = 5 + (j%2)*3;
+                    if(j%2===0) drawLeaf(px+6, py, pr*0.8, 0.5, 0.6);
+                    drawRose(px, py, pr, ROSE_COLORS[j%ROSE_COLORS.length], 0.8);
+                }
+
+                // Right pillar cluster
+                for(var k=0; k<pillarCount; k++){
+                    var qy = cy + ry*0.3 + k*(H - (cy+ry*0.3))/pillarCount;
+                    var qx = cx + rx + Math.sin(k*0.9)*6;
+                    var qr = 5 + (k%2)*3;
+                    if(k%2===1) drawLeaf(qx-6, qy, qr*0.8, -0.5, 0.6);
+                    drawRose(qx, qy, qr, ROSE_COLORS[(k+2)%ROSE_COLORS.length], 0.8);
+                }
+            }
+
+            // ---- Chandelier ----
+            function drawChandelier(){
+                var cx = W/2 + Math.sin(t*0.018)*3; // gentle sway
+                var topY = H*0.08;
+                var bodyY = H*0.22;
+
+                // hanging chain
+                ctx.save();
+                ctx.strokeStyle = '#c9a84c';
+                ctx.lineWidth = 1.5;
+                ctx.globalAlpha = 0.8;
+                ctx.beginPath();
+                ctx.moveTo(cx, topY); ctx.lineTo(cx, bodyY);
+                ctx.stroke();
+
+                // main body — ornate oval
+                var grad = ctx.createRadialGradient(cx, bodyY, 2, cx, bodyY, 18);
+                grad.addColorStop(0, '#fffde7');
+                grad.addColorStop(0.5, '#f0d060');
+                grad.addColorStop(1, '#c9a84c');
+                ctx.beginPath();
+                ctx.ellipse(cx, bodyY, 14, 9, 0, 0, Math.PI*2);
+                ctx.fillStyle = grad;
+                ctx.globalAlpha = 0.9;
+                ctx.fill();
+                ctx.strokeStyle = '#b8860b';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                // arms (5 candle arms radiating down)
+                var arms = 5;
+                for(var a=0; a<arms; a++){
+                    var aAng = (a/(arms-1) - 0.5) * Math.PI * 0.9; // spread -90° to 90° below
+                    var armLen = 22 + (a===2 ? 0 : -4); // centre arm slightly shorter
+                    var ax2 = cx + Math.sin(aAng) * armLen;
+                    var ay2 = bodyY + Math.cos(aAng) * armLen * 0.5;
+                    // arm line
+                    ctx.beginPath();
+                    ctx.moveTo(cx, bodyY + 8);
+                    ctx.quadraticCurveTo(cx + Math.sin(aAng)*armLen*0.5, bodyY + armLen*0.3, ax2, ay2);
+                    ctx.strokeStyle = '#c9a84c';
+                    ctx.lineWidth = 1.2;
+                    ctx.globalAlpha = 0.8;
+                    ctx.stroke();
+                    // candle base cup
+                    ctx.beginPath();
+                    ctx.ellipse(ax2, ay2+2, 4, 2.5, 0, 0, Math.PI*2);
+                    ctx.fillStyle = '#e8c84a';
+                    ctx.globalAlpha = 0.85;
+                    ctx.fill();
+                    // candle wax
+                    ctx.beginPath();
+                    ctx.rect(ax2-2, ay2-8, 4, 8);
+                    ctx.fillStyle = '#fffde7';
+                    ctx.globalAlpha = 0.9;
+                    ctx.fill();
+                    // flame flicker
+                    var flicker = Math.sin(t*0.15 + a*1.3) * 1.5;
+                    ctx.beginPath();
+                    ctx.ellipse(ax2, ay2-10+flicker*0.3, 2.5, 4+flicker*0.5, 0, 0, Math.PI*2);
+                    ctx.fillStyle = '#ffca28';
+                    ctx.globalAlpha = 0.9;
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.ellipse(ax2, ay2-11+flicker*0.3, 1.2, 2.5, 0, 0, Math.PI*2);
+                    ctx.fillStyle = '#fff9c4';
+                    ctx.globalAlpha = 0.95;
+                    ctx.fill();
+                    // glow
+                    ctx.beginPath();
+                    ctx.arc(ax2, ay2-10, 6+flicker, 0, Math.PI*2);
+                    ctx.fillStyle = 'rgba(255,220,100,0.12)';
+                    ctx.globalAlpha = 1;
+                    ctx.fill();
+                }
+                ctx.restore();
+            }
+
+            function resize(){
+                var rect = canvas.parentElement.getBoundingClientRect();
+                W = rect.width || 300; H = rect.height || 300;
+                canvas.width  = Math.round(W * (window.devicePixelRatio||1));
+                canvas.height = Math.round(H * (window.devicePixelRatio||1));
+                ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
+            }
+
+            function init(randomY){
+                items = [];
+                CONFIGS.forEach(function(cfg){
+                    for(var i=0;i<cfg.count;i++) items.push(makeItem(cfg, randomY));
+                });
+            }
+
+            function frame(){
+                t++;
+                ctx.clearRect(0,0,W,H);
+                // 1. arch structure
+                drawArch();
+                // 2. rose + leaf clusters
+                drawFlowerClusters();
+                // 3. chandelier with flickering candles
+                drawChandelier();
+                // 4. falling particles on top
+                items.forEach(function(p){
+                    if(p.type==='petal')      drawPetal(p);
+                    else if(p.type==='cross') drawCross(p);
+                    else if(p.type==='spark') drawSpark(p);
+                    else if(p.type==='dove')  drawDove(p);
+                    p.x += p.vx; p.y += p.vy; p.angle += p.spin;
+                    p.vx += Math.sin(p.y*0.014)*0.01;
+                    if(p.y > H+20){
+                        var cfg = CONFIGS.find(function(c){ return c.type===p.type; }) || CONFIGS[0];
+                        Object.assign(p, makeItem(cfg, false));
+                    }
+                });
+                rafId = requestAnimationFrame(frame);
+            }
+
+            function start(){
+                if(started) return;
+                started = true;
+                resize();
+                init(true);
+                frame();
+            }
+
+            if('IntersectionObserver' in window){
+                var io = new IntersectionObserver(function(entries){
+                    if(entries[0].isIntersecting){ start(); io.disconnect(); }
+                }, {threshold:0.1});
+                io.observe(canvas.parentElement);
+            } else { start(); }
+
+            window.addEventListener('resize', function(){
+                if(!started) return;
+                cancelAnimationFrame(rafId);
+                started = false;
+                start();
+            });
+        })();
+        </script>
+
+        <!-- ==================== DRESS CODE ==================== -->
+        <style>
+            #ssDress {
+                position: relative;
+                background: #f9f0e0;
+                padding: 62px 0 74px;
+                overflow: hidden;
+            }
+
+            #ssDress .ss-dc-head {
+                text-align: center;
+                margin: 0 0 clamp(24px, 4vw, 40px);
+                padding: 0 20px;
+            }
+
+            #ssDress .ss-dc-l1 {
+                display: block;
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 11px;
+                letter-spacing: 0.34em;
+                text-indent: 0.34em;
+                text-transform: uppercase;
+                color: #b09263;
+                margin-bottom: 14px;
+            }
+
+            #ssDress .ss-dc-l2 {
+                display: block;
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-weight: 300;
+                font-size: clamp(38px, 9vw, 56px);
+                letter-spacing: 0.03em;
+                text-transform: none;
+                line-height: 1;
+                color: #a67d2b;
+            }
+
+            #ssDress .ss-dc-orn {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin: 20px auto 0;
+                max-width: 150px;
+            }
+
+            #ssDress .ss-dc-orn i {
+                display: block;
+                height: 1px;
+                flex: 1 1 auto;
+                background: linear-gradient(to right, rgba(200,171,109,0), rgba(200,171,109,0.8));
+            }
+
+            #ssDress .ss-dc-orn i + i {
+                background: linear-gradient(to left, rgba(200,171,109,0), rgba(200,171,109,0.8));
+            }
+
+            #ssDress .ss-dc-orn span {
+                width: 6px;
+                height: 6px;
+                transform: rotate(45deg);
+                background: #c8ab6d;
+                flex: 0 0 auto;
+            }
+
+            /* ---- centred event name, above the illustration ---- */
+            #ssDcName {
+                text-align: center;
+                padding: 0 20px;
+                margin: 0 0 clamp(16px, 2.6vw, 26px);
+                transition: opacity 0.42s ease, transform 0.42s ease;
+            }
+
+            #ssDcName.is-out {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+
+            #ssDcName .ss-dc-name {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: clamp(12px, 2.9vw, 15px);
+                letter-spacing: 0.26em;
+                text-indent: 0.26em;
+                text-transform: uppercase;
+                color: #8a6b4f;
+                line-height: 1.4;
+                margin: 0;
+            }
+
+            #ssDcName .ss-dc-rule {
+                width: 22px;
+                height: 1px;
+                background: #c8ab6d;
+                opacity: 0.7;
+                margin: 9px auto 0;
+            }
+
+            /* ---- carousel stage ---- */
+            #ssDcStage {
+                position: relative;
+                height: clamp(330px, 62vw, 560px);
+                margin: 0 auto;
+                touch-action: pan-y;
+                cursor: grab;
+                user-select: none;
+                -webkit-user-select: none;
+            }
+
+            #ssDcStage.ss-dc-grabbing { cursor: grabbing; }
+
+            /* the browser stops panning the page as soon as the gesture reads horizontal */
+            #ssDcStage.ss-dc-lockx { touch-action: none; }
+
+            #ssDcStage .ss-dc-card {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: clamp(240px, 46vw, 430px);
+                height: 100%;
+                margin-left: calc(clamp(240px, 46vw, 430px) / -2);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                will-change: transform, opacity, filter;
+                /* every frame is driven by script, so movement, scale, opacity,
+                   blur and the pop arc always share one clock */
+                transition: none;
+            }
+
+            #ssDcStage .ss-dc-card img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+                object-position: center bottom;
+                pointer-events: none;
+                -webkit-user-drag: none;
+            }
+
+            /* soft overlay that lifts off the centred card — synced via --veil */
+            #ssDcStage .ss-dc-card::after {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background: rgba(249,240,224,0.42);
+                opacity: var(--veil, 1);
+                pointer-events: none;
+            }
+
+            #ssDcStage .ss-dc-card.is-centre {
+                z-index: 3;
+                cursor: default;
+            }
+
+            #ssDcStage .ss-dc-card.is-side { z-index: 2; }
+            #ssDcStage .ss-dc-card.is-hidden { z-index: 1; opacity: 0; pointer-events: none; }
+
+            /* ---- details under the stage ---- */
+            #ssDcInfo {
+                max-width: 620px;
+                margin: clamp(32px, 6vw, 56px) auto 0;
+                padding: 0 24px;
+                text-align: center;
+                transition: opacity 0.42s ease, transform 0.42s ease;
+            }
+
+            #ssDcInfo.is-out {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            #ssDcInfo .ss-dc-line {
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-size: clamp(15px, 3.5vw, 21px);
+                color: #6c513f;
+                line-height: 1.5;
+                margin: 0 0 6px;
+            }
+
+            #ssDcInfo .ss-dc-line b {
+                font-family: 'Marcellus', Georgia, serif;
+                font-weight: 400;
+                font-size: 0.62em;
+                letter-spacing: 0.2em;
+                text-transform: uppercase;
+                color: #b09263;
+                margin-right: 8px;
+            }
+
+            #ssDcInfo .ss-dc-palette {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 9px;
+                margin-top: 18px;
+            }
+
+            #ssDcInfo .ss-dc-palette i {
+                display: block;
+                width: 17px;
+                height: 17px;
+                border-radius: 50%;
+                box-shadow: 0 0 0 1px rgba(122,90,50,0.22), 0 2px 6px -2px rgba(122,90,50,0.5);
+            }
+
+            /* ---- navigation arrows: bare chevrons, no chrome ---- */
+            #ssDress .ss-dc-arrow {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 12;
+                width: clamp(34px, 5vw, 44px);
+                height: clamp(44px, 6.4vw, 56px);
+                padding: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: none;
+                border: 0;
+                cursor: pointer;
+                opacity: 0.45;
+                transition: opacity 0.35s ease, transform 0.35s ease;
+            }
+
+            #ssDress .ss-dc-arrow:hover,
+            #ssDress .ss-dc-arrow:focus-visible {
+                opacity: 0.95;
+            }
+
+            #ssDress .ss-dc-prev:hover  { transform: translateY(-50%) translateX(-2px); }
+            #ssDress .ss-dc-next:hover  { transform: translateY(-50%) translateX(2px); }
+
+            #ssDress .ss-dc-arrow:active {
+                transform: translateY(-50%) scale(0.92);
+            }
+
+            #ssDress .ss-dc-arrow:focus { outline: none; }
+
+            #ssDress .ss-dc-arrow svg {
+                width: clamp(15px, 2.2vw, 20px);
+                height: auto;
+                stroke: #a67d2b;
+                stroke-width: 1.2;
+                fill: none;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
+            #ssDress .ss-dc-prev { left: clamp(10px, 3vw, 34px); }
+            #ssDress .ss-dc-next { right: clamp(10px, 3vw, 34px); }
+
+            /* ---- dots ---- */
+            #ssDcDots {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                margin-top: clamp(20px, 3.4vw, 30px);
+            }
+
+            #ssDcDots button {
+                width: 7px;
+                height: 7px;
+                padding: 0;
+                border: 0;
+                border-radius: 50%;
+                background: rgba(166,125,43,0.28);
+                cursor: pointer;
+                transition: background 0.4s ease, transform 0.4s ease;
+            }
+
+            #ssDcDots button.is-on {
+                background: #a67d2b;
+                transform: scale(1.5);
+            }
+
+            #ssDress .ss-dc-hint {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 10px;
+                letter-spacing: 0.24em;
+                text-indent: 0.24em;
+                text-transform: uppercase;
+                color: #b09263;
+                text-align: center;
+                margin: 16px 0 0;
+                opacity: 0.75;
+            }
+
+            @media screen and (max-width: 639px) {
+                #ssDress { padding: 50px 0 58px; }
+                #ssDress .ss-dc-l1 { font-size: 9px; letter-spacing: 0.26em; text-indent: 0.26em; margin-bottom: 11px; }
+                #ssDcInfo .ss-dc-palette i { width: 14px; height: 14px; }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                #ssDcInfo { transition: opacity 0.2s ease; }
+            }
+        </style>
+        <section id="ssDress">
+            <div class="ss-dc-head">
+                <span class="ss-dc-l1">What to wear</span>
+                <span class="ss-dc-l2">Dress Code</span>
+                <div class="ss-dc-orn" aria-hidden="true"><i></i><span></span><i></i></div>
+            </div>
+
+            <div id="ssDcName" aria-live="polite"></div>
+
+            <div id="ssDcStage" role="group" aria-label="Dress code by event">
+                <button type="button" class="ss-dc-arrow ss-dc-prev" id="ssDcPrev" aria-label="Previous event">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14.5 5.5 L8 12 L14.5 18.5"/></svg>
+                </button>
+                <button type="button" class="ss-dc-arrow ss-dc-next" id="ssDcNext" aria-label="Next event">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 5.5 L16 12 L9.5 18.5"/></svg>
+                </button>
+            </div>
+
+            <div id="ssDcInfo"></div>
+
+            <div id="ssDcDots" role="tablist" aria-label="Choose an event"></div>
+
+            <p class="ss-dc-hint">Swipe to explore</p>
+        </section>
+
+        <script>
+            (function() {
+                var stage = document.getElementById('ssDcStage');
+                var nameEl = document.getElementById('ssDcName');
+                var info  = document.getElementById('ssDcInfo');
+                var dots  = document.getElementById('ssDcDots');
+                if (!stage) return;
+
+                var EVENTS = [
+                    {
+                        name: 'Hindu Wedding',
+                        img: '/image/wedding-dc.webp',
+                        women: 'Traditional silks — Kanjivaram or Banarasi saree with rich zari work',
+                        men: 'Sherwani or veshti with angavastram in ivory, gold or cream',
+                        palette: ['#c4185f', '#c8a24a', '#e9dcc0', '#b7c4ac']
+                    },
+                    {
+                        name: 'Church Blessing',
+                        img: '/image/sangeet-dc.webp',
+                        women: 'Semi-formal Indian elegance — shimmer lehenga or a floral saree',
+                        men: 'Bandhgala jacket or a smart kurta with tailored trousers',
+                        palette: ['#b9cdc0', '#d9a679', '#1c1c1c', '#e6cf9a']
+                    },
+                    {
+                        name: 'Reception',
+                        img: '/image/reception-dc.webp',
+                        women: 'Evening gown, shimmer saree or a cocktail lehenga',
+                        men: 'Tuxedo, suit or a three-piece in navy or black',
+                        palette: ['#d9bd85', '#c4c6c8', '#1e2a4a', '#111111']
+                    }
+                ];
+
+                var N = EVENTS.length;
+                var current = 0;          /* Mehendi centred first */
+                var cards = [];
+
+                /* ---------- build ---------- */
+                EVENTS.forEach(function(ev, i) {
+                    var c = document.createElement('div');
+                    c.className = 'ss-dc-card';
+                    c.setAttribute('aria-hidden', 'true');
+                    var im = document.createElement('img');
+                    im.src = ev.img;
+                    im.alt = ev.name + ' dress code';
+                    im.loading = i === 0 ? 'eager' : 'lazy';
+                    c.appendChild(im);
+                    c.addEventListener('click', function() {
+                        var rel = offset(i);
+                        if (rel !== 0) go(rel);
+                    });
+                    stage.appendChild(c);
+                    cards.push(c);
+
+                    var d = document.createElement('button');
+                    d.type = 'button';
+                    d.setAttribute('role', 'tab');
+                    d.setAttribute('aria-label', ev.name);
+                    d.addEventListener('click', function() { jump(i); });
+                    dots.appendChild(d);
+                });
+
+                /* shortest circular distance from current to i, in -2..2 for N=5 */
+                function offset(i) {
+                    var half = Math.floor(N / 2);
+                    return ((i - current + half + N * 8) % N) - half;
+                }
+
+                function step() {
+                    return Math.min(stage.getBoundingClientRect().width * 0.27, 265);
+                }
+
+                var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                /* ---------- render: everything derives from one value, so it can't desync ---------- */
+                function layoutU(shift) {
+                    var s = step();
+
+                    cards.forEach(function(c, i) {
+                        var rel = offset(i) + shift;   /* cards move WITH the finger */
+                        var a = Math.abs(rel);
+                        var scale = Math.max(0.58, 1.12 - a * 0.30);   /* centre enlarged to 1.12 */
+                        var y = -50 + Math.min(a, 1.6) * 6.5;          /* pops down as it leaves */
+                        var op = a > 1.85 ? 0 : Math.max(0, 1 - a * 0.42);
+                        var blur = Math.min(3.4, Math.max(0, a - 0.06) * 2.8);
+
+                        c.style.transform = 'translate3d(' + (rel * s).toFixed(2) + 'px, ' + y.toFixed(2) + '%, 0) scale(' + scale.toFixed(4) + ')';
+                        c.style.opacity = op.toFixed(3);
+                        c.style.filter = blur < 0.12 ? 'none' : 'blur(' + blur.toFixed(2) + 'px)';
+                        c.style.setProperty('--veil', Math.min(1, a * 1.15).toFixed(3));
+                        c.style.zIndex = String(10 - Math.round(a * 3));
+
+                        c.classList.toggle('is-centre', a < 0.5);
+                        c.classList.toggle('is-side', a >= 0.5 && a < 1.85);
+                        c.classList.toggle('is-hidden', a >= 1.85);
+                        c.setAttribute('aria-hidden', (Math.round(offset(i)) === 0 && Math.abs(shift) < 0.02) ? 'false' : 'true');
+                    });
+
+                    Array.prototype.forEach.call(dots.children, function(d, i) {
+                        d.classList.toggle('is-on', i === current);
+                        d.setAttribute('aria-selected', i === current ? 'true' : 'false');
+                    });
+                }
+
+                function layout(dragPx) {
+                    layoutU((dragPx || 0) / step());
+                }
+
+                /* ---------- the glide: eased shift -> 0 with a soft overshoot ----------
+                   The overshoot carries every property past centre and back together:
+                   the incoming card swells slightly beyond full size (pop UP) at the
+                   exact moment the outgoing card dips below its resting side scale
+                   (pop DOWN), then both settle. One curve, no separate animations. */
+                var raf = null;
+
+                function easeOutBack(t) {
+                    var k = 1.24;   /* gentle spring, ~4% overshoot */
+                    t = t - 1;
+                    return 1 + (k + 1) * t * t * t + k * t * t;
+                }
+
+                function glide(fromShift) {
+                    if (raf) cancelAnimationFrame(raf);
+                    if (reduceMotion) { layoutU(0); return; }
+                    var dist = Math.abs(fromShift);
+                    var dur = 420 + 240 * Math.min(dist, 1.3);   /* farther = a touch longer */
+                    var t0 = performance.now();
+
+                    function frame(now) {
+                        var t = Math.min(1, (now - t0) / dur);
+                        var e = easeOutBack(t);
+                        layoutU(fromShift * (1 - e));
+                        if (t < 1) raf = requestAnimationFrame(frame);
+                        else { raf = null; layoutU(0); }
+                    }
+                    raf = requestAnimationFrame(frame);
+                }
+
+                function paintInfo() {
+                    var ev = EVENTS[current];
+                    if (nameEl) {
+                        nameEl.innerHTML =
+                            '<h3 class="ss-dc-name">' + ev.name + '</h3>' +
+                            '<div class="ss-dc-rule" aria-hidden="true"></div>';
+                    }
+                    info.innerHTML =
+                        '<p class="ss-dc-line"><b>Women</b>' + ev.women + '</p>' +
+                        '<p class="ss-dc-line"><b>Men</b>' + ev.men + '</p>' +
+                        '<div class="ss-dc-palette" aria-hidden="true">' +
+                            ev.palette.map(function(c) {
+                                return '<i style="background:' + c + '"></i>';
+                            }).join('') +
+                        '</div>';
+                }
+
+                function swapInfo() {
+                    info.classList.add('is-out');
+                    if (nameEl) nameEl.classList.add('is-out');
+                    setTimeout(function() {
+                        paintInfo();
+                        info.classList.remove('is-out');
+                        if (nameEl) nameEl.classList.remove('is-out');
+                    }, 260);
+                }
+
+                /* circular — current always wraps, so there is no end to hit.
+                   dragPx hands the glide the exact shift the finger left off at,
+                   so release -> settle is one continuous motion. */
+                function go(dir, dragPx) {
+                    var carried = (dragPx || 0) / step();
+                    current = (current + dir + N * 8) % N;
+                    swapInfo();
+                    /* offsets just shrank by dir, so the same on-screen frame is
+                       shift = carried + dir; glide carries it home to zero */
+                    glide(carried + dir);
+                }
+
+                function jump(i) {
+                    if (i === current) return;
+                    var d = ((i - current + Math.floor(N / 2) + N * 8) % N) - Math.floor(N / 2);
+                    current = i;
+                    swapInfo();
+                    glide(d);   /* arrive from the side it was on */
+                }
+
+                /* ---------- drag / swipe ---------- */
+                var dragging = false, startX = 0, startY = 0, dx = 0, pid = null;
+                var axis = null;      /* null = undecided, 'x' = ours, 'y' = the page scrolls */
+                var touching = false;
+
+                function down(e) {
+                    if (e.button !== undefined && e.button !== 0) return;
+                    if (raf) { cancelAnimationFrame(raf); raf = null; layoutU(0); }
+                    dragging = true;
+                    axis = null;
+                    dx = 0;
+                    var p = e.touches ? e.touches[0] : e;
+                    startX = p.clientX;
+                    startY = p.clientY;
+                    touching = (e.pointerType === 'touch') || !!e.touches;
+                    stage.classList.add('ss-dc-grabbing');
+                    if (e.pointerId !== undefined) {
+                        pid = e.pointerId;
+                        try { stage.setPointerCapture(pid); } catch (err) {}
+                    }
+                }
+
+                function movePtr(e) {
+                    if (!dragging) return;
+                    var p = e.touches ? e.touches[0] : e;
+                    var mx = p.clientX - startX;
+                    var my = p.clientY - startY;
+
+                    /* first few pixels decide who owns the gesture */
+                    if (axis === null) {
+                        if (Math.abs(mx) < 8 && Math.abs(my) < 8) return;
+                        if (Math.abs(my) > Math.abs(mx)) {
+                            /* vertical intent — hand the gesture back to the page */
+                            axis = 'y';
+                            release();
+                            layout();
+                            return;
+                        }
+                        axis = 'x';
+                        stage.classList.add('ss-dc-drag', 'ss-dc-lockx');
+                    }
+
+                    if (axis !== 'x') return;
+                    dx = mx;
+                    if (e.cancelable) e.preventDefault();
+                    layout(dx);
+                }
+
+                function release() {
+                    dragging = false;
+                    stage.classList.remove('ss-dc-drag', 'ss-dc-grabbing');
+                    if (pid !== null) {
+                        try { stage.releasePointerCapture(pid); } catch (err) {}
+                        pid = null;
+                    }
+                    /* give scrolling back once the finger is up */
+                    setTimeout(function() { stage.classList.remove('ss-dc-lockx'); }, 0);
+                }
+
+                function up() {
+                    if (!dragging) return;
+                    var wasX = (axis === 'x');
+                    release();
+                    if (!wasX) { axis = null; dx = 0; return; }
+                    var threshold = Math.min(step() * 0.28, 62);
+                    if (dx <= -threshold) go(1, dx);
+                    else if (dx >= threshold) go(-1, dx);
+                    else glide(dx / step());   /* not far enough — spring back */
+                    axis = null;
+                    dx = 0;
+                }
+
+                /* pointermove can't cancel a scroll on its own — this can */
+                stage.addEventListener('touchmove', function(e) {
+                    if (dragging && axis === 'x' && e.cancelable) e.preventDefault();
+                }, { passive: false });
+
+                var prevBtn = document.getElementById('ssDcPrev');
+                var nextBtn = document.getElementById('ssDcNext');
+                [prevBtn, nextBtn].forEach(function(b) {
+                    if (!b) return;
+                    /* arrows must never begin a drag on the stage beneath them */
+                    ['pointerdown', 'mousedown', 'touchstart'].forEach(function(evt) {
+                        b.addEventListener(evt, function(e) { e.stopPropagation(); }, { passive: true });
+                    });
+                });
+                if (prevBtn) prevBtn.addEventListener('click', function() { go(-1); });
+                if (nextBtn) nextBtn.addEventListener('click', function() { go(1); });
+
+                if (window.PointerEvent) {
+                    stage.addEventListener('pointerdown', down);
+                    stage.addEventListener('pointermove', movePtr);
+                    stage.addEventListener('pointerup', up);
+                    stage.addEventListener('pointercancel', up);
+                } else {
+                    stage.addEventListener('mousedown', down);
+                    window.addEventListener('mousemove', movePtr);
+                    window.addEventListener('mouseup', up);
+                    stage.addEventListener('touchstart', down, { passive: true });
+                    stage.addEventListener('touchmove', movePtr, { passive: false });
+                    window.addEventListener('touchend', up);
+                }
+
+                /* ---------- trackpad / wheel ---------- */
+                var wheelLock = false;
+                stage.addEventListener('wheel', function(e) {
+                    var d = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : 0;
+                    if (!d || Math.abs(d) < 6) return;   /* vertical scroll passes through */
+                    e.preventDefault();
+                    if (wheelLock) return;
+                    wheelLock = true;
+                    go(d > 0 ? 1 : -1);
+                    setTimeout(function() { wheelLock = false; }, 520);
+                }, { passive: false });
+
+                /* ---------- keyboard ---------- */
+                stage.tabIndex = 0;
+                stage.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+                    if (e.key === 'ArrowLeft')  { e.preventDefault(); go(-1); }
+                });
+
+                window.addEventListener('resize', function() { layout(); });
+
+                paintInfo();
+                layoutU(0);
+                /* small entrance: Mehendi rises into place on first view */
+                if (!reduceMotion && 'IntersectionObserver' in window) {
+                    var seen = false;
+                    var io = new IntersectionObserver(function(entries) {
+                        if (seen || !entries[0].isIntersecting) return;
+                        seen = true;
+                        io.disconnect();
+                        glide(0.24);
+                    }, { threshold: 0.35 });
+                    io.observe(stage);
+                }
+            })();
+        </script>
+
+
+<!-- ==================== SWIPE GALLERY ==================== -->
+        <style>
+            #ssGallery {
+                position: relative;
+                overflow: hidden;
+                padding: 70px 18px 110px;
+                background: radial-gradient(circle at 50% 52%, rgba(181, 135, 73, 0.11), transparent 37%), #f9f0e0;
+                text-align: center;
+            }
+
+            #ssGallery .ss-ga-eyebrow {
+                font-family: 'Marcellus', Georgia, serif;
+                font-size: 11px;
+                letter-spacing: 0.34em;
+                text-indent: 0.34em;
+                text-transform: uppercase;
+                color: #9a7442;
+            }
+
+            #ssGallery .ss-ga-title {
+                margin-top: 10px;
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-size: clamp(42px, 8vw, 64px);
+                font-weight: 300;
+                line-height: 1;
+                color: #704518;
+            }
+
+            #ssGallery .ss-ga-instruction {
+                margin: 12px auto 64px;
+                font-family: 'Cormorant Garamond', Georgia, serif;
+                font-size: 18px;
+                font-style: italic;
+                color: #765b43;
+            }
+
+            #ssGallery .ss-ga-stack {
+                position: relative;
+                width: min(500px, 86vw);
+                aspect-ratio: 1122 / 1402;
+                margin: 0 auto;
+            }
+
+            #ssGallery .ss-ga-seal {
+                position: absolute;
+                top: -51px;
+                left: 50%;
+                z-index: 10;
+                display: block;
+                width: clamp(102px, 26vw, 142px);
+                transform: translateX(-50%) rotate(-4deg);
+                filter: drop-shadow(0 10px 12px rgba(72, 24, 26, 0.3));
+                pointer-events: none;
+            }
+
+            #ssGallery .ss-ga-stage {
+                position: absolute;
+                inset: 0;
+                touch-action: pan-y;
+                user-select: none;
+                -webkit-user-select: none;
+                outline: none;
+            }
+
+            #ssGallery .ss-ga-card {
+                position: absolute;
+                inset: 0;
+                margin: 0;
+                will-change: transform, opacity;
+                filter: drop-shadow(0 22px 25px rgba(73, 45, 23, 0.2));
+                transform-origin: 50% 15%;
+            }
+
+            #ssGallery .ss-ga-card img {
+                display: block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                object-position: center top;
+                border-radius: 4px;
+                pointer-events: none;
+                -webkit-user-drag: none;
+            }
+
+            #ssGallery .ss-ga-card--back {
+                z-index: 1;
+                transform: rotate(var(--back-rotate, 2.6deg)) scale(var(--back-scale, 0.965));
+                transition: transform 0.72s cubic-bezier(0.22, 0.72, 0.22, 1);
+            }
+
+            #ssGallery .ss-ga-card--front {
+                z-index: 2;
+                cursor: grab;
+                transform: translate3d(var(--drag-x, 0px), 0, 0) rotate(var(--drag-rotate, -1.4deg)) scale(var(--drag-scale, 1));
+                transition: transform 0.72s cubic-bezier(0.22, 0.72, 0.22, 1), opacity 0.5s ease;
+            }
+
+            #ssGallery .ss-ga-card--front.is-dragging {
+                cursor: grabbing;
+                transition: none;
+            }
+
+            #ssGallery .ss-ga-card--front.is-exiting {
+                opacity: 0;
+                transform: translate3d(var(--exit-x), 3%, 0) rotate(var(--exit-rotate)) scale(0.88);
+                transition: transform 0.72s cubic-bezier(0.32, 0.02, 0.24, 1), opacity 0.48s 0.12s ease;
+            }
+
+            #ssGallery .ss-ga-card.is-resetting { transition: none !important; }
+
+            @media (prefers-reduced-motion: reduce) {
+                #ssGallery .ss-ga-card { transition-duration: 0.01ms !important; }
+            }
+        </style>
+        <section id="ssGallery" aria-labelledby="ssGalleryTitle">
+            <p class="ss-ga-eyebrow">Our story</p>
+            <h2 class="ss-ga-title" id="ssGalleryTitle">Moments to treasure</h2>
+            <p class="ss-ga-instruction" id="ssGalleryHint">Swipe left or right to turn the photo</p>
+            <div class="ss-ga-stack">
+                <div class="ss-ga-stage" id="ssGalleryStage" tabindex="0" role="group" aria-label="Two-photo gallery. Swipe left or right, or use the arrow keys, to change the photo." aria-describedby="ssGalleryHint">
+                    <figure class="ss-ga-card ss-ga-card--back" data-photo="2">
+                        <img src="/image/gallery-2.jpg" alt="Hariharan and Sharon at dinner" draggable="false"/>
+                    </figure>
+                    <figure class="ss-ga-card ss-ga-card--front" data-photo="1">
+                        <img src="/image/gallery-1.jpg" alt="Hariharan and Sharon" draggable="false"/>
+                    </figure>
+                </div>
+                <img class="ss-ga-seal" src="/image/wax-seal-flower.png" alt="" aria-hidden="true"/>
+            </div>
+        </section>
+
+        <script>
+            (function() {
+                var stage = document.getElementById('ssGalleryStage');
+                if (!stage) return;
+
+                var front = stage.querySelector('.ss-ga-card--front');
+                var back = stage.querySelector('.ss-ga-card--back');
+                var startX = 0;
+                var currentX = 0;
+                var startTime = 0;
+                var dragging = false;
+                var animating = false;
+
+                function setDrag(x) {
+                    var width = Math.max(stage.clientWidth, 1);
+                    var progress = Math.min(Math.abs(x) / width, 1);
+                    currentX = x;
+                    front.style.setProperty('--drag-x', x + 'px');
+                    front.style.setProperty('--drag-rotate', (-1.4 + (x / width) * 9) + 'deg');
+                    front.style.setProperty('--drag-scale', 1 - progress * 0.08);
+                    back.style.setProperty('--back-scale', 0.965 + progress * 0.035);
+                    back.style.setProperty('--back-rotate', (2.6 - progress * 2.6) + 'deg');
+                }
+
+                function clearDrag() {
+                    front.style.removeProperty('--drag-x');
+                    front.style.removeProperty('--drag-rotate');
+                    front.style.removeProperty('--drag-scale');
+                    back.style.removeProperty('--back-scale');
+                    back.style.removeProperty('--back-rotate');
+                }
+
+                function settleBack() {
+                    front.classList.remove('is-dragging');
+                    clearDrag();
+                }
+
+                function cycle(direction) {
+                    if (animating) return;
+                    animating = true;
+                    dragging = false;
+                    var outgoing = front;
+                    var incoming = back;
+                    var distance = Math.max(stage.clientWidth * 1.25, 520);
+
+                    outgoing.classList.remove('is-dragging');
+                    outgoing.style.setProperty('--exit-x', direction * distance + 'px');
+                    outgoing.style.setProperty('--exit-rotate', direction * 11 + 'deg');
+                    outgoing.classList.add('is-exiting');
+                    incoming.style.removeProperty('--back-scale');
+                    incoming.style.removeProperty('--back-rotate');
+
+                    window.setTimeout(function() {
+                        outgoing.classList.add('is-resetting');
+                        outgoing.classList.remove('ss-ga-card--front', 'is-exiting');
+                        outgoing.classList.add('ss-ga-card--back');
+                        outgoing.style.removeProperty('--exit-x');
+                        outgoing.style.removeProperty('--exit-rotate');
+
+                        incoming.classList.add('is-resetting');
+                        incoming.classList.remove('ss-ga-card--back');
+                        incoming.classList.add('ss-ga-card--front');
+                        clearDrag();
+
+                        front = incoming;
+                        back = outgoing;
+                        stage.setAttribute('aria-label', 'Photo ' + front.getAttribute('data-photo') + ' of 2. Swipe left or right to continue.');
+
+                        requestAnimationFrame(function() {
+                            requestAnimationFrame(function() {
+                                outgoing.classList.remove('is-resetting');
+                                incoming.classList.remove('is-resetting');
+                                animating = false;
+                            });
+                        });
+                    }, 730);
+                }
+
+                stage.addEventListener('pointerdown', function(event) {
+                    if (animating || event.button !== 0) return;
+                    startX = event.clientX;
+                    currentX = 0;
+                    startTime = Date.now();
+                    dragging = true;
+                    front.classList.add('is-dragging');
+                    stage.setPointerCapture(event.pointerId);
+                });
+
+                stage.addEventListener('pointermove', function(event) {
+                    if (!dragging || animating) return;
+                    setDrag(event.clientX - startX);
+                });
+
+                function finishDrag(event) {
+                    if (!dragging || animating) return;
+                    dragging = false;
+                    if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+                    var elapsed = Math.max(Date.now() - startTime, 1);
+                    var velocity = currentX / elapsed;
+                    var committed = Math.abs(currentX) > stage.clientWidth * 0.2 || Math.abs(velocity) > 0.55;
+                    if (committed && currentX !== 0) cycle(currentX < 0 ? -1 : 1);
+                    else settleBack();
+                }
+
+                stage.addEventListener('pointerup', finishDrag);
+                stage.addEventListener('pointercancel', finishDrag);
+                stage.addEventListener('keydown', function(event) {
+                    if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+                    event.preventDefault();
+                    cycle(event.key === 'ArrowLeft' ? -1 : 1);
+                });
+            })();
+        </script>
+        
+        
+        <!-- full-screen flower shower layer (fires once, on date reveal) -->
+        <div id="ssPetals" aria-hidden="true"></div>
+
+        <!-- ==================== GLOBAL SIDEWAYS PETALS ==================== -->
+        <canvas id="ssGlobalPetals" aria-hidden="true" style="
+            position:fixed;inset:0;width:100%;height:100%;
+            pointer-events:none;z-index:9999;
+        "></canvas>
+        <script>
+        (function(){
+            var canvas = document.getElementById('ssGlobalPetals');
+            if (!canvas) return;
+            var ctx = canvas.getContext('2d');
+            var W = window.innerWidth, H = window.innerHeight;
+            var DPR = window.devicePixelRatio || 1;
+            var petals = [];
+            var COUNT = 28;
+
+            var SHAPES = ['oval','heart','teardrop'];
+            var COLORS = [
+                '#f8bbd0','#f48fb1','#fce4ec',   // pink rose
+                '#fff9c4','#fffde7',              // jasmine white
+                '#ffe0b2','#ffcc80',              // marigold orange
+                '#e1bee7','#ce93d8'               // soft lavender
+            ];
+
+            function rand(a,b){ return a + Math.random()*(b-a); }
+
+            function makePetal(fromLeft){
+                // sideways flow: start off left edge, drift right
+                return {
+                    x: fromLeft ? rand(-80,-10) : rand(-W*0.5, -10),
+                    y: rand(0, H),
+                    r: rand(4, 9),
+                    ry: rand(2.5, 5),
+                    angle: rand(0, Math.PI*2),
+                    spin: rand(-0.02, 0.02),
+                    vx: rand(1.2, 2.8),          // primary: move right
+                    vy: rand(-0.3, 0.6),          // slight downward drift
+                    wobble: rand(0, Math.PI*2),
+                    wobbleSpeed: rand(0.015, 0.04),
+                    color: COLORS[Math.floor(Math.random()*COLORS.length)],
+                    alpha: rand(0.45, 0.85),
+                    shape: SHAPES[Math.floor(Math.random()*SHAPES.length)]
+                };
+            }
+
+            function drawOval(p){
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, p.r, p.ry, 0, 0, Math.PI*2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function drawTeardrop(p){
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                ctx.beginPath();
+                ctx.moveTo(0, -p.r);
+                ctx.bezierCurveTo( p.ry, -p.r*0.3,  p.ry,  p.r*0.6,  0,  p.r);
+                ctx.bezierCurveTo(-p.ry,  p.r*0.6, -p.ry, -p.r*0.3,  0, -p.r);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function drawHeart(p){
+                ctx.save();
+                ctx.globalAlpha = p.alpha * 0.7;
+                ctx.translate(p.x, p.y);
+                ctx.rotate(p.angle);
+                var s = p.r * 0.55;
+                ctx.beginPath();
+                ctx.moveTo(0, s*0.5);
+                ctx.bezierCurveTo( s,   -s*0.3,  s*1.6, s*0.6,  0,  s*1.6);
+                ctx.bezierCurveTo(-s*1.6, s*0.6, -s,   -s*0.3,  0,  s*0.5);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                ctx.restore();
+            }
+
+            function resize(){
+                W = window.innerWidth; H = window.innerHeight;
+                canvas.width  = Math.round(W * DPR);
+                canvas.height = Math.round(H * DPR);
+                ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            }
+
+            function init(){
+                petals = [];
+                for(var i=0;i<COUNT;i++) petals.push(makePetal(false));
+            }
+
+            function frame(){
+                ctx.clearRect(0, 0, W, H);
+                for(var i=0;i<petals.length;i++){
+                    var p = petals[i];
+                    // wobble: gentle sine on vy
+                    p.wobble += p.wobbleSpeed;
+                    p.vy = Math.sin(p.wobble) * 0.5;
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.angle += p.spin;
+                    if(p.shape==='oval')     drawOval(p);
+                    else if(p.shape==='heart') drawHeart(p);
+                    else                     drawTeardrop(p);
+                    // recycle when off right edge
+                    if(p.x > W + 20) Object.assign(p, makePetal(true));
+                }
+                requestAnimationFrame(frame);
+            }
+
+            resize();
+            init();
+            frame();
+            window.addEventListener('resize', function(){ resize(); });
+        })();
+        </script>
+
+    </body>
+</html>
