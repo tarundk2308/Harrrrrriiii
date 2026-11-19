@@ -1604,112 +1604,53 @@
                         (function() {
                             var eventDate = new Date(2027, 0, 28, 9, 0, 0);
                             var root = document.getElementById('ssCountdown');
-                            var container = document.getElementById('countdownContainer');
                             var elDays = document.getElementById('days');
                             var elHours = document.getElementById('hours');
                             var elMins = document.getElementById('minutes');
                             var elSecs = document.getElementById('seconds');
                             if (!root || !elDays) return;
 
-                            var prev = { days: null, hours: null, minutes: null, seconds: null };
-                            var revealed = false, live = false, timer = null;
-
-                            function flip(el, newVal) {
-                                if (el.textContent === newVal) return;
-                                if (!live) { el.textContent = newVal; return; }
-                                el.classList.add('flip-out');
-                                setTimeout(function() {
-                                    el.classList.remove('flip-out');
-                                    el.classList.add('flip-in');
-                                    el.textContent = newVal;
-                                    el.offsetHeight;
-                                    el.classList.remove('flip-in');
-                                }, 520);
-                            }
-
                             function tick() {
                                 var dist = eventDate - new Date();
-                                if (dist < 0) {
-                                    container.innerHTML = '<p class="ss-cd-foot" style="opacity:0.9">See you there!</p>';
-                                    if (timer) clearInterval(timer);
-                                    return;
-                                }
-                                var d = String(Math.floor(dist / 86400000));
-                                var h = String(Math.floor((dist % 86400000) / 3600000)).padStart(2, '0');
-                                var m = String(Math.floor((dist % 3600000) / 60000)).padStart(2, '0');
-                                var s = String(Math.floor((dist % 60000) / 1000)).padStart(2, '0');
-                                if (d !== prev.days)    { flip(elDays, d);  prev.days = d; }
-                                if (h !== prev.hours)   { flip(elHours, h); prev.hours = h; }
-                                if (m !== prev.minutes) { flip(elMins, m);  prev.minutes = m; }
-                                if (s !== prev.seconds) { flip(elSecs, s);  prev.seconds = s; }
+                                if (dist < 0) { return; }
+                                elDays.textContent  = String(Math.floor(dist / 86400000));
+                                elHours.textContent = String(Math.floor((dist % 86400000) / 3600000)).padStart(2,'0');
+                                elMins.textContent  = String(Math.floor((dist % 3600000) / 60000)).padStart(2,'0');
+                                elSecs.textContent  = String(Math.floor((dist % 60000) / 1000)).padStart(2,'0');
                             }
 
-                            function doReveal() {
-                                if (revealed) return;
-                                revealed = true;
+                            tick();
+                            setInterval(tick, 1000);
+
+                            /* Show countdown after scratch reveal */
+                            function showCD() {
+                                root.style.display = 'block';
+                                root.style.opacity = '0';
+                                root.style.transform = 'translateY(16px)';
+                                root.style.transition = 'opacity 1s ease, transform 1s ease';
+                                root.setAttribute('aria-hidden', 'false');
                                 root.querySelectorAll('.number, .label').forEach(function(el) {
                                     el.classList.add('revealed');
                                 });
+                                setTimeout(function() {
+                                    root.style.opacity = '1';
+                                    root.style.transform = 'translateY(0)';
+                                }, 50);
                             }
 
-                            /* the section only exists on the page once the date has been scratched open */
-                            function goLive() {
-                                if (live) return;
-                                live = true;
-                                tick();
-                                root.setAttribute('aria-hidden', 'false');
-                                root.classList.add('ss-cd-mounted');
-                                root.offsetHeight; /* force layout so the fade-up plays */
-                                requestAnimationFrame(function() {
-                                    root.classList.add('ss-cd-live');
-                                    doReveal();
-                                });
-                                timer = setInterval(tick, 1000);
-                            }
-
-                            var saveDate = document.getElementById('ssSaveDate');
-
-                            function dateIsOut() {
-                                if (window.ssDateRevealed) return true;
-                                return !!(saveDate && saveDate.classList.contains('ss-revealed'));
-                            }
-
-                            if (!saveDate) {
-                                // always wait for scratch reveal
-                                document.addEventListener('ss:date-revealed', goLive, { once: true });
-                            } else if (dateIsOut()) {
-                                goLive();
-                            } else {
-                                document.addEventListener('ss:date-revealed', goLive, { once: true });
-                                var poll = setInterval(function() {
-                                    if (dateIsOut()) { clearInterval(poll); goLive(); }
-                                }, 400);
-                            }
+                            document.addEventListener('ss:date-revealed', showCD, { once: true });
                         })();
                     </script>
         <!-- ==================== COUNTDOWN (FINAL SECTION) ==================== -->
         <style>
-            /* ---- countdown: inline below scratch card ---- */
+            /* ---- countdown: shown after scratch reveal ---- */
                             #ssCountdown {
                                 display: none;
                                 background: transparent;
-                                padding: 32px 16px 20px;
+                                padding: 32px 16px 24px;
                                 text-align: center;
                                 position: relative;
-                                overflow: hidden;
                                 width: 100%;
-                            }
-
-                            #ssCountdown.ss-cd-mounted {
-                                display: block;
-                                opacity: 0;
-                                transform: translateY(16px);
-                            }
-
-                            #ssCountdown.ss-cd-live {
-                                opacity: 1;
-                                transform: translateY(0);
-                                transition: opacity 1.25s ease, transform 1.25s cubic-bezier(0.22, 0.61, 0.36, 1);
                             }
 
                             #ssCountdown .ss-cd-title {
