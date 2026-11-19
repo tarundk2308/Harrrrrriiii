@@ -2169,11 +2169,17 @@
                 transform: translateY(-50%);
                 object-fit: contain;
                 z-index: 0;
-                opacity: 0.20;
+                opacity: 0.22;
                 pointer-events: none;
                 filter: blur(3px) saturate(1.3);
                 mix-blend-mode: multiply;
                 border-radius: 50%;
+            }
+            /* Blue watercolor for church — transparent PNG, no multiply needed */
+            .ss-ev-card--flip .ss-ev-wc-bg {
+                mix-blend-mode: normal;
+                opacity: 0.30;
+                filter: blur(2px) saturate(1.1);
             }
 
             /* Church arch background */
@@ -2224,7 +2230,7 @@
             </div>
 
             <div class="ss-ev-card ss-ev-card--flip">
-                <img class="ss-ev-wc-bg" src="/image/watercolor-bg.jpg" aria-hidden="true" alt=""/>
+                <img class="ss-ev-wc-bg" src="/image/watercolor-blue.png" aria-hidden="true" alt=""/>
                 <div class="ss-ev-art">
                     <div class="ss-muh-wrap ss-church-wrap">
                         <canvas class="ss-muh-canvas" id="ssChurchCanvas" aria-hidden="true"></canvas>
